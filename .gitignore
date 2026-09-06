@@ -1,8 +1,10 @@
-# upstream clone and teaching-repo clone
+# course repo clones and the upstream notetaker clone
 notetaker/
+isa401/
 class_code/
-# slide decks come from fmegahed/isa401; zoom media is large and private
+# local deck copies (superseded by isa401/); session media and outputs
 lectures/
+sessions/
 *.mp4
 *.vtt
 *.m4a
