@@ -19,8 +19,8 @@ LaTeX, chalkboards, TikZ diagrams, and bibliographies is left behind.
 
 Three sources, in this order of authority when they disagree:
 
-1. **Slide deck**: the xaringan `.Rmd` in `lectures/NN_topic/`, copied from
-   the course repo `fmegahed/isa401`. Gives structure, learning objectives,
+1. **Slide deck**: the xaringan `.Rmd` at `lectures/NN_topic/` in the
+   course repo `fmegahed/isa401`, cloned locally. Gives structure, learning objectives,
    and the code planned for the session.
 2. **In-class code**: the `.Rmd` committed live to the teaching repo
    `fmegahed/isa401a` under `markdowns/`. What was actually typed. Preferred
@@ -52,42 +52,49 @@ RMD. Those sessions rely on the deck, the transcript, and screen stills.
 ## Layout
 
 The working folder `C:\Users\megahefm\Documents\claude\notetaker` is the
-project.
+project. Both course repos are cloned inside it so the tool reads decks and
+class code straight from git, and `git pull` in each after class is the
+whole update step.
 
 ```
-notetaker/            upstream clone, read-only reference
-class_code/           clone of fmegahed/isa401a (git pull after each class)
-lectures/
-  NN_topic/
-    NN_topic.Rmd      slide deck, copied from fmegahed/isa401
+notetaker/            upstream dmanam/notetaker clone, read-only reference
+isa401/               clone of fmegahed/isa401 (decks at lectures/NN_topic/NN_topic.Rmd)
+class_code/           clone of fmegahed/isa401a (class code at markdowns/*.Rmd)
+sessions/
+  NN_topic/           one folder per class, named like the deck folder
     zoom/
       recording.mp4   Zoom download
       transcript.vtt  Zoom download
-    session/          everything the tool writes for this session
-      transcript.json
-      scenes/         scene-NNN.jpg + scenes.json
-      notes.qmd
-      notes.questions.json
-      state.json      instructor name, video url, class rmd path, stage flags
-      logs/           one trace per agent run (agent_log.py)
+    transcript.json   everything below is written by the tool
+    scenes/           scene-NNN.jpg + scenes.json
+    notes.qmd
+    notes.questions.json
+    state.json        instructor name, video url, deck path, class rmd path
+    logs/             one trace per agent run (agent_log.py)
 isa_notes/            the tool
 docs/superpowers/specs/   this document
 ```
 
-Media (`*.mp4`, `*.vtt`, `zoom/`), the two clones, and `lectures/` are
-gitignored. The tool and the specs are committed.
+Session media and outputs live under `sessions/`, outside both course
+clones, so a Zoom recording can never be committed to a course repo by
+accident. The three clones, `sessions/`, and all media are gitignored in
+the project repo. The tool and the specs are committed.
+
+The deck for a session is found by name: `sessions/03_r_foundations` reads
+`isa401/lectures/03_r_foundations/03_r_foundations.Rmd`. `--deck PATH`
+overrides that for a deck not yet pushed.
 
 ## Command
 
 ```
-python -m isa_notes lectures/03_r_foundations \
+python -m isa_notes sessions/03_r_foundations \
     --class-rmd class_code/markdowns/03_r_basics.Rmd \
     --instructor "Fadel Megahed" \
     --video-url https://miamioh.zoom.us/rec/share/...
 ```
 
 Flags saved to `state.json` on first use and not required again:
-`--instructor`, `--video-url`, `--video-url-template`, `--class-rmd`.
+`--instructor`, `--video-url`, `--video-url-template`, `--class-rmd`, `--deck`.
 
 Stage flags: `--answer` (follow-up on queued questions), `--verify`
 (verification pass only), `--no-verify`, `--regen` (rewrite notes from
@@ -134,7 +141,7 @@ The transcript given to the agent has a marker spliced in where each
 scene starts, exactly as the upstream does with boards:
 
 ```
-[00:23:12] === scene 41 up: lectures/03_r_foundations/session/scenes/scene-041.jpg ===
+[00:23:12] === scene 41 up: sessions/03_r_foundations/scenes/scene-041.jpg ===
 [00:23:14]  so if you look at the environment pane now ...
 ```
 
