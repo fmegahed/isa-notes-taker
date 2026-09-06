@@ -201,10 +201,18 @@ for the first version.
 - **What we covered**: a short paragraph and the deck's learning objectives.
 - **Body**: sections following the deck's parts. Narrative of what was
   explained; the class RMD's code reproduced in chunks with `eval: false`;
-  line-by-line explanation where the instructor walked through it. Every
-  paragraph that came from the recording begins with a timestamp span
-  (`[hh:mm:ss]{.ts}`), styled muted inline. A paragraph the agent wrote
-  itself carries none.
+  where the instructor walked through code line by line, Quarto code
+  annotations (`# <1>` markers with a numbered list below the chunk) carry
+  the explanation rather than prose after the chunk. Every paragraph that
+  came from the recording begins with a timestamp span (`[hh:mm:ss]{.ts}`),
+  styled muted inline. A paragraph the agent wrote itself carries none.
+- **Sessions without code** (introduction, git, visualization fundamentals,
+  GUI labs): the body has the same shape, filled with the instructor's
+  explanation, examples, and emphasis rather than code. The notes may not
+  restate a slide's bullets; they link to the slide by number and write
+  what was said around it. A slide that passed without commentary gets no
+  paragraph. In GUI labs the stills are the main evidence and the notes read
+  as a walkthrough of what was clicked and why.
 - **Screen stills**: embedded only where the transcript cannot carry the
   point (GUI menus and dialogs in Tableau, Power BI, Flourish, DataWrapper),
   cropped to the relevant region, never from a student screen share.
@@ -281,7 +289,37 @@ One session is a long agentic run on Opus under the Claude subscription,
 plus a verify pass. Stills are read by Haiku. Expect a visible dent in plan
 limits over a semester of roughly 28 sessions.
 
+## Hosting
+
+The notes are published to the isa401 GitHub Pages site. They are not
+served from ChatISA (decided 2026-09-06).
+
+## Deferred: live code with Quarto Live
+
+Runnable R chunks in the browser are wanted, but not in the first version.
+The plan, after one session's notes look right, is a spike on a single page:
+
+- Quarto Live (`r-wasm/quarto-live`) for `{webr}` chunks.
+- A client-side service worker that injects the COOP and COEP headers, since
+  GitHub Pages cannot set response headers. Cross-origin isolation is what
+  gives webR the SharedArrayBuffer channel it needs for any networking.
+- A hidden setup chunk that sets `ALL_PROXY` to the public SOCKS5 over
+  WebSocket proxy that ChatISA already uses, so chunks that read from a URL
+  or scrape a page work without CORS.
+- An audit of cross-origin subresources on the page (fonts, images), which
+  `require-corp` blocks unless they send a resource policy header.
+
+The spike has to confirm that Quarto Live's bundled webR selects the
+SharedArrayBuffer channel once the page is isolated. If it passes, the tool
+emits `{webr}` for self-contained chunks and keeps `eval: false` only where a
+chunk needs something the browser cannot provide. If it fails, the notes stay
+static and the decision is revisited.
+
+Short video clips cut from the recording for GUI sequences are a possible
+later addition to the scenes stage. Generic animation is not planned.
+
 ## Out of scope for the first version
 
 Zoom API download, site listing integration, a course-wide assembled
-document, practice questions, and any use of the NotebookLM material.
+document, practice questions, live code chunks (see above), and any use of
+the NotebookLM material.
