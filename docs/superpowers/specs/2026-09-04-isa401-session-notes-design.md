@@ -61,16 +61,17 @@ notetaker/            upstream dmanam/notetaker clone, read-only reference
 isa401/               clone of fmegahed/isa401 (decks at lectures/NN_topic/NN_topic.Rmd)
 class_code/           clone of fmegahed/isa401a (class code at markdowns/*.Rmd)
 sessions/
-  NN_topic/           one folder per class, named like the deck folder
-    zoom/
-      recording.mp4   Zoom download
-      transcript.vtt  Zoom download
-    transcript.json   everything below is written by the tool
-    scenes/           scene-NNN.jpg + scenes.json
-    notes.qmd
-    notes.questions.json
-    state.json        instructor name, video url, deck path, class rmd path
-    logs/             one trace per agent run (agent_log.py)
+  classNN/            one folder per class, Zoom's own file names inside
+    GMT..._Recording_1920x1080.mp4    Zoom download (the only *.mp4)
+    GMT..._Recording.transcript.vtt   Zoom download (the only *.vtt)
+    GMT..._Recording.m4a              Zoom download, unused for now
+    out/              everything below is written by the tool
+      transcript.json
+      scenes/         scene-NNN.jpg + scenes.json
+      notes.qmd
+      notes.questions.json
+      state.json      instructor name, video url, deck path, class rmd path
+      logs/           one trace per agent run (agent_log.py)
 isa_notes/            the tool
 docs/superpowers/specs/   this document
 ```
@@ -80,14 +81,21 @@ clones, so a Zoom recording can never be committed to a course repo by
 accident. The three clones, `sessions/`, and all media are gitignored in
 the project repo. The tool and the specs are committed.
 
-The deck for a session is found by name: `sessions/03_r_foundations` reads
-`isa401/lectures/03_r_foundations/03_r_foundations.Rmd`. `--deck PATH`
-overrides that for a deck not yet pushed.
+The tool finds the video and transcript by extension inside the session
+folder and refuses to run if there is not exactly one of each. The deck is
+found by class number: `sessions/class03` reads the single
+`isa401/lectures/03_*/03_*.Rmd`. `--deck PATH` overrides that for a deck not
+yet pushed. The `.m4a` is kept for a possible later Whisper re-transcription
+if Zoom's transcript proves too rough; nothing uses it now.
+
+Observed on the first four recordings (2026-09-08): each is 70 to 81
+minutes, 1920x1080 or 2426x1516 at 25 fps; each VTT has 600 to 650 cues and
+every cue is prefixed `Fadel Megahed: `.
 
 ## Command
 
 ```
-python -m isa_notes sessions/03_r_foundations \
+python -m isa_notes sessions/class03 \
     --class-rmd class_code/markdowns/03_r_basics.Rmd \
     --instructor "Fadel Megahed" \
     --video-url https://miamioh.zoom.us/rec/share/...
@@ -141,7 +149,7 @@ The transcript given to the agent has a marker spliced in where each
 scene starts, exactly as the upstream does with boards:
 
 ```
-[00:23:12] === scene 41 up: sessions/03_r_foundations/scenes/scene-041.jpg ===
+[00:23:12] === scene 41 up: sessions/class03/out/scenes/scene-041.jpg ===
 [00:23:14]  so if you look at the environment pane now ...
 ```
 
