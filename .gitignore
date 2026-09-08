@@ -11,3 +11,6 @@ sessions/
 __pycache__/
 *.pyc
 .venv/
+# planning workspace and quarto caches
+.superpowers/
+.quarto/

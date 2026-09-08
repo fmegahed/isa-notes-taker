@@ -73,7 +73,7 @@ sessions/
       state.json      instructor name, video url, deck path, class rmd path
       logs/           one trace per agent run (agent_log.py)
 isa_notes/            the tool
-docs/superpowers/specs/   this document
+planning/specs/   this document
 ```
 
 Session media and outputs live under `sessions/`, outside both course

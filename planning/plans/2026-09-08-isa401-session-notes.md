@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3.14, ffmpeg 9, Quarto 1.10, `claude-agent-sdk` on the Claude Code CLI (subscription backend), Pillow for crops. No test framework: plain assertion scripts run with `python`.
 
-**Spec:** `docs/superpowers/specs/2026-09-04-isa401-session-notes-design.md`
+**Spec:** `planning/specs/2026-09-04-isa401-session-notes-design.md`
 
 ## Global Constraints
 
