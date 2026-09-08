@@ -53,6 +53,19 @@ with tempfile.TemporaryDirectory() as d:
     src = S.resolve_sources(sd, args, {}, project_root=d)
     assert src["deck"] == deck and src["class_rmd"] == rmd
     assert src["date"] == "2026-08-31" and src["video_url"] == "https://z/rec"
+    assert src["instructor_pronouns"] is None
+    pronoun_args = S.parse_args(["sessions/class03", "--instructor-pronouns", "he/him"])
+    assert pronoun_args.instructor_pronouns == "he/him"
+    pronoun_src = S.resolve_sources(sd, pronoun_args, {}, project_root=d)
+    assert pronoun_src["instructor_pronouns"] == "he/him"
+    S.save_state(out, {k: (str(v) if isinstance(v, Path) else v)
+                       for k, v in pronoun_src.items()})
+    reloaded = S.load_state(out)
+    assert reloaded["instructor_pronouns"] == "he/him"
+    again_pronoun = S.resolve_sources(sd, S.parse_args(["sessions/class03"]),
+                                      reloaded, project_root=d)
+    assert again_pronoun["instructor_pronouns"] == "he/him"
+    print("instructor pronouns flag resolves and survives a state round trip")
     # Saved flags come back without being passed again.
     S.save_state(out, {k: (str(v) if isinstance(v, Path) else v)
                        for k, v in src.items()})

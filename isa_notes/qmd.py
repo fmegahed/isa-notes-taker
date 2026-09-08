@@ -83,7 +83,9 @@ def front_matter(title: str, subtitle: str, date: str | None,
               "---", ""]
     items = [f"[{k}]({v})" for k, v in links.items() if v]
     if items:
-        lines.append(" | ".join(items) + "  ")
+        lines.append(" | ".join(items))
+        if note:
+            lines.append("")
     if note:
         lines.append(note)
     lines.append("")

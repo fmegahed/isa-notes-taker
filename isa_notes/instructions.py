@@ -112,15 +112,19 @@ Two places are exempt because a reader never sees them:
 - a todo comment, <!-- todo: ... -->, on its own line. Those are notes to
   the instructor, who does have the transcript and the stills, so name what
   you need looked at: <!-- todo: scene 41 unreadable, check the filter name -->
-  is more use than a version that talks around it.
+  is more use than a version that talks around it. Every todo names what to check
+  and where to look, with a timestamp or a scene number; a todo that only
+  says "check this" is not a todo and must not be written.
 - the Loose ends section, written entirely as todo comments."""
 
 VOICE = """Address the student as "you". Refer to the instructor as "Dr. Megahed" on
 first mention and "Megahed" after, or write in the notes' own voice ("we
-load the file"), which is what these notes mostly are. Clean up speech
-disfluencies. Use en dashes or commas for asides; never an em dash. Keep
-sentences short. Bold nothing except the first words of a list item where a
-list has several parallel items."""
+load the file"), which is what these notes mostly are. Use no gendered pronoun
+for the instructor unless the task states their pronouns; write the name, or
+use the notes' own voice. Clean up speech disfluencies. Use en dashes or
+commas for asides; never an em dash. Keep sentences short. Bold nothing
+except the first words of a list item where a list has several parallel
+items."""
 
 SHAPE = """The page, in order:
 1. The front matter and header lines given in the task, verbatim, at the top.
@@ -232,14 +236,31 @@ def _sources_block(deck: Path | None, class_rmd: Path | None) -> str:
     return "\n".join(parts)
 
 
+_NO_PRONOUNS = (" No pronouns are on record for the instructor: refer to "
+               "them by name or write in the notes' own voice, and use no "
+               "gendered pronoun for them.")
+
+
+def instructor_line(instructor: str, pronouns: str | None = None) -> str:
+    """The `**Instructor:** ...` line, with pronouns if given, else the
+    no-pronouns sentence."""
+    return (f"**Instructor:** {instructor}" +
+           (f" ({pronouns})" if pronouns else "") + "." +
+           ("" if pronouns else _NO_PRONOUNS))
+
+
 def write_message(*, title: str, date: str | None, instructor: str,
                   deck: Path | None, class_rmd: Path | None,
-                  transcript_text: str, scene_index: str, header: str) -> str:
+                  transcript_text: str, scene_index: str, header: str,
+                  pronouns: str | None = None) -> str:
+    instr_line = (
+        f"**Instructor:** {instructor}" + (f" ({pronouns})" if pronouns else "") +
+        f". Refer to them as \"Dr. Megahed\" on first mention and \"Megahed\" "
+        f"after." + ("" if pronouns else _NO_PRONOUNS))
     return (
         f"Write the companion notes for this class session.\n\n"
         f"**Session:** {title}" + (f" ({date})" if date else "") + "\n"
-        f"**Instructor:** {instructor}. Refer to them as \"Dr. Megahed\" on "
-        f"first mention and \"Megahed\" after.\n\n"
+        f"{instr_line}\n\n"
         f"{_sources_block(deck, class_rmd)}\n\n"
         f"Read the deck and the class RMD in full before you start writing.\n\n"
         f"**Front matter and header.** The file must begin with exactly this "
@@ -252,10 +273,11 @@ def write_message(*, title: str, date: str | None, instructor: str,
 
 def verify_message(*, notes: Path, instructor: str, deck: Path | None,
                    class_rmd: Path | None, transcript_text: str,
-                   scene_index: str) -> str:
+                   scene_index: str, pronouns: str | None = None) -> str:
+    instr_line = instructor_line(instructor, pronouns)
     return (
         f"Check the notes in `{Path(notes).resolve()}`.\n\n"
-        f"**Instructor:** {instructor}.\n\n"
+        f"{instr_line}\n\n"
         f"{_sources_block(deck, class_rmd)}\n\n"
         f"You may open any still by path, and the frame-reader subagent can "
         f"read frames at any timestamp.\n\n"

@@ -57,6 +57,8 @@ with tempfile.TemporaryDirectory() as d:
     assert "css: ts.css" in fm and "[Slides](https://s)" in fm
     assert "Class code" not in fm, "links without a URL are dropped"
     assert "—" not in fm
+    assert ("[Slides](https://s) | [Recording](https://z)\n\n"
+           "Timestamps are hh:mm:ss into the recording.") in fm, fm
     notes = d / "notes.qmd"
     notes.write_text("# Body\n", encoding="utf-8")
     assert qmd.ensure_front_matter(notes, fm) is True

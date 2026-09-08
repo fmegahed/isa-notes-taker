@@ -45,8 +45,8 @@ SLIDES_URL = "https://fmegahed.github.io/isa401/fall2026/class{n:02d}/{stem}.htm
 CLASS_CODE_URL = "https://github.com/fmegahed/isa401a/blob/main/markdowns/{name}"
 TS_NOTE = ("Timestamps in the margin are hh:mm:ss into the recording; "
            "drag the player there to hear the passage.")
-SAVED_KEYS = ("instructor", "video_url", "video_url_template", "deck",
-              "class_rmd", "date")
+SAVED_KEYS = ("instructor", "instructor_pronouns", "video_url",
+              "video_url_template", "deck", "class_rmd", "date")
 
 
 # -- inputs ------------------------------------------------------------------
@@ -93,6 +93,7 @@ def resolve_sources(session_dir: Path, args, state: dict,
     date = state.get("date") or (qmd.zoom_date(mp4.name) if mp4 else None)
     return {
         "instructor": pick(args.instructor, "instructor") or "Fadel Megahed",
+        "instructor_pronouns": pick(args.instructor_pronouns, "instructor_pronouns"),
         "video_url": pick(args.video_url, "video_url"),
         "video_url_template": pick(args.video_url_template, "video_url_template"),
         "deck": deck, "class_rmd": rmd, "date": date, "n": n,
@@ -173,7 +174,8 @@ def stage_write(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
         title=title, date=src.get("date"), instructor=src["instructor"],
         deck=src.get("deck"), class_rmd=src.get("class_rmd"),
         transcript_text=_transcript_text(tj, found),
-        scene_index=SC.index_text(found), header=header)
+        scene_index=SC.index_text(found), header=header,
+        pronouns=src.get("instructor_pronouns"))
     print(f"  writing notes with the {args.backend} backend")
     run_agent(system_prompt=I.SYSTEM_PROMPT, user_text=user,
               ctx=_ctx(out, mp4, tj, found), output_file=notes,
@@ -194,7 +196,8 @@ def stage_verify(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
         notes=notes, instructor=src["instructor"], deck=src.get("deck"),
         class_rmd=src.get("class_rmd"),
         transcript_text=_transcript_text(tj, found),
-        scene_index=SC.index_text(found))
+        scene_index=SC.index_text(found),
+        pronouns=src.get("instructor_pronouns"))
     print("  checking the notes against the transcript")
     run_agent(system_prompt=I.VERIFY_PROMPT, user_text=user,
               ctx=_ctx(out, mp4, tj, found), output_file=notes,
@@ -224,7 +227,8 @@ def stage_answer(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
         f"Resolve those you now can (using the answers, the stills, the "
         f"frame-reader, or the class RMD; ask again if needed) and remove "
         f"the resolved comments. Leave genuinely unresolved ones in place.\n\n"
-        f"{I._sources_block(src.get('deck'), src.get('class_rmd'))}")
+        f"{I._sources_block(src.get('deck'), src.get('class_rmd'))}\n\n"
+        f"{I.instructor_line(src['instructor'], src.get('instructor_pronouns'))}")
     run_agent(system_prompt=I.SYSTEM_PROMPT, user_text="\n\n".join(parts),
               ctx=ctx, output_file=notes, backend=args.backend,
               model=args.model, frame_model=args.frame_model, revise=True,
@@ -269,6 +273,8 @@ def parse_args(argv: list[str]):
     p.add_argument("--class-rmd", default=None)
     p.add_argument("--deck", default=None)
     p.add_argument("--instructor", default=None)
+    p.add_argument("--instructor-pronouns", default=None,
+                   help='e.g. "he/him"; saved in state')
     p.add_argument("--video-url", default=None)
     p.add_argument("--video-url-template", default=None,
                    help="e.g. https://youtu.be/ID?t={seconds}; turns timestamps into links")
