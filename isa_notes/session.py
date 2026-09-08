@@ -139,13 +139,17 @@ def deck_meta_for(src: dict) -> dict:
 
 
 def header_for(src: dict, description: str | None = None,
-               extra_links: dict[str, str] | None = None) -> str:
+               extra_links: dict[str, str] | None = None,
+               css: str | None = "ts.css") -> str:
     """The page title is the deck's subtitle (the class-specific part,
     e.g. "03: Foundations"), else "Class NN"; the subtitle is the deck's
     title (the course name), else "ISA 401" -- swapped from the deck's own
     layout so a listing of pages shows the class, not the course, on
     every row. `description` is left to the caller (stage_write has none
-    yet; stage_publish fills it from the page body)."""
+    yet; stage_publish fills it from the page body). `css` defaults to
+    "ts.css" for the per-session page; stage_publish passes css=None for
+    the site copy, since notes_site/'s own scss already carries the same
+    .ts rules and no ts.css file sits beside the published page."""
     deck = src.get("deck")
     meta = deck_meta_for(src)
     title = meta["subtitle"] or f"Class {src['n']:02d}"
@@ -160,7 +164,7 @@ def header_for(src: dict, description: str | None = None,
         links.update(extra_links)
     note = TS_NOTE if src.get("video_url") else f"{RECORDING_NOTE} {TS_NOTE}"
     return qmd.front_matter(title, subtitle, src.get("date"), links, note,
-                            description=description)
+                            description=description, css=css)
 
 
 # -- stages ------------------------------------------------------------------
@@ -254,69 +258,90 @@ def _no_notes_message(notes: Path) -> str:
     return msg
 
 
-def _ensure_nojekyll() -> None:
-    """Quarto's output has folders starting with "_" (e.g. _site-style
-    assets); GitHub Pages' Jekyll processing drops those unless a
-    .nojekyll file says not to. docs/ is committed, so this only needs
-    creating once, but a render never removes it and a clone might not
-    have it yet."""
+def _rebuild_docs() -> None:
+    """docs/ is what GitHub Pages serves; it is rebuilt from scratch from
+    the just-rendered notes_site/_site every publish (not merged with
+    whatever a project render there happens to leave behind), so a class
+    folder removed from notes_site/ actually disappears from docs/ too,
+    and a stale file from an earlier render or a manual edit cannot
+    linger."""
+    site_dir = NOTES_SITE / "_site"
     if DOCS_DIR.exists():
-        marker = DOCS_DIR / ".nojekyll"
-        if not marker.exists():
-            marker.write_bytes(b"")
+        shutil.rmtree(DOCS_DIR)
+    shutil.copytree(site_dir, DOCS_DIR)
+    (DOCS_DIR / ".nojekyll").write_bytes(b"")
 
 
 def stage_publish(out: Path, src: dict, args) -> Path:
     """Land one class's notes.qmd as a page of the notes_site/ project,
     then render the whole site (its listing needs every class's page, not
-    just this one). Returns the class's target folder."""
+    just this one) and rebuild docs/ from that render. Returns the
+    class's target folder."""
     notes = out / "notes.qmd"
     if not notes.exists():
         raise SystemExit(_no_notes_message(notes))
     n = src["n"]
     target = NOTES_SITE / f"class{n:02d}"
     target.mkdir(parents=True, exist_ok=True)
+    # notes_site/ is a website project, so even a single-file render
+    # lands in its output-dir (_site/classNN/...), not next to the
+    # source index.qmd.
+    site_pdf = NOTES_SITE / "_site" / f"class{n:02d}" / "index.pdf"
 
     original_text = notes.read_text(encoding="utf-8")
     description = qmd.what_we_covered(original_text)
-    extra_links = None
 
-    if args.pdf:
-        # Render a draft copy first so a PDF link can be added to the
-        # final header only if the render actually produces one; the
-        # final write below always starts fresh from original_text so a
-        # second header swap here does not clobber this one.
-        draft_header = header_for(src, description=description)
-        draft_text = qmd.replace_front_matter(original_text, draft_header)
-        (target / "index.qmd").write_text(draft_text, encoding="utf-8")
-        qmd.copy_referenced_images(draft_text, out, target)
-        proc = subprocess.run(["quarto", "render", "index.qmd", "--to", "typst"],
-                              cwd=str(target), capture_output=True, text=True,
-                              encoding="utf-8", errors="replace")
-        # notes_site/ is a website project with output-dir set to ../docs,
-        # so quarto writes even a single-file --to typst render there
-        # (docs/classNN/index.pdf), not next to the source index.qmd.
-        pdf = DOCS_DIR / f"class{n:02d}" / "index.pdf"
-        if proc.returncode == 0 and pdf.exists():
-            print(f"  pdf: {pdf}")
-            extra_links = {"PDF": "index.pdf"}
-        else:
-            tail = ((proc.stderr or "") + (proc.stdout or ""))[-2000:]
-            print("  pdf render failed (best effort; continuing):")
-            print(tail)
-
-    header = header_for(src, description=description, extra_links=extra_links)
+    # The site copy has no ts.css beside it (notes_site/'s own scss
+    # already carries the same .ts rules), so its header omits css:.
+    header = header_for(src, description=description, css=None)
     text = qmd.replace_front_matter(original_text, header)
     (target / "index.qmd").write_text(text, encoding="utf-8")
     qmd.copy_referenced_images(text, out, target)
 
+    # Render the whole project before attempting a PDF: a full project
+    # render cleans output-dir of anything not part of this pass, which
+    # is what actually removes a stale PDF left by an earlier publish
+    # (rendering the PDF first and the project second would have quarto
+    # clean the PDF right back out, since a project render only keeps
+    # what its own pass produces).
     proc = subprocess.run(["quarto", "render"], cwd=str(NOTES_SITE),
                           capture_output=True, text=True, encoding="utf-8",
                           errors="replace")
     if proc.returncode != 0:
         raise SystemExit("quarto render (notes_site) failed:\n"
                          + (proc.stderr or "") + (proc.stdout or ""))
-    _ensure_nojekyll()
+
+    if args.pdf:
+        proc = subprocess.run(["quarto", "render", "index.qmd", "--to", "typst"],
+                              cwd=str(target), capture_output=True, text=True,
+                              encoding="utf-8", errors="replace")
+        if proc.returncode == 0 and site_pdf.exists():
+            print(f"  pdf: {site_pdf}")
+            header = header_for(src, description=description,
+                                extra_links={"PDF": "index.pdf"}, css=None)
+            text = qmd.replace_front_matter(original_text, header)
+            (target / "index.qmd").write_text(text, encoding="utf-8")
+            # A single-file render only touches this page's own output,
+            # so it picks up the new link without disturbing the rest of
+            # the just-rendered site (or the PDF just produced above).
+            proc2 = subprocess.run(
+                ["quarto", "render", "index.qmd", "--to", "html"],
+                cwd=str(target), capture_output=True, text=True,
+                encoding="utf-8", errors="replace")
+            if proc2.returncode != 0:
+                raise SystemExit(
+                    "quarto render (class page, after pdf) failed:\n"
+                    + (proc2.stderr or "") + (proc2.stdout or ""))
+        else:
+            tail = ((proc.stderr or "") + (proc.stdout or ""))[-2000:]
+            print("  pdf render failed (best effort; continuing):")
+            print(tail)
+            # A partial PDF from this failed attempt must not linger
+            # next to a page whose header does not link one.
+            site_pdf.unlink(missing_ok=True)
+            (target / "index.pdf").unlink(missing_ok=True)
+
+    _rebuild_docs()
     print(f"  published: {target}")
     print(f"  site rendered: {DOCS_DIR}")
     return target

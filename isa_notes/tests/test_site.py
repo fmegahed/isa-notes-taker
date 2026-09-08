@@ -44,7 +44,7 @@ with tempfile.TemporaryDirectory() as d:
     project_root = d / "project"
     notes_site = project_root / "notes_site"
     notes_site.mkdir(parents=True)
-    for name in ("_quarto.yml", "index.qmd", "site.scss"):
+    for name in ("_quarto.yml", "index.qmd", "site.scss", "favicon.png"):
         shutil.copy2(REPO_NOTES_SITE / name, notes_site / name)
 
     real_notes_site = S.NOTES_SITE
@@ -86,9 +86,11 @@ with tempfile.TemporaryDirectory() as d:
         assert 'title: "Foundations of R"' in t3, t3
         assert 'title: "Data Wrangling"' in t5, t5
         assert "description:" in t3 and "description:" in t5
+        assert "css:" not in t3 and "css:" not in t5, \
+            "the site copy has no ts.css beside it; css: must be omitted"
         assert (notes_site / "class05" / "scenes" / "still.png").exists()
         print("stage_publish writes index.qmd with the subtitle as title, "
-             "and a description")
+             "a description, and no css: line")
 
         docs_index = S.DOCS_DIR / "index.html"
         assert docs_index.exists(), "stage_publish must render the whole site"
@@ -96,8 +98,33 @@ with tempfile.TemporaryDirectory() as d:
         assert "Foundations of R" in html and "Data Wrangling" in html
         print("the rendered site (docs/index.html) lists both sessions")
 
+        assert "site_libs/quarto-search" not in html, \
+            "search: false must drop the search box's JS bundle"
+        print("the site has no search box")
+
+        assert "How these notes are made" in html
+        assert "https://github.com/dmanam/notetaker" in html
+        print("the index page explains how the notes are made and credits notetaker")
+
+        assert '<link href="./favicon.png" rel="icon"' in html, html
+        print("the site uses favicon.png as its favicon")
+
         assert (S.DOCS_DIR / ".nojekyll").exists()
         print("stage_publish leaves a .nojekyll marker in docs/")
+
+        # -- removing a session's folder removes it from docs/ on the next
+        # publish, since docs/ is rebuilt from _site/ from scratch each time.
+        shutil.rmtree(notes_site / "class05")
+        S.stage_publish(out3, src3, publish_args)
+        assert not (S.DOCS_DIR / "class05").exists(), \
+            "docs/ must be rebuilt from scratch, not merged with the old one"
+        assert (S.DOCS_DIR / "class03").exists()
+        print("docs/ is rebuilt from scratch: a removed class disappears from it")
+
+        # Republish class05 (its session folder under sessions/ was never
+        # touched, only its notes_site/ copy) so later file-count
+        # assertions are not thrown by this test's own cleanup.
+        S.stage_publish(out5, src5, publish_args)
 
         # -- deploy: file count, and an unrelated pre-existing file survives --
         deploy_dir = d / "deploy_target"
@@ -137,6 +164,26 @@ with tempfile.TemporaryDirectory() as d:
             t7 = (notes_site / "class07" / "index.qmd").read_text(encoding="utf-8")
             assert "[PDF](index.pdf)" in t7, t7
             print("stage_publish rendered a PDF and linked it from the page")
+
+            # -- a later failed typst render must remove the stale PDF and
+            # the now-dangling link, not leave the old one reachable ------
+            real_run = S.subprocess.run
+
+            def failing_typst_run(cmd, **kwargs):
+                if "typst" in cmd:
+                    return subprocess.CompletedProcess(
+                        cmd, 1, stdout="", stderr="forced failure for the test")
+                return real_run(cmd, **kwargs)
+
+            S.subprocess.run = failing_typst_run
+            try:
+                S.stage_publish(out7, src7, pdf_args)
+            finally:
+                S.subprocess.run = real_run
+            assert not pdf_path.exists(), "a stale PDF must not survive a failed render"
+            t7_after = (notes_site / "class07" / "index.qmd").read_text(encoding="utf-8")
+            assert "[PDF]" not in t7_after, t7_after
+            print("a failed typst render removes the stale PDF and its link")
         else:
             print("typst render unavailable, skipped")
     finally:

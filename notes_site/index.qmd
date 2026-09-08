@@ -15,3 +15,18 @@ listing:
 
 One page per class session, written from the recording, the slides, and the
 code typed in class. Timestamps are hh:mm:ss into the recording on Canvas.
+
+## How these notes are made
+
+These pages are generated, not typed. After each class, Dr. Megahed runs a small program that takes the Zoom recording, the slide deck, and the R Markdown file written in class, and asks an AI model (Claude, run through Claude Code) to write the notes. A second, independent pass re-reads the draft against the transcript and the class code and corrects what it can show to be wrong. Anything it cannot settle is flagged for Dr. Megahed to answer before the page is published.
+
+What that means for you:
+
+- The code blocks are copied from the class file, not rewritten by the model.
+- Timestamps before each paragraph point into the recording on Canvas. When the notes and the recording disagree, the recording wins.
+- Questions from the room appear as "a student asked". No student is named or quoted at length.
+- The prose is AI-written and machine-checked, not proofread word by word. If you find a mistake, tell Dr. Megahed and it will be fixed.
+
+The program is an adaptation of [notetaker](https://github.com/dmanam/notetaker) by Deven Manam, which does the same for mathematics lectures. The adapted version, and a description of how it works, is at [fmegahed/isa-notes-taker](https://github.com/fmegahed/isa-notes-taker).
+
+## Sessions

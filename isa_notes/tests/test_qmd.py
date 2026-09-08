@@ -68,6 +68,11 @@ with tempfile.TemporaryDirectory() as d:
     assert lines[date_i + 1] == 'description: "We covered vectors and loops."', fm_desc
     print("front_matter emits a quoted description line right after date")
 
+    fm_nocss = qmd.front_matter("T", "S", "2026-08-31", {}, "", css=None)
+    assert "css:" not in fm_nocss, fm_nocss
+    assert "toc-depth: 3\n" in fm_nocss and "code-copy: true" in fm_nocss
+    print("front_matter(css=None) omits the css line but keeps the rest")
+
     notes = d / "notes.qmd"
     notes.write_text("# Body\n", encoding="utf-8")
     assert qmd.ensure_front_matter(notes, fm) is True

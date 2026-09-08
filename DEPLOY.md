@@ -10,7 +10,8 @@ second repo, no manual copy step, for the normal workflow.
 |---|---|
 | Source of truth for one class | `sessions/classNN/out/notes.qmd` |
 | That class's site page (plus images, optional PDF) | `notes_site/classNN/index.qmd` |
-| The rendered site (committed) | `docs/` |
+| Quarto's own render output (not committed) | `notes_site/_site/` |
+| The rendered site (committed; a fresh copy of `_site/` every publish) | `docs/` |
 | Optional mirror elsewhere (rare) | wherever `--deploy DIR` points |
 
 `notes_site/class*/` is committed in this repo as the source of the site.
@@ -26,8 +27,8 @@ python isa_notes/session.py sessions/class03 --publish --pdf
 ```
 
 The first two write and refine the notes. The third lands the page in
-`notes_site/class03/`, renders the whole site into `docs/`, and (with
-`--pdf`) adds a downloadable PDF, best effort.
+`notes_site/class03/`, renders the whole site, rebuilds `docs/` from
+that render, and (with `--pdf`) adds a downloadable PDF, best effort.
 
 ## Commit and push
 
@@ -63,13 +64,17 @@ quarto preview notes_site
 ```
 
 This renders and serves the site at a local URL, rebuilding on save. It
-still writes into `docs/`, same as a real publish.
+writes to `notes_site/_site/` (not committed), not `docs/`; run
+`--publish` when the preview looks right to rebuild `docs/` for real.
 
 ## Removing a session from the site
 
-Delete `notes_site/classNN/`, then publish any other session again
-(`--publish`, no need to touch the deleted one) to re-render `docs/`
-without it. Commit and push as usual.
+`docs/` is rebuilt from scratch on every publish, from whatever
+`notes_site/_site/` contains at that moment; it is never merged with
+whatever was there before. So: delete `notes_site/classNN/`, then
+publish any other session (`--publish`, no need to touch the deleted
+one) and that class disappears from `docs/` too. Commit and push as
+usual.
 
 ## Optional: mirror elsewhere
 

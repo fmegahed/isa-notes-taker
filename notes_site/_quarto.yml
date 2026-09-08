@@ -1,9 +1,11 @@
 project:
   type: website
-  output-dir: ../docs
+  output-dir: _site
 
 website:
   title: "ISA 401 Notes"
+  favicon: favicon.png
+  search: false
   navbar:
     right:
       - text: "Slides and schedule"

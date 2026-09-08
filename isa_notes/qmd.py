@@ -73,7 +73,8 @@ def zoom_date(name: str) -> str | None:
 
 def front_matter(title: str, subtitle: str, date: str | None,
                  links: dict[str, str | None], note: str,
-                 description: str | None = None) -> str:
+                 description: str | None = None,
+                 css: str | None = "ts.css") -> str:
     def q(s: str) -> str:
         return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
     lines = ["---", f"title: {q(title)}"]
@@ -84,8 +85,10 @@ def front_matter(title: str, subtitle: str, date: str | None,
     if description:
         lines.append(f"description: {q(description)}")
     lines += ["engine: markdown", "format:", "  html:", "    toc: true",
-              "    toc-depth: 3", "    css: ts.css", "    code-copy: true",
-              "---", ""]
+              "    toc-depth: 3"]
+    if css:
+        lines.append(f"    css: {css}")
+    lines += ["    code-copy: true", "---", ""]
     items = [f"[{k}]({v})" for k, v in links.items() if v]
     if items:
         lines.append(" | ".join(items))
