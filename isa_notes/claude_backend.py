@@ -518,13 +518,6 @@ understood the request. If you cannot find what was asked for anywhere on the
 board, reply {"error": "..."} saying what you do see instead."""
 
 
-BOARD_LOCATOR_SUBSCRIPTION = """
-
-The board still is a file on disk; its path is in your instructions. Open it
-with the Read tool — that is the only way you get to see it. Your final
-message is the JSON box and nothing else; it is parsed, not read."""
-
-
 DIAGRAM_INSTRUCTION = """
 
 Diagrams, in detail. You draw them yourself — you are the one who knows what
@@ -1107,31 +1100,6 @@ def _run_subscription(system_prompt: str, user_text: str,
         system_prompt = system_prompt + FRAME_DELEGATION_SUBSCRIPTION
     else:
         disallowed.append("Task")
-
-    if ctx.boards and ctx.diagrams_dir is not None:
-        # The cheap model only finds things. Reading a diagram off a board is
-        # a mathematical judgement — an arrow direction is a claim, not a
-        # typesetting choice — and measurement said the cheap model gets it
-        # wrong even when magnified. So the main model draws, and this one
-        # answers the single question it can answer reliably: where is it.
-        agents = dict(agents or {})
-        agents["board-locator"] = AgentDefinition(
-            description=(
-                "Finds a region on a board photograph. Give it the still's "
-                "path and a description of what to box; it returns a JSON "
-                "box {x, y, width, height} in fractions of the image. It "
-                "does not read mathematics and does not draw."
-            ),
-            prompt=BOARD_LOCATOR_PROMPT + BOARD_LOCATOR_SUBSCRIPTION,
-            tools=["mcp__notes__crop_board", "Read"],
-            mcpServers=["notes"],
-            model=frame_model,
-        )
-        if "Task" not in allowed:
-            allowed.append("Task")
-        if "Task" in disallowed:
-            disallowed.remove("Task")
-        system_prompt = system_prompt + DIAGRAM_INSTRUCTION
 
     options = ClaudeAgentOptions(
         system_prompt=system_prompt,

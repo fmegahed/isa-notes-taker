@@ -159,8 +159,8 @@ class NotesToolContext:
     # When set, the cite_reference tool is offered and entries accumulate in
     # this .bib file (course mode's running bibliography).
     bib_file: Path | None = None
-    # Board stills for this lecture ({id, path, …}) and where compiled
-    # diagrams are built. Together these enable check_diagram/draw_diagram.
+    # Scene stills for this lecture ({id, path, start, end}) and where crops
+    # are written. Together these enable crop_still.
     boards: list = field(default_factory=list)
     diagrams_dir: Path | None = None
     # Populated during the run:
@@ -769,106 +769,26 @@ def build_tools(ctx: NotesToolContext) -> list[dict]:
         })
 
     if ctx.boards and ctx.diagrams_dir is not None:
-        ids = ", ".join(str(b["id"]) for b in ctx.boards)
         tools.append({
-            "name": "crop_board",
+            "name": "crop_still",
             "description": (
-                f"Get part of a board still at full resolution. Sending a "
-                f"whole slate downscales it to the vision ceiling, which "
-                f"leaves a chalk stroke a pixel or two wide — too little to "
-                f"tell one arrowhead from another or read a subscript. A crop "
-                f"of the same region arrives un-shrunk. Do this before you "
-                f"commit to what a diagram's arrows do. It does not sharpen "
-                f"anything and never scales up, so cropping tighter and "
-                f"tighter past the thing you want buys nothing. "
-                f"Boards: {ids}."),
-            "input_schema": {
-                "type": "object",
-                "properties": {
-                    "board": {"type": ["integer", "string"],
-                              "description": "Which board to crop."},
-                    "x": {"type": "number",
-                          "description": "Left edge, 0 (left) to 1 (right)."},
-                    "y": {"type": "number",
-                          "description": "Top edge, 0 (top) to 1 (bottom)."},
-                    "width": {"type": "number",
-                              "description": "Box width as a fraction, 0–1."},
-                    "height": {"type": "number",
-                               "description": "Box height as a fraction, 0–1."},
-                },
-                "required": ["board", "x", "y", "width", "height"],
-            },
-        })
-
-    if ctx.diagrams_dir is not None:
-        tools.append({
-            "name": "check_diagram",
-            "description": (
-                "Compile one tikz-cd or tikz diagram on its own and render it "
-                "to a PNG, so you can look at your own drawing next to the "
-                "board and see whether it matches. Returns the compiler's "
-                "errors if it does not build. Use this on every diagram "
-                "before putting it in the notes: a diagram that fails to "
-                "compile takes the whole course build down with it, and one "
-                "that compiles but has an arrow reversed is worse than no "
-                "diagram at all."
+                "Cut a region out of a screen still at native resolution, "
+                "for embedding in the notes. Give the scene id from the "
+                "scene index and a box as fractions of the whole image "
+                "(x, y = top-left corner; width, height). Returns the "
+                "relative path to put in ![](...) and shows you the crop. "
+                "Use it for a GUI dialog, a menu, a chart, or a console "
+                "error that the transcript cannot carry. Never crop a scene "
+                "that shows a student's screen share."
             ),
             "input_schema": {
                 "type": "object",
                 "properties": {
-                    "latex": {
-                        "type": "string",
-                        "description": ("The diagram alone — a \\begin{tikzcd}"
-                                        "…\\end{tikzcd} or \\begin{tikzpicture}"
-                                        "…\\end{tikzpicture} block, with no "
-                                        "surrounding document or figure."),
-                    },
-                    "objects": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "description": (
-                            "Every object that belongs in this diagram, in "
-                            "LaTeX — e.g. [\"M_\\\\infty\", \"M_0\", \"S\"]. "
-                            "Required. For a diagram read off a board this is "
-                            "your reading of the slate, listed BEFORE you "
-                            "compare anything: name what is there even if you "
-                            "have not drawn it, and the two get diffed for "
-                            "you. For a diagram you are composing from the "
-                            "mathematics, it is the objects you mean to "
-                            "include. Either way an object you meant and "
-                            "omitted is invisible to every other check, "
-                            "because the diagram has nothing there to point "
-                            "at — this is the only check that finds it."),
-                    },
-                    "arrows": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "from": {"type": "string"},
-                                "to": {"type": "string"},
-                            },
-                        },
-                        "description": (
-                            "Optional, and worth doing: the arrows you read "
-                            "off the board, each {from, to}. Diffed against "
-                            "the diagram the same way."),
-                    },
-                    "name": {
-                        "type": "string",
-                        "description": ("Short slug identifying the diagram, "
-                                        "e.g. 'pushout-square'. Used for the "
-                                        "file name."),
-                    },
-                    "board": {
-                        "type": ["integer", "string"],
-                        "description": ("Which board this diagram came off. "
-                                        "Pass it and you get back the "
-                                        "provenance comment to put above the "
-                                        "diagram in the notes."),
-                    },
+                    "scene": {"type": "integer"},
+                    "x": {"type": "number"}, "y": {"type": "number"},
+                    "width": {"type": "number"}, "height": {"type": "number"},
                 },
-                "required": ["latex", "objects"],
+                "required": ["scene", "x", "y", "width", "height"],
             },
         })
 
@@ -1101,130 +1021,40 @@ def build_handlers(ctx: NotesToolContext) -> dict[str, Handler]:
                                          "media_type": media, "data": data}},
         ])
 
-    def crop_board(inp: dict) -> ToolResult:
-        from boards import zoom
+    def crop_still(inp: dict) -> ToolResult:
+        from PIL import Image
 
-        board = next((b for b in ctx.boards
-                      if str(b["id"]) == str(inp.get("board"))), None)
-        if board is None:
-            have = ", ".join(str(b["id"]) for b in ctx.boards) or "none"
-            return ToolResult(f"Error: no board {inp.get('board')!r}. "
+        scene = next((s for s in ctx.boards
+                      if str(s["id"]) == str(inp.get("scene"))), None)
+        if scene is None:
+            have = ", ".join(str(s["id"]) for s in ctx.boards) or "none"
+            return ToolResult(f"Error: no scene {inp.get('scene')!r}. "
                               f"Available: {have}.", is_error=True)
-        box = (inp.get("x", 0), inp.get("y", 0),
-               inp.get("width", 1), inp.get("height", 1))
-        root = Path(ctx.diagrams_dir) / "crops"
-        n = len(list(root.glob("crop-*.jpg"))) + 1 if root.exists() else 1
-        dest = root / f"crop-{n:03d}.jpg"
-        emit(f"  [crop_board {board['id']} {box}]")
-        out = zoom(Path(board["path"]), dest, box)
-        if out is None:
+        try:
+            x, y, w, h = (float(inp[k]) for k in ("x", "y", "width", "height"))
+        except (KeyError, TypeError, ValueError):
+            return ToolResult("Error: x, y, width, height must be numbers "
+                              "between 0 and 1.", is_error=True)
+        if not (0 <= x < 1 and 0 <= y < 1 and 0.04 <= w <= 1 - x + 1e-9
+                and 0.04 <= h <= 1 - y + 1e-9):
             return ToolResult(
-                "Error: that crop is unusable — the box is off the image or "
-                "smaller than 4% of it in one direction. Give x, y, width and "
-                "height as fractions of the whole still.", is_error=True)
-        path, mag = out
-        return _image_result(path, (
-            f"Board {board['id']}, the region x={box[0]:.2f} y={box[1]:.2f} "
-            f"w={box[2]:.2f} h={box[3]:.2f}, at native resolution — {mag:.1f}x "
-            f"the detail you would get from the whole still. If what you "
-            f"wanted is not in frame, crop again with a different box; if it "
-            f"is in frame but still unreadable, it is unreadable, and "
-            f"cropping tighter will not help."))
-
-    def check_diagram(inp: dict) -> ToolResult:
-        from diagrams import (check_inventory, compile_snippet, lint,
-                              looks_like_diagram, strip_fences)
-
-        latex = (inp.get("latex") or "").strip()
-        if not latex:
-            return ToolResult("Error: no diagram given.", is_error=True)
-        objects = [o for o in (inp.get("objects") or []) if str(o).strip()]
-        if not objects and "\\begin{tikzcd}" in strip_fences(latex):
-            return ToolResult(
-                "Error: list the objects first. `objects` must be every "
-                "object you read off the board for this diagram — your "
-                "reading of the slate, not a description of what you drew. "
-                "It is checked against the diagram, and it is the only way a "
-                "dropped object gets caught: one you never noticed leaves no "
-                "trace in the drawing for any other check to find.",
-                is_error=True)
-        if not looks_like_diagram(strip_fences(latex)):
-            # Prose compiles perfectly well, so this has to be caught before
-            # the compiler says yes to something that is not a diagram.
-            return ToolResult(
-                "Error: no tikzcd or tikzpicture environment here. Pass the "
-                "diagram itself — a \\begin{tikzcd}…\\end{tikzcd} or "
-                "\\begin{tikzpicture}…\\end{tikzpicture} block — not the "
-                "surrounding text.", is_error=True)
-        slug = re.sub(r"[^a-z0-9-]+", "-",
-                      (inp.get("name") or "diagram").lower()).strip("-")
+                "Error: that box is off the image or smaller than 4% of it "
+                "in one direction. Give x, y, width and height as fractions "
+                "of the whole still.", is_error=True)
         root = Path(ctx.diagrams_dir)
-        n = 1
-        while (root / f"{slug or 'diagram'}-{n:02d}").exists():
-            n += 1
-        workdir = root / f"{slug or 'diagram'}-{n:02d}"
-        emit(f"  [check_diagram {workdir.name}]")
-
-        # The course preamble has to go in. The notes define macros of their
-        # own, and the agent is told to; a diagram written
-        # with them is correct in the document and fails here without them —
-        # "Undefined control sequence" for a macro that is in fact defined.
-        # The cost of omitting it: the gate rejects valid diagrams,
-        # reports no parsed errors at all, and the agent either inlines every
-        # macro by hand or gives up and writes prose instead of the diagram.
-        # Includes what was added during this run, since the agent may have
-        # declared a macro moments ago and used it here.
-        preamble = "\n".join(list(ctx.existing_preamble)
-                             + list(ctx.new_preamble_additions))
-        result = compile_snippet(latex, workdir, preamble)
-        if not result.ok:
-            return ToolResult(
-                f"The diagram does not compile. Fix it and check again "
-                f"(line numbers are into your snippet):\n"
-                f"{result.describe()}", is_error=True)
-
-        # The inventory diff comes first and is fatal: a diagram missing an
-        # object the model itself says is on the board is wrong, and letting
-        # it through with a note is how the last one got written.
-        body = strip_fences(latex)
-        missing = check_inventory(body, objects, inp.get("arrows"))
-        if missing:
-            return ToolResult(
-                "It compiles, but it does not match your own reading of the "
-                "board:\n" + "\n".join(f"  - {m}" for m in missing)
-                + "\nFix the diagram (or the list, if the list was wrong) "
-                  "and check again. Do not write this into the notes as it "
-                  "stands.", is_error=True)
-
-        # Compiling proves nothing about fidelity. These two defects are
-        # what dropped objects and mis-hung arrows look like structurally,
-        # and they cost nothing to find.
-        problems = lint(body)
-        note = ""
-        if problems:
-            note = ("\n\nStructural problems, which compiling does not "
-                    "catch:\n" + "\n".join(f"  - {p}" for p in problems)
-                    + "\nCheck each against the board before you use this.")
-
-        board = next((b for b in ctx.boards
-                      if str(b["id"]) == str(inp.get("board"))), None)
-        if board is not None:
-            at = format_timestamp(board.get("best_at", 0))
-            note += (f"\n\nPut this line above the diagram in the notes, so "
-                     f"it can be checked against the source later:\n"
-                     f"  % board {board['id']} @ {at} — {board['path']}")
-
-        if result.image is None:
-            return ToolResult(
-                f"Compiles. {result.note} You can use it, but nobody has "
-                f"seen it drawn — check it by eye against the board.{note}")
-        return _image_result(result.image, (
-            "Compiles. Now compare this render against the board — every "
-            "object, every arrow, every label, every direction. Anything on "
-            "the board and not in the render is the failure that is hardest "
-            "to notice, because nothing points at it: go back to your list "
-            "of what is in the crop and check each item is here."
-            + note))
+        root.mkdir(parents=True, exist_ok=True)
+        n = len(list(root.glob("crop-*.jpg"))) + 1
+        dest = root / f"crop-{n:03d}.jpg"
+        with Image.open(scene["path"]) as im:
+            W, H = im.size
+            box = (int(x * W), int(y * H), int((x + w) * W), int((y + h) * H))
+            im.crop(box).save(dest, quality=90)
+        emit(f"  [crop_still {scene['id']} {box}]")
+        rel = f"{root.name}/{dest.name}"
+        return _image_result(dest, (
+            f"Scene {scene['id']} cropped to {box} (pixels). Embed it as "
+            f"![describe what it shows]({rel}). If what you wanted is not in "
+            f"frame, crop again with a different box."))
 
     handlers: dict[str, Handler] = {
         "clarify_transcript": clarify_transcript,
@@ -1237,10 +1067,8 @@ def build_handlers(ctx: NotesToolContext) -> dict[str, Handler]:
         handlers["add_to_preamble"] = add_to_preamble
     if ctx.video_path:
         handlers["get_frame"] = get_frame
-    if ctx.diagrams_dir is not None:
-        handlers["check_diagram"] = check_diagram
-        if ctx.boards:
-            handlers["crop_board"] = crop_board
+    if ctx.boards and ctx.diagrams_dir is not None:
+        handlers["crop_still"] = crop_still
     return {name: _logged(ctx, name, fn) for name, fn in handlers.items()}
 
 
