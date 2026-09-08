@@ -48,10 +48,10 @@ pass after writing.
 
 ## Flags worth knowing about
 
-- `--instructor-pronouns "he/him"`: until this is set, the notes' prose uses
-  no gendered pronoun for the instructor (the name, or the notes' own
-  voice, stands in instead). Saved in `state.json` once passed, so it need
-  not be repeated on later runs.
+- `--instructor-pronouns "they/them"`: the pronouns the prose uses for the
+  instructor; the default is he/him. The notes call the instructor "Fadel"
+  and never print pronouns as a label. Saved in `state.json` once passed, so
+  it need not be repeated on later runs.
 - `--video-url-template "https://youtu.be/ID?t={seconds}"`: turns every
   `[hh:mm:ss]{.ts}` timestamp in the notes into a link to that point in the
   recording, using `{seconds}` as the placeholder for the timestamp

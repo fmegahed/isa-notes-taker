@@ -124,7 +124,8 @@ def resolve_sources(session_dir: Path, args, state: dict,
     date = state.get("date") or (qmd.zoom_date(mp4.name) if mp4 else None)
     return {
         "instructor": pick(args.instructor, "instructor") or "Fadel Megahed",
-        "instructor_pronouns": pick(args.instructor_pronouns, "instructor_pronouns"),
+        "instructor_pronouns": pick(args.instructor_pronouns, "instructor_pronouns")
+        or I.DEFAULT_PRONOUNS,
         "video_url": pick(args.video_url, "video_url"),
         "video_url_template": pick(args.video_url_template, "video_url_template"),
         "deck": deck, "class_rmd": rmd, "date": date, "n": n,

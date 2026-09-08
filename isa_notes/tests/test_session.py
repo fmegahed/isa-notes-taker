@@ -54,7 +54,7 @@ with tempfile.TemporaryDirectory() as d:
     src = S.resolve_sources(sd, args, {}, project_root=d)
     assert src["deck"] == deck and src["class_rmd"] == rmd
     assert src["date"] == "2026-08-31" and src["video_url"] == "https://z/rec"
-    assert src["instructor_pronouns"] is None
+    assert src["instructor_pronouns"] == "he/him", "default pronouns"
     pronoun_args = S.parse_args(["sessions/class03", "--instructor-pronouns", "he/him"])
     assert pronoun_args.instructor_pronouns == "he/him"
     pronoun_src = S.resolve_sources(sd, pronoun_args, {}, project_root=d)

@@ -117,11 +117,12 @@ Two places are exempt because a reader never sees them:
   says "check this" is not a todo and must not be written.
 - the Loose ends section, written entirely as todo comments."""
 
-VOICE = """Address the student as "you". Refer to the instructor as "Dr. Megahed" on
-first mention and "Megahed" after, or write in the notes' own voice ("we
-load the file"), which is what these notes mostly are. Use no gendered pronoun
-for the instructor unless the task states their pronouns; write the name, or
-use the notes' own voice. Clean up speech disfluencies. Use en dashes or
+VOICE = """Address the student as "you". Refer to the instructor by first name,
+"Fadel", or write in the notes' own voice ("we load the file"), which is what
+these notes mostly are. Never "Dr. Megahed", "Megahed", "the professor", or
+"the instructor" in the prose. Use the pronouns the task gives for the
+instructor as ordinary prose; never print pronouns as a label anywhere on
+the page. Clean up speech disfluencies. Use en dashes or
 commas for asides; never an em dash. Keep sentences short. Bold nothing
 except the first words of a list item where a list has several parallel
 items."""
@@ -215,8 +216,8 @@ about the main content and wrong in the material added around it.""",
   split a paragraph, mark the new one with the time its own material starts;
   if you merge two, keep the earlier mark.
 - Preserve the front matter and the header lines at the top exactly.
-- Refer to the instructor as "Dr. Megahed" on first mention and "Megahed"
-  after; correct "the lecturer", "the professor", or a first name.
+- Refer to the instructor as "Fadel"; correct "Dr. Megahed", "Megahed",
+  "the lecturer", "the professor", or "the instructor" to that.
 
 Finally, reply with a short report: one line per change made, one line per
 doubt flagged. If the notes are clean, say so; do not invent work."""])
@@ -236,29 +237,26 @@ def _sources_block(deck: Path | None, class_rmd: Path | None) -> str:
     return "\n".join(parts)
 
 
-_NO_PRONOUNS = (" No pronouns are on record for the instructor: refer to "
-               "them by name or write in the notes' own voice, and use no "
-               "gendered pronoun for them.")
+DEFAULT_PRONOUNS = "he/him"
+_NAME_RULE = (" In the notes, call the instructor \"Fadel\" and use these "
+              "pronouns as ordinary prose; never print the pronouns as a "
+              "label on the page.")
 
 
 def instructor_line(instructor: str, pronouns: str | None = None,
                     extra: str = "") -> str:
-    """The `**Instructor:** ...` line, with pronouns if given, else the
-    no-pronouns sentence. `extra`, if given, is inserted right after the
-    initial sentence and before the no-pronouns sentence (if any)."""
-    return (f"**Instructor:** {instructor}" +
-           (f" ({pronouns})" if pronouns else "") + "." + extra +
-           ("" if pronouns else _NO_PRONOUNS))
+    """The `**Instructor:** ...` line for the model: the name, the pronouns
+    to use in prose (defaulting to he/him), and the first-name rule. `extra`,
+    if given, follows the name rule."""
+    return (f"**Instructor:** {instructor} ({pronouns or DEFAULT_PRONOUNS})."
+            + _NAME_RULE + extra)
 
 
 def write_message(*, title: str, date: str | None, instructor: str,
                   deck: Path | None, class_rmd: Path | None,
                   transcript_text: str, scene_index: str, header: str,
                   pronouns: str | None = None) -> str:
-    instr_line = instructor_line(
-        instructor, pronouns,
-        extra=" Refer to them as \"Dr. Megahed\" on first mention and "
-             "\"Megahed\" after.")
+    instr_line = instructor_line(instructor, pronouns)
     return (
         f"Write the companion notes for this class session.\n\n"
         f"**Session:** {title}" + (f" ({date})" if date else "") + "\n"
