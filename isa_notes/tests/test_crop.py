@@ -42,3 +42,39 @@ with tempfile.TemporaryDirectory() as d:
     none = NT.NotesToolContext(refs_dir=d)
     assert "crop_still" not in {t["name"] for t in NT.build_tools(none)}
     print("no scenes, no crop tool")
+
+with tempfile.TemporaryDirectory() as d2:
+    d2 = Path(d2)
+    still2 = d2 / "scenes" / "scene-007.jpg"
+    still2.parent.mkdir()
+    Image.new("RGB", (400, 200), "white").save(still2)
+    ctx2 = NT.NotesToolContext(refs_dir=d2, boards=[
+        {"id": 7, "path": str(still2), "start": 1.0, "end": 2.0}],
+        diagrams_dir=d2 / "crops")
+    crops2 = ctx2.diagrams_dir
+    crops2.mkdir(parents=True)
+    for name in ("crop-001.jpg", "crop-002.jpg", "crop-004.jpg"):
+        Image.new("RGB", (10, 10), "white").save(crops2 / name)
+    existing_004 = (crops2 / "crop-004.jpg").read_bytes()
+    h2 = NT.build_handlers(ctx2)["crop_still"]
+
+    r2 = h2({"scene": 7, "x": 0.5, "y": 0.0, "width": 0.5, "height": 0.5})
+    assert not r2.is_error, r2.content
+    text2 = r2.content[0]["text"] if isinstance(r2.content, list) else r2.content
+    assert "crops/crop-005.jpg" in text2, text2
+    assert (crops2 / "crop-004.jpg").read_bytes() == existing_004
+    print("crop numbering skips past a gap instead of colliding")
+
+with tempfile.TemporaryDirectory() as d3:
+    d3 = Path(d3)
+    still3 = d3 / "scenes" / "scene-007.jpg"
+    still3.parent.mkdir()
+    Image.new("RGB", (20, 20), "white").save(still3)
+    ctx3 = NT.NotesToolContext(refs_dir=d3, boards=[
+        {"id": 7, "path": str(still3), "start": 1.0, "end": 2.0}],
+        diagrams_dir=d3 / "crops")
+    h3 = NT.build_handlers(ctx3)["crop_still"]
+
+    zero = h3({"scene": 7, "x": 0, "y": 0, "width": 0.04, "height": 0.5})
+    assert zero.is_error, zero.content
+    print("box that rounds to zero pixels on a tiny still is an error")

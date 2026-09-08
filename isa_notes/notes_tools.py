@@ -1043,11 +1043,22 @@ def build_handlers(ctx: NotesToolContext) -> dict[str, Handler]:
                 "of the whole still.", is_error=True)
         root = Path(ctx.diagrams_dir)
         root.mkdir(parents=True, exist_ok=True)
-        n = len(list(root.glob("crop-*.jpg"))) + 1
+        existing = []
+        for p in root.glob("crop-*.jpg"):
+            try:
+                existing.append(int(p.stem.split("-")[1]))
+            except (IndexError, ValueError):
+                continue
+        n = max(existing, default=0) + 1
         dest = root / f"crop-{n:03d}.jpg"
         with Image.open(scene["path"]) as im:
             W, H = im.size
             box = (int(x * W), int(y * H), int((x + w) * W), int((y + h) * H))
+            if box[2] <= box[0] or box[3] <= box[1]:
+                return ToolResult(
+                    "Error: that box is empty at this image's resolution "
+                    f"({W}x{H} px) — it rounds down to zero width or height. "
+                    "Give a larger width or height.", is_error=True)
             im.crop(box).save(dest, quality=90)
         emit(f"  [crop_still {scene['id']} {box}]")
         rel = f"{root.name}/{dest.name}"
