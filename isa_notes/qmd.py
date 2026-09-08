@@ -72,7 +72,7 @@ def zoom_date(name: str) -> str | None:
 def front_matter(title: str, subtitle: str, date: str | None,
                  links: dict[str, str | None], note: str) -> str:
     def q(s: str) -> str:
-        return '"' + s.replace('"', '\\"') + '"'
+        return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
     lines = ["---", f"title: {q(title)}"]
     if subtitle:
         lines.append(f"subtitle: {q(subtitle)}")
@@ -129,8 +129,12 @@ def publish(notes: Path, dest: Path) -> list[Path]:
     dest = Path(dest)
     dest.mkdir(parents=True, exist_ok=True)
     copied: list[Path] = []
+    notes_root = notes.parent.resolve()
     for rel in ["notes.qmd", "ts.css"] + referenced_images(
             notes.read_text(encoding="utf-8")):
+        if Path(rel).is_absolute() or not (notes.parent / rel).resolve().is_relative_to(notes_root):
+            print(f"  (publish: {rel} points outside the notes folder; skipped)")
+            continue
         src = notes.parent / rel
         if not src.exists():
             print(f"  (publish: {rel} is referenced but missing)")

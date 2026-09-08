@@ -62,6 +62,8 @@ with tempfile.TemporaryDirectory() as d:
     assert qmd.ensure_front_matter(notes, fm) is True
     assert notes.read_text(encoding="utf-8").startswith(fm)
     assert qmd.ensure_front_matter(notes, fm) is False
+    escaped_fm = qmd.front_matter('A \\ B "C"', "", None, {}, "")
+    assert 'title: "A \\\\ B \\"C\\""' in escaped_fm, escaped_fm
     print("front matter assembled and prepended once")
 
     body = ("[00:12:34]{.ts} A paragraph.\n\n<!-- todo: check this @ 00:13:00 -->\n"
@@ -85,6 +87,16 @@ with tempfile.TemporaryDirectory() as d:
     names = sorted(p.relative_to(d / "site" / "class03").as_posix() for p in copied)
     assert names == ["notes.qmd", "scenes/scene-041.jpg", "ts.css"], names
     print("publish copies the page, its css, and referenced images")
+
+    out2 = d / "out2"
+    out2.mkdir()
+    (d / "outside.png").write_bytes(b"y")
+    (out2 / "notes.qmd").write_text(fm + "\n![](../outside.png)\n", encoding="utf-8")
+    (out2 / "ts.css").write_text(".ts{}")
+    copied2 = qmd.publish(out2 / "notes.qmd", d / "site" / "class03b")
+    assert not any(p.name == "outside.png" for p in copied2), copied2
+    assert not (d / "site" / "outside.png").exists()
+    print("publish refuses to follow a reference outside the notes folder")
 
     ok, log = qmd.render(out / "notes.qmd")
     assert ok, log
