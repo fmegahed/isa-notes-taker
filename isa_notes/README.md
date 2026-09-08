@@ -29,7 +29,10 @@ class.
    Flags are saved in `sessions/classNN/out/state.json` and need not be
    repeated.
 3. Answer questions in the terminal as they appear, or press Enter to defer.
-   Later: `python isa_notes/session.py sessions/class03 --answer`.
+   Later: `python isa_notes/session.py sessions/class03 --answer`. Pass
+   `--wait` to block until every question the agent asks in this run has
+   been answered, instead of leaving unanswered ones for a later
+   `--answer` pass.
 4. Open `sessions/class03/out/notes.html` and read it.
 5. Publish: `--publish path/to/site/folder` copies `notes.qmd`, `ts.css`,
    and the stills the page embeds.
@@ -38,10 +41,34 @@ class.
 pass. `--no-scenes` skips screen stills. `--no-verify` skips the checking
 pass after writing.
 
+## Flags worth knowing about
+
+- `--instructor-pronouns "he/him"`: until this is set, the notes' prose uses
+  no gendered pronoun for the instructor (the name, or the notes' own
+  voice, stands in instead). Saved in `state.json` once passed, so it need
+  not be repeated on later runs.
+- `--video-url-template "https://youtu.be/ID?t={seconds}"`: turns every
+  `[hh:mm:ss]{.ts}` timestamp in the notes into a link to that point in the
+  recording, using `{seconds}` as the placeholder for the timestamp
+  converted to seconds. Applied at render time, so it can be added on a
+  later run without rewriting the notes.
+- `--scene-threshold X` (default 0.30): the ffmpeg scene-change score above
+  which a screen change gets its own still. Lower catches more, smaller
+  changes; higher keeps only larger ones. Changing it on a session that
+  already has `scenes/scenes.json` re-detects the stills instead of
+  serving ones made at the old threshold.
+- `--wait`: see step 3 above.
+
 ## Tests
 
 ```sh
 for t in isa_notes/tests/test_*.py; do python "$t" || echo "FAILED $t"; done
+```
+
+PowerShell:
+
+```powershell
+Get-ChildItem isa_notes/tests/test_*.py | ForEach-Object { python $_.FullName; if ($LASTEXITCODE -ne 0) { "FAILED $($_.Name)" } }
 ```
 
 No test calls a model.

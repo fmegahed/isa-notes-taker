@@ -568,13 +568,14 @@ def build_tools(ctx: NotesToolContext) -> list[dict]:
             "name": "clarify_transcript",
             "description": (
                 "Use when a word or phrase in the transcript appears garbled, "
-                "misheared, or makes no mathematical sense in context. "
-                "Provide the exact unclear text, the surrounding context, and "
-                "your best guess at what was said. The question is queued for "
-                "the user and answered asynchronously — proceed with your "
-                "guess (marked with \\todo) and pick the verdict up later via "
-                "get_user_answers. Confirmed corrections are passed to future "
-                "lectures so the mishearing gets fixed wherever it recurs."
+                "misheared, or makes no sense as R, as a tool's menu, or as "
+                "English. Provide the exact unclear text, the surrounding "
+                "context, and your best guess at what was said. The question "
+                "is queued for the user and answered asynchronously; proceed "
+                "with your guess (marked with <!-- todo: ... -->) and pick "
+                "the verdict up later via get_user_answers. Confirmed "
+                "corrections are passed to future classes so the mishearing "
+                "gets fixed wherever it recurs."
             ),
             "input_schema": {
                 "type": "object",
@@ -594,7 +595,7 @@ def build_tools(ctx: NotesToolContext) -> list[dict]:
                     "timestamp": {
                         "type": "string",
                         "description": (
-                            "When this is said, as hh:mm:ss — copy the "
+                            "When this is said, as hh:mm:ss, copied from the "
                             "timestamp of the transcript line it comes from. "
                             "The user uses it to jump to that point in the "
                             "video, so it must be the real position."
@@ -607,13 +608,14 @@ def build_tools(ctx: NotesToolContext) -> list[dict]:
         {
             "name": "ask_user",
             "description": (
-                "Ask the user for help with a LaTeX typesetting question you are "
-                "not confident about — e.g. which package and command to use for "
-                "a non-standard symbol, field-specific notation, or unusual "
-                "mathematical construct. Use this rather than silently guessing "
-                "or omitting. The question is queued and answered "
-                "asynchronously — proceed provisionally (marked with \\todo) "
-                "and collect the answer later via get_user_answers."
+                "Ask the user a question the instructor should settle: what "
+                "a mumbled function or package name was, whether a detour is "
+                "worth keeping in the notes, or what a number on screen "
+                "actually read. Use this rather than silently guessing or "
+                "omitting. The question is queued and answered "
+                "asynchronously; proceed provisionally (marked with "
+                "<!-- todo: ... -->) and collect the answer later via "
+                "get_user_answers."
             ),
             "input_schema": {
                 "type": "object",
@@ -622,29 +624,30 @@ def build_tools(ctx: NotesToolContext) -> list[dict]:
                         "type": "string",
                         "description": (
                             "A precise question for the user, e.g. "
-                            "'What LaTeX package and command should I use for "
-                            "the prism symbol in prismatic cohomology?'"
+                            "'Was that function ggpredict or ggeffect? The "
+                            "audio is unclear.'"
                         ),
                     },
                     "timestamp": {
                         "type": "string",
                         "description": (
-                            "The point in the lecture the question is about, "
+                            "The point in the class the question is about, "
                             "as hh:mm:ss (from the transcript line, or the "
                             "frame you were looking at). Supply it whenever "
-                            "the question comes from a specific moment — "
-                            "nearly always — so the user can go and look."
+                            "the question comes from a specific moment, "
+                            "which is nearly always, so the user can go "
+                            "and look."
                         ),
                     },
                     "provisional": {
                         "type": "string",
                         "description": (
                             "What you are doing in the meantime, e.g. "
-                            "'\\square from amssymb'. This is handed back to "
-                            "you with the answer — by then you will be a "
-                            "fresh context that no longer remembers what you "
-                            "chose, and the user's reply may well be just "
-                            "'yes, that works'."
+                            "'ggeffect (ggeffects package)'. This is handed "
+                            "back to you with the answer; by then you will "
+                            "be a fresh context that no longer remembers what "
+                            "you chose, and the user's reply may well be "
+                            "just 'yes, that's right'."
                         ),
                     },
                 },
@@ -754,18 +757,18 @@ def build_tools(ctx: NotesToolContext) -> list[dict]:
         tools.append({
             "name": "get_frame",
             "description": (
-                "Extract a single frame from the lecture video at a given "
+                "Extract a single frame from the class video at a given "
                 f"timestamp. {delivery}"
-                "Use this SPARINGLY, as a fallback. Where board snapshots are "
-                "provided they are already the best view of each board — "
-                "taken at the moment it was most complete and with the "
-                "lecturer edited out — so reach for a raw frame only when a "
-                "snapshot is missing, garbled, or plainly does not cover the "
-                "moment you need. A single frame is a poor substitute: it may "
-                "catch a mid-erasure, a slide transition, a camera pan, or the "
-                "lecturer standing in front of the very thing you want to "
-                "read. If you do use it, take several nearby timestamps and "
-                "reconcile them."
+                "Use this SPARINGLY, as a fallback. Where a screen still is "
+                "already provided for that moment, it is already the best "
+                "view of the screen (taken when it was most complete, with "
+                "the instructor edited out where possible), so reach for a "
+                "raw frame only when a still is missing, garbled, or plainly "
+                "does not cover the moment you need. A single frame is a "
+                "poor substitute: it may catch a mid-transition moment, a "
+                "slide change, a camera pan, or the instructor standing in "
+                "front of the very thing you want to read. If you do use it, "
+                "take several nearby timestamps and reconcile them."
             ),
             "input_schema": {
                 "type": "object",

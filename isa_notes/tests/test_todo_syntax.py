@@ -42,3 +42,31 @@ assert "\\todo" not in block and "—" not in block, block
 assert "todo comment" in block
 assert NT.format_answers([]) == ""
 print("todos are HTML comments; prompts speak Quarto")
+
+# Every tool offered to the note-writer (with every optional tool switched on)
+# must speak the course's vocabulary: Markdown todos, R/GUI examples, screen
+# stills, never chalkboards or mathematics.
+ctx_full = NT.NotesToolContext(
+    refs_dir=Path("unused"), video_path=Path("class.mp4"),
+    boards=[{"id": 1, "path": "scenes/scene-001.jpg", "start": 0.0, "end": 1.0}],
+    diagrams_dir=Path("crops"))
+FORBIDDEN = ("latex", "\\todo", "mathematic", "board")
+for tool in NT.build_tools(ctx_full):
+    desc = tool.get("description", "")
+    low = desc.lower()
+    for word in FORBIDDEN:
+        assert word not in low, f"{tool['name']} description has {word!r}: {desc}"
+    for pname, pschema in tool.get("input_schema", {}).get("properties", {}).items():
+        pdesc = pschema.get("description", "")
+        plow = pdesc.lower()
+        for word in FORBIDDEN:
+            assert word not in plow, (
+                f"{tool['name']}.{pname} description has {word!r}: {pdesc}")
+frame_reader_low = CB.FRAME_READER_AGENT_DESCRIPTION.lower()
+for word in FORBIDDEN:
+    assert word not in frame_reader_low, (
+        f"frame-reader description has {word!r}: {CB.FRAME_READER_AGENT_DESCRIPTION}")
+src = Path(CB.__file__).read_text(encoding="utf-8")
+assert "\\todo marker" not in src, "run_agent's closing note still says \\todo marker(s)"
+assert "<!-- todo --> comment(s)" in src, "closing note should speak Markdown todos"
+print("every offered tool, and the frame-reader, speak Markdown/R/screen, not LaTeX")

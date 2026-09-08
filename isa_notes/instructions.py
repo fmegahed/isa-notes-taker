@@ -241,11 +241,13 @@ _NO_PRONOUNS = (" No pronouns are on record for the instructor: refer to "
                "gendered pronoun for them.")
 
 
-def instructor_line(instructor: str, pronouns: str | None = None) -> str:
+def instructor_line(instructor: str, pronouns: str | None = None,
+                    extra: str = "") -> str:
     """The `**Instructor:** ...` line, with pronouns if given, else the
-    no-pronouns sentence."""
+    no-pronouns sentence. `extra`, if given, is inserted right after the
+    initial sentence and before the no-pronouns sentence (if any)."""
     return (f"**Instructor:** {instructor}" +
-           (f" ({pronouns})" if pronouns else "") + "." +
+           (f" ({pronouns})" if pronouns else "") + "." + extra +
            ("" if pronouns else _NO_PRONOUNS))
 
 
@@ -253,10 +255,10 @@ def write_message(*, title: str, date: str | None, instructor: str,
                   deck: Path | None, class_rmd: Path | None,
                   transcript_text: str, scene_index: str, header: str,
                   pronouns: str | None = None) -> str:
-    instr_line = (
-        f"**Instructor:** {instructor}" + (f" ({pronouns})" if pronouns else "") +
-        f". Refer to them as \"Dr. Megahed\" on first mention and \"Megahed\" "
-        f"after." + ("" if pronouns else _NO_PRONOUNS))
+    instr_line = instructor_line(
+        instructor, pronouns,
+        extra=" Refer to them as \"Dr. Megahed\" on first mention and "
+             "\"Megahed\" after.")
     return (
         f"Write the companion notes for this class session.\n\n"
         f"**Session:** {title}" + (f" ({date})" if date else "") + "\n"

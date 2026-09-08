@@ -84,7 +84,7 @@ def merge_cues(cues: list[dict], gap: float = 1.5,
 
 
 def write_transcript(vtt_path: Path, out_path: Path) -> int:
-    cues = parse_vtt(Path(vtt_path).read_text(encoding="utf-8"))
+    cues = parse_vtt(Path(vtt_path).read_text(encoding="utf-8-sig"))
     segments = merge_cues(cues)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps({

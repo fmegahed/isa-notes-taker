@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sys
 from pathlib import Path
 
@@ -36,20 +37,28 @@ import qmd                                                 # noqa: E402
 import scenes as SC                                        # noqa: E402
 import vtt                                                 # noqa: E402
 from claude_backend import (BACKENDS, collect_followup_answers,   # noqa: E402
-                            count_todos, mark_answers_applied, run_agent)
+                            count_todos, mark_answers_applied,
+                            questions_file_for, run_agent)
 from media import format_transcript                        # noqa: E402
 from notes_tools import NotesToolContext                   # noqa: E402
 
 PROJECT_ROOT = HERE.parent
 SLIDES_URL = "https://fmegahed.github.io/isa401/fall2026/class{n:02d}/{stem}.html"
 CLASS_CODE_URL = "https://github.com/fmegahed/isa401a/blob/main/markdowns/{name}"
-TS_NOTE = ("Timestamps in the margin are hh:mm:ss into the recording; "
-           "drag the player there to hear the passage.")
+TS_NOTE = ("Timestamps before each paragraph are hh:mm:ss into the "
+           "recording; drag the player there to hear the passage.")
 SAVED_KEYS = ("instructor", "instructor_pronouns", "video_url",
               "video_url_template", "deck", "class_rmd", "date")
 
 
 # -- inputs ------------------------------------------------------------------
+
+def require_tools(names: list[str]) -> None:
+    missing = [n for n in names if shutil.which(n) is None]
+    if missing:
+        raise SystemExit("missing on PATH: " + ", ".join(missing)
+                         + "; install them before running")
+
 
 def find_media(session_dir: Path) -> tuple[Path, Path]:
     session_dir = Path(session_dir)
@@ -73,6 +82,23 @@ def save_state(out: Path, state: dict) -> None:
                                           encoding="utf-8")
 
 
+def _resolve_path(flag_value, state_value, flag_name: str) -> Path | None:
+    """A path supplied on this invocation must exist, or the run is
+    misconfigured and should stop now rather than silently search for a
+    substitute. A path recovered from a previous run's state.json may be
+    stale (the file was moved or renamed since); the caller heals that case
+    by searching for the real file, so return None for it to try."""
+    if flag_value not in (None, ""):
+        p = Path(flag_value)
+        if not p.exists():
+            raise SystemExit(f"--{flag_name} {p} does not exist")
+        return p
+    if state_value:
+        p = Path(state_value)
+        return p if p.exists() else None
+    return None
+
+
 def resolve_sources(session_dir: Path, args, state: dict,
                     project_root: Path = PROJECT_ROOT) -> dict:
     n = qmd.class_number(session_dir)
@@ -82,13 +108,11 @@ def resolve_sources(session_dir: Path, args, state: dict,
     def pick(flag, key):
         return flag if flag not in (None, "") else state.get(key)
 
-    deck = pick(args.deck, "deck")
-    deck = Path(deck) if deck else None
-    if deck is None or not deck.exists():
+    deck = _resolve_path(args.deck, state.get("deck"), "deck")
+    if deck is None:
         deck = qmd.find_deck(n, project_root / "isa401")
-    rmd = pick(args.class_rmd, "class_rmd")
-    rmd = Path(rmd) if rmd else None
-    if rmd is None or not rmd.exists():
+    rmd = _resolve_path(args.class_rmd, state.get("class_rmd"), "class-rmd")
+    if rmd is None:
         rmd = qmd.find_class_rmd(n, project_root / "class_code")
     date = state.get("date") or (qmd.zoom_date(mp4.name) if mp4 else None)
     return {
@@ -137,9 +161,15 @@ def stage_scenes(mp4: Path, out: Path, enabled: bool, threshold: float) -> list[
     if not enabled:
         return []
     if (sdir / "scenes.json").exists():
-        found = SC.load(sdir)
-        print(f"  scenes: {len(found)} stills exist")
-        return found
+        cached_threshold = SC.load_threshold(sdir)
+        if cached_threshold is not None and abs(cached_threshold - threshold) > 1e-9:
+            print(f"  scenes.json was made at threshold {cached_threshold}, "
+                 f"not the requested {threshold}; the cached stills are "
+                 f"stale, re-detecting")
+        else:
+            found = SC.load(sdir)
+            print(f"  scenes: {len(found)} stills exist")
+            return found
     print("  detecting scene changes (a few minutes for an 80 minute class)")
     found = SC.detect(mp4, sdir, threshold=threshold)
     print(f"  scenes: {len(found)} stills")
@@ -156,7 +186,8 @@ def _ctx(out: Path, mp4: Path, tj: Path, found: list[dict]) -> NotesToolContext:
         refs_dir=out / "refs", video_path=mp4,
         total_duration=segs[-1]["end"] if segs else 0.0,
         transcript_path=tj, boards=found,
-        diagrams_dir=(out / "crops") if found else None)
+        diagrams_dir=(out / "crops") if found else None,
+        state_file=out / "agent_state.json")
 
 
 def _transcript_text(tj: Path, found: list[dict]) -> str:
@@ -176,6 +207,15 @@ def stage_write(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
         transcript_text=_transcript_text(tj, found),
         scene_index=SC.index_text(found), header=header,
         pronouns=src.get("instructor_pronouns"))
+    if notes.exists():
+        # --regen starts a fresh write; old open questions no longer apply
+        # to whatever the agent writes this time, but are kept as a .bak
+        # rather than deleted outright.
+        qfile = questions_file_for(notes)
+        if qfile.exists():
+            bak = qfile.with_name(qfile.name + ".bak")
+            bak.unlink(missing_ok=True)
+            qfile.replace(bak)
     print(f"  writing notes with the {args.backend} backend")
     run_agent(system_prompt=I.SYSTEM_PROMPT, user_text=user,
               ctx=_ctx(out, mp4, tj, found), output_file=notes,
@@ -187,11 +227,25 @@ def stage_write(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
     return notes
 
 
+def _no_notes_message(notes: Path) -> str:
+    msg = f"No notes at {notes}; write them first."
+    bak = notes.with_name(notes.name + ".bak")
+    if bak.exists():
+        msg += f" (a {bak.name} from an interrupted run is present)"
+    return msg
+
+
+def stage_publish(notes: Path, publish_dir) -> list[Path]:
+    if not notes.exists():
+        raise SystemExit(_no_notes_message(notes))
+    return qmd.publish(notes, Path(publish_dir))
+
+
 def stage_verify(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
                  args) -> None:
     notes = out / "notes.qmd"
     if not notes.exists():
-        raise SystemExit(f"No notes at {notes}; write them first.")
+        raise SystemExit(_no_notes_message(notes))
     user = I.verify_message(
         notes=notes, instructor=src["instructor"], deck=src.get("deck"),
         class_rmd=src.get("class_rmd"),
@@ -210,7 +264,7 @@ def stage_answer(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
                  args) -> None:
     notes = out / "notes.qmd"
     if not notes.exists():
-        raise SystemExit(f"No notes at {notes}; write them first.")
+        raise SystemExit(_no_notes_message(notes))
     ctx = _ctx(out, mp4, tj, found)
     answers = collect_followup_answers(ctx, notes, _segments(tj))
     todos = count_todos(notes.read_text(encoding="utf-8"))
@@ -239,10 +293,26 @@ def stage_answer(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
 def stage_render(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
                  args) -> bool:
     notes = out / "notes.qmd"
+    header = header_for(src)
+    text = notes.read_text(encoding="utf-8")
+    if not qmd.front_matter_matches(notes, header):
+        header_block = qmd.front_matter_block(header)
+        file_block = qmd.front_matter_block(text) or []
+        rest = text.splitlines()[len(file_block):]
+        text = "\n".join(header_block + rest) + "\n"
+        notes.write_text(text, encoding="utf-8")
+        print("  front matter did not match the expected header; restored it")
+
+    fences = qmd.executable_fences(text)
+    if fences:
+        raise SystemExit(
+            f"{notes} has an executable code fence ({fences[0]!r}); "
+            f"rendering it would run that code. Use an inert fence "
+            f"(```r, not ```{{r}}) and fix the file before rendering.")
+
     if src.get("video_url_template"):
-        text = notes.read_text(encoding="utf-8")
-        notes.write_text(qmd.link_timestamps(text, src["video_url_template"]),
-                         encoding="utf-8")
+        text = qmd.link_timestamps(text, src["video_url_template"])
+        notes.write_text(text, encoding="utf-8")
     ok, log = qmd.render(notes)
     if ok:
         print(f"  quarto render: ok ({out / 'notes.html'})")
@@ -293,6 +363,7 @@ def parse_args(argv: list[str]):
 
 
 def main(argv: list[str] | None = None) -> None:
+    require_tools(["ffmpeg", "ffprobe", "quarto"])
     args = parse_args(sys.argv[1:] if argv is None else argv)
     session_dir = Path(args.session_dir).resolve()
     out = session_dir / "out"
@@ -326,7 +397,7 @@ def main(argv: list[str] | None = None) -> None:
             stage_render(out, mp4, tj, found, src, args)
 
     if args.publish:
-        copied = qmd.publish(notes, Path(args.publish))
+        copied = stage_publish(notes, args.publish)
         print(f"  published {len(copied)} file(s) to {args.publish}")
 
 

@@ -71,3 +71,13 @@ with tempfile.TemporaryDirectory() as d:
     assert data["metadata"]["cues"] == 7
     assert set(data["segments"][0]) == {"start", "end", "speaker", "text"}
 print("transcript.json written in the upstream segment schema")
+
+with tempfile.TemporaryDirectory() as d:
+    src_bom = Path(d) / "bom.transcript.vtt"
+    src_bom.write_bytes(b"\xef\xbb\xbf" + SAMPLE.encode("utf-8"))
+    out_bom = Path(d) / "transcript.json"
+    n_bom = vtt.write_transcript(src_bom, out_bom)
+    data_bom = json.loads(out_bom.read_text(encoding="utf-8"))
+    assert n_bom == n and len(data_bom["segments"]) == len(data["segments"])
+    assert data_bom["segments"][0]["text"] == data["segments"][0]["text"]
+print("a leading BOM parses to the same cue count")

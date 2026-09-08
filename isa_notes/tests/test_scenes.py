@@ -3,6 +3,7 @@ which scene detection never emits. A synthetic video of three flat colours
 with hard cuts at 2 s and 4 s must give exactly three stills with those
 intervals, and a threshold of 0 must trip the runaway guard rather than
 write a still per frame."""
+import io
 import json
 import shutil
 import subprocess
@@ -37,8 +38,10 @@ with tempfile.TemporaryDirectory() as d:
     assert abs(found[2]["end"] - 6.0) < 0.3, found[2]
     for s in found:
         assert Path(s["path"]).is_file() and Path(s["path"]).is_absolute()
-    assert json.loads((out / "scenes.json").read_text())[0]["id"] == 1
+    raw = json.loads((out / "scenes.json").read_text())
+    assert raw["threshold"] == 0.3 and raw["scenes"][0]["id"] == 1, raw
     assert scenes.load(out) == found
+    assert scenes.load_threshold(out) == 0.3
     print("three stills: first frame plus two cuts, with intervals")
 
     # A threshold of 0 marks every frame; the guard raises the threshold
@@ -86,3 +89,30 @@ with tempfile.TemporaryDirectory() as d:
     assert starts == sorted(starts) and len(set(starts)) == 3, starts
     assert abs(sampled[-1]["end"] - 6.0) < 0.3, sampled[-1]
     print("even sample spans the whole scan instead of just the start")
+
+    # ffmpeg's showinfo timestamps and the written stills can disagree in
+    # count (a dropped frame, say); _cuts must warn and truncate to the
+    # shorter rather than let zip silently drop the mismatch unremarked.
+    class _FakeProc:
+        def __init__(self, stderr):
+            self.stderr = stderr
+
+    tmp_dir = d / "tmp_cuts"
+    tmp_dir.mkdir()
+    (tmp_dir / "cut-000001.jpg").write_bytes(b"x")
+    (tmp_dir / "cut-000002.jpg").write_bytes(b"x")
+    real_run = scenes.subprocess.run
+    scenes.subprocess.run = lambda *a, **k: _FakeProc(
+        "Parsed_showinfo pts_time:1.0\n"
+        "Parsed_showinfo pts_time:2.0\n"
+        "Parsed_showinfo pts_time:3.0\n")
+    real_stdout, sys.stdout = sys.stdout, io.StringIO()
+    try:
+        mismatched = scenes._cuts(Path("fake.mp4"), tmp_dir, 0.3)
+        printed = sys.stdout.getvalue()
+    finally:
+        sys.stdout = real_stdout
+        scenes.subprocess.run = real_run
+    assert len(mismatched) == 2, mismatched
+    assert "3" in printed and "2" in printed, printed
+    print("_cuts warns and truncates on a timestamp/still count mismatch")

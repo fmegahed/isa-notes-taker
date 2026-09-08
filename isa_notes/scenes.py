@@ -54,6 +54,10 @@ def _cuts(video: Path, tmp_dir: Path, threshold: float) -> list[tuple[float, Pat
     times = [float(m.group(1)) for m in _PTS.finditer(proc.stderr)]
     files = sorted(tmp_dir.glob("cut-*.jpg"),
                     key=lambda p: int(p.stem.split("-")[1]))
+    if len(times) != len(files):
+        print(f"  scene detection: {len(times)} timestamp(s) but "
+              f"{len(files)} still(s) parsed from ffmpeg's output; "
+              f"truncating to the shorter", flush=True)
     return list(zip(times, files))
 
 
@@ -121,13 +125,25 @@ def detect(video: Path, out_dir: Path, threshold: float = 0.30,
         end = starts[i + 1][0] if i + 1 < len(starts) else duration
         result.append({"id": i + 1, "path": str(path.resolve()),
                        "start": round(at, 3), "end": round(end, 3)})
-    (out_dir / "scenes.json").write_text(json.dumps(result, indent=1))
+    (out_dir / "scenes.json").write_text(
+        json.dumps({"threshold": t, "scenes": result}, indent=1))
     return result
 
 
 def load(out_dir: Path) -> list[dict]:
     f = Path(out_dir) / "scenes.json"
-    return json.loads(f.read_text()) if f.exists() else []
+    if not f.exists():
+        return []
+    data = json.loads(f.read_text())
+    return data["scenes"] if isinstance(data, dict) else data
+
+
+def load_threshold(out_dir: Path) -> float | None:
+    f = Path(out_dir) / "scenes.json"
+    if not f.exists():
+        return None
+    data = json.loads(f.read_text())
+    return data.get("threshold") if isinstance(data, dict) else None
 
 
 def marks(scenes: list[dict]) -> list[tuple[float, str]]:

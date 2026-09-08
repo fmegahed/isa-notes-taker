@@ -18,7 +18,9 @@ from media import parse_timestamp
 
 TS_RE = re.compile(r"\[(\d{2}:\d{2}:\d{2})\]\{\.ts\}")
 TODO_RE = re.compile(r"<!--\s*todo\b.*?-->", re.IGNORECASE | re.DOTALL)
-_IMG_RE = re.compile(r"!\[[^\]]*\]\(([^)\s]+)\)")
+_IMG_RE = re.compile(
+    r"!\[[^\]]*\]\(([^)\s]+)\)"
+    r"|<img\s[^>]*?src=[\"']([^\"']+)[\"']")
 _CLASS_RE = re.compile(r"class0*(\d+)$", re.IGNORECASE)
 _ZOOM_RE = re.compile(r"GMT(\d{4})(\d{2})(\d{2})-\d{6}")
 _R_INLINE = re.compile(r"`r\s[^`]*`")
@@ -100,6 +102,43 @@ def ensure_front_matter(path: Path, header: str) -> bool:
     return True
 
 
+def front_matter_block(text: str) -> list[str] | None:
+    """The file's leading `---` ... `---` block, as raw lines including both
+    delimiters, or None if the text does not open with one."""
+    lines = text.splitlines()
+    if not lines or lines[0].strip() != "---":
+        return None
+    for i in range(1, len(lines)):
+        if lines[i].strip() == "---":
+            return lines[:i + 1]
+    return None
+
+
+def front_matter_matches(path: Path, header: str) -> bool:
+    """Whether the file's leading front matter block is still the one the
+    header supplies, line for line, ignoring trailing whitespace. A model
+    revising the file can rewrite or drop the front matter by mistake; this
+    is how stage_render notices before handing a broken page to quarto."""
+    file_block = front_matter_block(Path(path).read_text(encoding="utf-8"))
+    header_block = front_matter_block(header)
+    if file_block is None or header_block is None:
+        return False
+    return ([line.rstrip() for line in file_block]
+           == [line.rstrip() for line in header_block])
+
+
+_EXEC_FENCE_RE = re.compile(r"^```\{.*$", re.MULTILINE)
+
+
+def executable_fences(text: str) -> list[str]:
+    """Fenced code blocks the model wrote as executable (```` ```{r} ````,
+    ```` ```{python} ````, ...) rather than inert (```` ```r ````). The page
+    renders with `engine: markdown`, which does not execute code, but a
+    model that reverts to the executable form would make quarto try to run
+    it, and it should not run, ever."""
+    return _EXEC_FENCE_RE.findall(text)
+
+
 def timestamps(text: str) -> list[str]:
     return TS_RE.findall(text)
 
@@ -113,7 +152,8 @@ def link_timestamps(text: str, template: str) -> str:
 
 def referenced_images(text: str) -> list[str]:
     seen: list[str] = []
-    for p in _IMG_RE.findall(text):
+    for md_path, html_path in _IMG_RE.findall(text):
+        p = md_path or html_path
         if p not in seen and not p.startswith(("http://", "https://")):
             seen.append(p)
     return seen

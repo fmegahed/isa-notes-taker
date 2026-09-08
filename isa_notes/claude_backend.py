@@ -344,12 +344,12 @@ def run_agent(
     ensure_broker(ctx).close()
 
     if output_file.exists() and output_file.stat().st_size > 0:
-        text = output_file.read_text()
+        text = output_file.read_text(encoding="utf-8")
     else:
         print(f"\nWarning: the agent never wrote {output_file.name}; saving "
               f"its chat output there instead — review it before compiling.",
               file=sys.stderr)
-        output_file.write_text(fallback)
+        output_file.write_text(fallback, encoding="utf-8")
         text = fallback
 
     save_questions(ctx, output_file)
@@ -371,9 +371,10 @@ def run_agent(
         corrections=list(ctx.new_corrections),
         reply=fallback[-600:] if fallback else "")
     if n_open or n_todo:
-        print(f"\nNote: {n_open} open question(s) and {n_todo} \\todo "
-              f"marker(s) remain (any prompt still on screen was cancelled). "
-              f"Resolve them later with a follow-up run (--answer).",
+        print(f"\nNote: {n_open} open question(s) and {n_todo} "
+              f"<!-- todo --> comment(s) remain (any prompt still on screen "
+              f"was cancelled). Resolve them later with a follow-up run "
+              f"(--answer).",
               file=sys.stderr)
     return text
 
@@ -443,9 +444,9 @@ def _analyze_frames_tool(frame_model: str) -> dict:
         "name": "analyze_frames",
         "description": (
             f"Have a cheaper model ({frame_model}) study video frames and "
-            "report what is on the board/slides. Extracts frames at the given "
+            "report what is on the screen. Extracts frames at the given "
             "timestamps and sends them — with your context — to the fast "
-            "model, which returns a faithful LaTeX transcription of the "
+            "model, which returns a faithful text transcription of the "
             "visible content. Prefer this over get_frame: frames are "
             "token-expensive for you. Call get_frame directly only when the "
             "report is ambiguous, incomplete, or mathematically implausible "
@@ -814,6 +815,13 @@ for; it will fetch and study the frames and report what is on screen. Only
 call get_frame yourself when the subagent's report is ambiguous, incomplete,
 or implausible and the passage is important."""
 
+FRAME_READER_AGENT_DESCRIPTION = (
+    "Reads class-video frames. Give it the timestamp(s), "
+    "the surrounding transcript, and what to look for; it "
+    "fetches frames via get_frame and reports the screen "
+    "contents as text."
+)
+
 
 def _run_subscription(system_prompt: str, user_text: str,
                       ctx: NotesToolContext, output_file: Path,
@@ -874,12 +882,7 @@ def _run_subscription(system_prompt: str, user_text: str,
         # escalates to get_frame itself only when the report is insufficient.
         agents = {
             "frame-reader": AgentDefinition(
-                description=(
-                    "Reads lecture-video frames. Give it the timestamp(s), "
-                    "the surrounding transcript, and what to look for; it "
-                    "fetches frames via get_frame and reports the board/slide "
-                    "contents in LaTeX."
-                ),
+                description=FRAME_READER_AGENT_DESCRIPTION,
                 prompt=FRAME_READER_PROMPT,
                 tools=["mcp__notes__get_frame"],
                 mcpServers=["notes"],

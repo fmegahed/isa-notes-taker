@@ -104,3 +104,33 @@ with tempfile.TemporaryDirectory() as d:
     assert ok, log
     assert (out / "notes.html").exists()
     print("quarto render passes on a minimal page")
+
+    header2 = qmd.front_matter("T", "", None, {}, "")
+    matching = header2 + "\n## Body\n"
+    (d / "matching.qmd").write_text(matching, encoding="utf-8")
+    assert qmd.front_matter_matches(d / "matching.qmd", header2) is True
+
+    altered = header2.replace("engine: markdown", "engine: knitr")
+    (d / "altered.qmd").write_text(altered + "\n## Body\n", encoding="utf-8")
+    assert qmd.front_matter_matches(d / "altered.qmd", header2) is False
+
+    (d / "nomatter.qmd").write_text("## Body only, no front matter\n",
+                                    encoding="utf-8")
+    assert qmd.front_matter_matches(d / "nomatter.qmd", header2) is False
+    print("front_matter_matches catches a rewritten front matter block")
+
+    exec_body = "prose\n\n```{r}\n1 + 1\n```\n\nmore prose\n"
+    inert_body = "prose\n\n```r\n1 + 1\n```\n\nmore prose\n"
+    assert qmd.executable_fences(exec_body) == ["```{r}"]
+    assert qmd.executable_fences(inert_body) == []
+    py_body = "```{python}\nprint(1)\n```\n"
+    assert qmd.executable_fences(py_body) == ["```{python}"]
+    print("executable_fences flags {r}/{python} cells but not inert r fences")
+
+    mixed = ('![](scenes/scene-041.jpg)\n'
+            '<img src="crops/crop-002.jpg" width="60%">\n'
+            "<img src='crops/crop-003.jpg'>\n")
+    assert qmd.referenced_images(mixed) == [
+        "scenes/scene-041.jpg", "crops/crop-002.jpg", "crops/crop-003.jpg"], \
+        qmd.referenced_images(mixed)
+    print("referenced_images finds Markdown and <img> references, either quote style")
