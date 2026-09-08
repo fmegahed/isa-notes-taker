@@ -47,6 +47,9 @@ SLIDES_URL = "https://fmegahed.github.io/isa401/fall2026/class{n:02d}/{stem}.htm
 CLASS_CODE_URL = "https://github.com/fmegahed/isa401a/blob/main/markdowns/{name}"
 TS_NOTE = ("Timestamps before each paragraph are hh:mm:ss into the "
            "recording; drag the player there to hear the passage.")
+# The recording itself is not linked from the page unless --video-url is
+# given; students find it on Canvas.
+RECORDING_NOTE = "The recording is on Canvas."
 SAVED_KEYS = ("instructor", "instructor_pronouns", "video_url",
               "video_url_template", "deck", "class_rmd", "date")
 
@@ -140,8 +143,9 @@ def header_for(src: dict) -> str:
         if src.get("class_rmd") else None,
         "Recording": src.get("video_url"),
     }
+    note = TS_NOTE if src.get("video_url") else f"{RECORDING_NOTE} {TS_NOTE}"
     return qmd.front_matter(meta["title"] or "ISA 401", meta["subtitle"],
-                            src.get("date"), links, TS_NOTE)
+                            src.get("date"), links, note)
 
 
 # -- stages ------------------------------------------------------------------

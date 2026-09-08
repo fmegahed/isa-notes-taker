@@ -21,11 +21,13 @@ class.
 2. Run:
 
    ```sh
-   python isa_notes/session.py sessions/class03 --video-url https://miamioh.zoom.us/rec/share/...
+   python isa_notes/session.py sessions/class03
    ```
 
    The deck and the class RMD are found by class number. Pass `--deck` or
    `--class-rmd` to override, `--instructor` if it is not Fadel Megahed.
+   The page does not link the recording; its header says the recording is
+   on Canvas. (`--video-url URL` would add a link instead.)
    Flags are saved in `sessions/classNN/out/state.json` and need not be
    repeated.
 3. Answer questions in the terminal as they appear, or press Enter to defer.

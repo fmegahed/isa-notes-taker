@@ -77,6 +77,10 @@ with tempfile.TemporaryDirectory() as d:
     assert header.startswith("---\ntitle: \"ISA 401\"")
     assert "subtitle: \"03: Foundations\"" in header
     assert "[Recording](https://z/rec)" in header
+    assert "on Canvas" not in header, "a linked recording needs no Canvas note"
+    # Without a URL the page says where the recording lives instead of linking it.
+    no_url = S.header_for({**src, "video_url": None})
+    assert "[Recording]" not in no_url and "The recording is on Canvas." in no_url
     assert "github.com/fmegahed/isa401a/blob/main/markdowns/03_r_basics.Rmd" in header
     assert "fmegahed.github.io/isa401/fall2026/class03/03_r_foundations.html" in header
     print("sources resolved from folder name, flags, and saved state; header built")
