@@ -1,0 +1,17 @@
+---
+title: "Class notes"
+listing:
+  contents: "class*/index.qmd"
+  type: table
+  sort: "date asc"
+  fields: [date, title, description]
+  field-display-names:
+    date: "Date"
+    title: "Session"
+    description: "Covered"
+  sort-ui: false
+  filter-ui: false
+---
+
+One page per class session, written from the recording, the slides, and the
+code typed in class. Timestamps are hh:mm:ss into the recording on Canvas.

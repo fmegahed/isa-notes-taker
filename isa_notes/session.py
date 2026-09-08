@@ -3,7 +3,8 @@
 
     python isa_notes/session.py sessions/class03 [--class-rmd F] [--deck F]
         [--instructor NAME] [--video-url URL] [--video-url-template T]
-        [--answer] [--verify] [--no-verify] [--regen] [--publish DIR]
+        [--answer] [--verify] [--no-verify] [--regen]
+        [--publish] [--pdf] [--deploy DIR]
         [--no-scenes] [--scene-threshold X] [--wait]
         [--backend B] [--model M] [--frame-model M]
 
@@ -18,6 +19,7 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -43,6 +45,8 @@ from media import format_transcript                        # noqa: E402
 from notes_tools import NotesToolContext                   # noqa: E402
 
 PROJECT_ROOT = HERE.parent
+NOTES_SITE = PROJECT_ROOT / "notes_site"
+DOCS_DIR = PROJECT_ROOT / "docs"
 SLIDES_URL = "https://fmegahed.github.io/isa401/fall2026/class{n:02d}/{stem}.html"
 CLASS_CODE_URL = "https://github.com/fmegahed/isa401a/blob/main/markdowns/{name}"
 TS_NOTE = ("Timestamps before each paragraph are hh:mm:ss into the "
@@ -134,18 +138,29 @@ def deck_meta_for(src: dict) -> dict:
     return {"title": f"ISA 401 Class {src['n']:02d}", "subtitle": ""}
 
 
-def header_for(src: dict) -> str:
+def header_for(src: dict, description: str | None = None,
+               extra_links: dict[str, str] | None = None) -> str:
+    """The page title is the deck's subtitle (the class-specific part,
+    e.g. "03: Foundations"), else "Class NN"; the subtitle is the deck's
+    title (the course name), else "ISA 401" -- swapped from the deck's own
+    layout so a listing of pages shows the class, not the course, on
+    every row. `description` is left to the caller (stage_write has none
+    yet; stage_publish fills it from the page body)."""
     deck = src.get("deck")
     meta = deck_meta_for(src)
+    title = meta["subtitle"] or f"Class {src['n']:02d}"
+    subtitle = meta["title"] or "ISA 401"
     links = {
         "Slides": SLIDES_URL.format(n=src["n"], stem=Path(deck).stem) if deck else None,
         "Class code": CLASS_CODE_URL.format(name=Path(src["class_rmd"]).name)
         if src.get("class_rmd") else None,
         "Recording": src.get("video_url"),
     }
+    if extra_links:
+        links.update(extra_links)
     note = TS_NOTE if src.get("video_url") else f"{RECORDING_NOTE} {TS_NOTE}"
-    return qmd.front_matter(meta["title"] or "ISA 401", meta["subtitle"],
-                            src.get("date"), links, note)
+    return qmd.front_matter(title, subtitle, src.get("date"), links, note,
+                            description=description)
 
 
 # -- stages ------------------------------------------------------------------
@@ -239,10 +254,103 @@ def _no_notes_message(notes: Path) -> str:
     return msg
 
 
-def stage_publish(notes: Path, publish_dir) -> list[Path]:
+def _ensure_nojekyll() -> None:
+    """Quarto's output has folders starting with "_" (e.g. _site-style
+    assets); GitHub Pages' Jekyll processing drops those unless a
+    .nojekyll file says not to. docs/ is committed, so this only needs
+    creating once, but a render never removes it and a clone might not
+    have it yet."""
+    if DOCS_DIR.exists():
+        marker = DOCS_DIR / ".nojekyll"
+        if not marker.exists():
+            marker.write_bytes(b"")
+
+
+def stage_publish(out: Path, src: dict, args) -> Path:
+    """Land one class's notes.qmd as a page of the notes_site/ project,
+    then render the whole site (its listing needs every class's page, not
+    just this one). Returns the class's target folder."""
+    notes = out / "notes.qmd"
     if not notes.exists():
         raise SystemExit(_no_notes_message(notes))
-    return qmd.publish(notes, Path(publish_dir))
+    n = src["n"]
+    target = NOTES_SITE / f"class{n:02d}"
+    target.mkdir(parents=True, exist_ok=True)
+
+    original_text = notes.read_text(encoding="utf-8")
+    description = qmd.what_we_covered(original_text)
+    extra_links = None
+
+    if args.pdf:
+        # Render a draft copy first so a PDF link can be added to the
+        # final header only if the render actually produces one; the
+        # final write below always starts fresh from original_text so a
+        # second header swap here does not clobber this one.
+        draft_header = header_for(src, description=description)
+        draft_text = qmd.replace_front_matter(original_text, draft_header)
+        (target / "index.qmd").write_text(draft_text, encoding="utf-8")
+        qmd.copy_referenced_images(draft_text, out, target)
+        proc = subprocess.run(["quarto", "render", "index.qmd", "--to", "typst"],
+                              cwd=str(target), capture_output=True, text=True,
+                              encoding="utf-8", errors="replace")
+        # notes_site/ is a website project with output-dir set to ../docs,
+        # so quarto writes even a single-file --to typst render there
+        # (docs/classNN/index.pdf), not next to the source index.qmd.
+        pdf = DOCS_DIR / f"class{n:02d}" / "index.pdf"
+        if proc.returncode == 0 and pdf.exists():
+            print(f"  pdf: {pdf}")
+            extra_links = {"PDF": "index.pdf"}
+        else:
+            tail = ((proc.stderr or "") + (proc.stdout or ""))[-2000:]
+            print("  pdf render failed (best effort; continuing):")
+            print(tail)
+
+    header = header_for(src, description=description, extra_links=extra_links)
+    text = qmd.replace_front_matter(original_text, header)
+    (target / "index.qmd").write_text(text, encoding="utf-8")
+    qmd.copy_referenced_images(text, out, target)
+
+    proc = subprocess.run(["quarto", "render"], cwd=str(NOTES_SITE),
+                          capture_output=True, text=True, encoding="utf-8",
+                          errors="replace")
+    if proc.returncode != 0:
+        raise SystemExit("quarto render (notes_site) failed:\n"
+                         + (proc.stderr or "") + (proc.stdout or ""))
+    _ensure_nojekyll()
+    print(f"  published: {target}")
+    print(f"  site rendered: {DOCS_DIR}")
+    return target
+
+
+def _inside_project(path: Path) -> bool:
+    try:
+        Path(path).resolve().relative_to(PROJECT_ROOT.resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def stage_deploy(args) -> None:
+    """Mirror the rendered docs/ elsewhere, e.g. a second repo. The normal
+    workflow needs no deploy step: docs/ is committed here and GitHub
+    Pages serves it directly. This only overwrites files docs/ has; it
+    never deletes anything already in the target that docs/ does not."""
+    if not DOCS_DIR.exists():
+        raise SystemExit(f"{DOCS_DIR} does not exist; run with --publish first")
+    dest = Path(args.deploy).resolve()
+    if _inside_project(dest):
+        raise SystemExit(f"--deploy {dest} resolves inside this project; point "
+                         f"it at a checkout outside {PROJECT_ROOT}")
+    dest.mkdir(parents=True, exist_ok=True)
+    count = 0
+    for p in DOCS_DIR.rglob("*"):
+        if p.is_file():
+            target = dest / p.relative_to(DOCS_DIR)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(p, target)
+            count += 1
+    print(f"  deployed {count} file(s) to {dest}")
+    print("  commit and push in that repo to publish the change")
 
 
 def stage_verify(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
@@ -300,10 +408,7 @@ def stage_render(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
     header = header_for(src)
     text = notes.read_text(encoding="utf-8")
     if not qmd.front_matter_matches(notes, header):
-        header_block = qmd.front_matter_block(header)
-        file_block = qmd.front_matter_block(text) or []
-        rest = text.splitlines()[len(file_block):]
-        text = "\n".join(header_block + rest) + "\n"
+        text = qmd.replace_front_matter(text, header)
         notes.write_text(text, encoding="utf-8")
         print("  front matter did not match the expected header; restored it")
 
@@ -356,7 +461,13 @@ def parse_args(argv: list[str]):
     p.add_argument("--verify", action="store_true", help="run only the checking pass")
     p.add_argument("--no-verify", dest="verify_after", action="store_false", default=True)
     p.add_argument("--regen", action="store_true")
-    p.add_argument("--publish", metavar="DIR", default=None)
+    p.add_argument("--publish", action="store_true",
+                   help="land this class's page in notes_site/ and render docs/")
+    p.add_argument("--pdf", action="store_true",
+                   help="with --publish, also render index.pdf (best effort)")
+    p.add_argument("--deploy", metavar="DIR", default=None,
+                   help="mirror the rendered docs/ into DIR (optional; docs/ "
+                        "must already exist, from --publish now or earlier)")
     p.add_argument("--no-scenes", dest="scenes", action="store_false", default=True)
     p.add_argument("--scene-threshold", type=float, default=0.30)
     p.add_argument("--wait", action="store_true")
@@ -401,8 +512,9 @@ def main(argv: list[str] | None = None) -> None:
             stage_render(out, mp4, tj, found, src, args)
 
     if args.publish:
-        copied = stage_publish(notes, args.publish)
-        print(f"  published {len(copied)} file(s) to {args.publish}")
+        stage_publish(out, src, args)
+    if args.deploy:
+        stage_deploy(args)
 
 
 if __name__ == "__main__":

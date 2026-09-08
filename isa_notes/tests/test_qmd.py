@@ -59,6 +59,15 @@ with tempfile.TemporaryDirectory() as d:
     assert "—" not in fm
     assert ("[Slides](https://s) | [Recording](https://z)\n\n"
            "Timestamps are hh:mm:ss into the recording.") in fm, fm
+    assert "description" not in fm, "no description means no description line"
+
+    fm_desc = qmd.front_matter("T", "S", "2026-08-31", {}, "",
+                               description="We covered vectors and loops.")
+    lines = fm_desc.splitlines()
+    date_i = lines.index('date: "2026-08-31"')
+    assert lines[date_i + 1] == 'description: "We covered vectors and loops."', fm_desc
+    print("front_matter emits a quoted description line right after date")
+
     notes = d / "notes.qmd"
     notes.write_text("# Body\n", encoding="utf-8")
     assert qmd.ensure_front_matter(notes, fm) is True
@@ -83,22 +92,23 @@ with tempfile.TemporaryDirectory() as d:
     out.mkdir()
     (out / "scenes").mkdir()
     (out / "scenes" / "scene-041.jpg").write_bytes(b"x")
-    (out / "notes.qmd").write_text(fm + "\n![](scenes/scene-041.jpg)\n", encoding="utf-8")
+    body_with_image = fm + "\n![](scenes/scene-041.jpg)\n"
+    (out / "notes.qmd").write_text(body_with_image, encoding="utf-8")
     (out / "ts.css").write_text(".ts{}")
-    copied = qmd.publish(out / "notes.qmd", d / "site" / "class03")
+    copied = qmd.copy_referenced_images(body_with_image, out, d / "site" / "class03")
     names = sorted(p.relative_to(d / "site" / "class03").as_posix() for p in copied)
-    assert names == ["notes.qmd", "scenes/scene-041.jpg", "ts.css"], names
-    print("publish copies the page, its css, and referenced images")
+    assert names == ["scenes/scene-041.jpg"], names
+    assert (d / "site" / "class03" / "scenes" / "scene-041.jpg").exists()
+    print("copy_referenced_images copies referenced images, preserving subpaths")
 
     out2 = d / "out2"
     out2.mkdir()
     (d / "outside.png").write_bytes(b"y")
-    (out2 / "notes.qmd").write_text(fm + "\n![](../outside.png)\n", encoding="utf-8")
-    (out2 / "ts.css").write_text(".ts{}")
-    copied2 = qmd.publish(out2 / "notes.qmd", d / "site" / "class03b")
+    body_outside = fm + "\n![](../outside.png)\n"
+    copied2 = qmd.copy_referenced_images(body_outside, out2, d / "site" / "class03b")
     assert not any(p.name == "outside.png" for p in copied2), copied2
     assert not (d / "site" / "outside.png").exists()
-    print("publish refuses to follow a reference outside the notes folder")
+    print("copy_referenced_images refuses to follow a reference outside the notes folder")
 
     ok, log = qmd.render(out / "notes.qmd")
     assert ok, log
@@ -134,3 +144,35 @@ with tempfile.TemporaryDirectory() as d:
         "scenes/scene-041.jpg", "crops/crop-002.jpg", "crops/crop-003.jpg"], \
         qmd.referenced_images(mixed)
     print("referenced_images finds Markdown and <img> references, either quote style")
+
+    covered_short = ("---\ntitle: \"x\"\n---\n\n## What we covered\n\n"
+                     "We loaded a CSV, cleaned column names, and made a "
+                     "scatterplot.\n\n- objective one\n- objective two\n\n"
+                     "## Part 1\n\nMore text.\n")
+    assert qmd.what_we_covered(covered_short) == (
+        "We loaded a CSV, cleaned column names, and made a scatterplot.")
+
+    long_sentence = "word " * 40
+    covered_long = f"## What we covered\n\n{long_sentence.strip()}.\n\n- a list\n"
+    got = qmd.what_we_covered(covered_long)
+    assert got is not None and len(got) <= 160, got
+    assert not got.endswith(" "), "truncation lands on a word boundary"
+
+    covered_ts = "## What we covered\n\n[00:00:05]{.ts} We covered loops.\n\n- x\n"
+    assert qmd.what_we_covered(covered_ts) == "We covered loops.", \
+        qmd.what_we_covered(covered_ts)
+
+    assert qmd.what_we_covered("## Body only\n\nNo such section.\n") is None
+    assert qmd.what_we_covered("## What we covered\n\n- only a list, no paragraph\n") \
+        is None
+    print("what_we_covered extracts, strips ts marks, and truncates at a word boundary")
+
+    header_a = qmd.front_matter("Old title", "Old sub", "2026-08-31", {}, "")
+    header_b = qmd.front_matter("New title", "New sub", "2026-08-31", {}, "",
+                               description="New description.")
+    original = header_a + "\n## Body\n\nSame content throughout.\n"
+    replaced = qmd.replace_front_matter(original, header_b)
+    assert qmd.front_matter_block(replaced) == qmd.front_matter_block(header_b)
+    assert "## Body\n\nSame content throughout." in replaced
+    assert "Old title" not in replaced and "Old sub" not in replaced
+    print("replace_front_matter swaps the header, keeps the body")

@@ -74,8 +74,8 @@ with tempfile.TemporaryDirectory() as d:
                               S.load_state(out), project_root=d)
     assert again["instructor"] == "Fadel Megahed" and again["deck"] == deck
     header = S.header_for(src)
-    assert header.startswith("---\ntitle: \"ISA 401\"")
-    assert "subtitle: \"03: Foundations\"" in header
+    assert header.startswith("---\ntitle: \"03: Foundations\"")
+    assert "subtitle: \"ISA 401\"" in header
     assert "[Recording](https://z/rec)" in header
     assert "on Canvas" not in header, "a linked recording needs no Canvas note"
     # Without a URL the page says where the recording lives instead of linking it.
@@ -227,7 +227,7 @@ with tempfile.TemporaryDirectory() as d:
     except SystemExit as e:
         assert "write them first" in str(e) and ".bak" not in str(e)
     try:
-        S.stage_publish(out7 / "notes.qmd", str(d / "site"))
+        S.stage_publish(out7, src, render_args)
         assert False, "stage_publish must refuse without notes.qmd"
     except SystemExit as e:
         assert "write them first" in str(e)
@@ -238,6 +238,41 @@ with tempfile.TemporaryDirectory() as d:
     except SystemExit as e:
         assert "notes.qmd.bak" in str(e) and "interrupted run" in str(e)
     print("no-notes messages name a notes.qmd.bak from an interrupted run")
+
+    # --publish is now a boolean; --pdf and --deploy are new, independent flags.
+    default_flags = S.parse_args(["sessions/class03"])
+    assert default_flags.publish is False
+    assert default_flags.pdf is False
+    assert default_flags.deploy is None
+    all_flags = S.parse_args(["sessions/class03", "--publish", "--pdf",
+                              "--deploy", str(d / "elsewhere")])
+    assert all_flags.publish is True and all_flags.pdf is True
+    assert all_flags.deploy == str(d / "elsewhere")
+    print("--publish is boolean; --pdf and --deploy parse independently")
+
+    # stage_deploy refuses a target inside the project, and refuses when
+    # nothing has been published yet (no docs/ to copy from).
+    empty_root = d / "empty_project"
+    empty_root.mkdir()
+    real_docs, real_root = S.DOCS_DIR, S.PROJECT_ROOT
+    S.DOCS_DIR, S.PROJECT_ROOT = empty_root / "docs", empty_root
+    try:
+        try:
+            S.stage_deploy(S.parse_args(["sessions/class03", "--deploy",
+                                        str(d / "somewhere")]))
+            assert False, "stage_deploy must refuse without a docs/ folder"
+        except SystemExit as e:
+            assert "docs" in str(e) and "--publish" in str(e)
+        (empty_root / "docs").mkdir()
+        try:
+            S.stage_deploy(S.parse_args(["sessions/class03", "--deploy",
+                                        str(empty_root / "x")]))
+            assert False, "stage_deploy must refuse a target inside the project"
+        except SystemExit as e:
+            assert "inside this project" in str(e)
+    finally:
+        S.DOCS_DIR, S.PROJECT_ROOT = real_docs, real_root
+    print("stage_deploy refuses without docs/ and refuses a target inside the project")
 
 # Importing session.py must not crash a run just because stdout cannot
 # encode a character the model wrote, such as an emoji, in cp1252. Strip

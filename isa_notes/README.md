@@ -36,8 +36,11 @@ class.
    been answered, instead of leaving unanswered ones for a later
    `--answer` pass.
 4. Open `sessions/class03/out/notes.html` and read it.
-5. Publish: `--publish path/to/site/folder` copies `notes.qmd`, `ts.css`,
-   and the stills the page embeds.
+5. Publish: `--publish` lands the page in `notes_site/classNN/` and renders
+   the whole notes website into `docs/`. Add `--pdf` for a downloadable
+   PDF, `--deploy DIR` to also mirror `docs/` elsewhere. See `DEPLOY.md`
+   at the project root for the full walkthrough, including the GitHub
+   Pages setup.
 
 `--regen` rewrites the notes from scratch. `--verify` runs only the checking
 pass. `--no-scenes` skips screen stills. `--no-verify` skips the checking

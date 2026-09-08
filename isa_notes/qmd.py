@@ -72,7 +72,8 @@ def zoom_date(name: str) -> str | None:
 
 
 def front_matter(title: str, subtitle: str, date: str | None,
-                 links: dict[str, str | None], note: str) -> str:
+                 links: dict[str, str | None], note: str,
+                 description: str | None = None) -> str:
     def q(s: str) -> str:
         return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
     lines = ["---", f"title: {q(title)}"]
@@ -80,6 +81,8 @@ def front_matter(title: str, subtitle: str, date: str | None,
         lines.append(f"subtitle: {q(subtitle)}")
     if date:
         lines.append(f"date: {q(date)}")
+    if description:
+        lines.append(f"description: {q(description)}")
     lines += ["engine: markdown", "format:", "  html:", "    toc: true",
               "    toc-depth: 3", "    css: ts.css", "    code-copy: true",
               "---", ""]
@@ -112,6 +115,33 @@ def front_matter_block(text: str) -> list[str] | None:
         if lines[i].strip() == "---":
             return lines[:i + 1]
     return None
+
+
+_HEADING_RE = re.compile(r"^#{1,6}\s")
+
+
+def _body_start(text: str) -> int:
+    """The line index where the real page body begins: the first Markdown
+    heading after the leading YAML front matter block, if any. A `header`
+    (as `front_matter` builds it) is more than that YAML block -- it also
+    has the links/note paragraph directly below it -- so swapping headers
+    by line count of the YAML block alone would leave the old links line
+    in place; anchoring on the first heading catches all of it."""
+    lines = text.splitlines()
+    block = front_matter_block(text)
+    start = len(block) if block else 0
+    for i in range(start, len(lines)):
+        if _HEADING_RE.match(lines[i]):
+            return i
+    return len(lines)
+
+
+def replace_front_matter(text: str, header: str) -> str:
+    """Swap the file's whole header (front matter plus the links/note
+    paragraph beneath it) for `header`, keeping the body -- from the
+    first Markdown heading on -- untouched."""
+    body = "\n".join(text.splitlines()[_body_start(text):])
+    return header + "\n" + body if body else header
 
 
 def front_matter_matches(path: Path, header: str) -> bool:
@@ -150,6 +180,38 @@ def link_timestamps(text: str, template: str) -> str:
     return TS_RE.sub(sub, text)
 
 
+_WHAT_WE_COVERED_RE = re.compile(r"^##\s+What we covered\s*$",
+                                 re.IGNORECASE | re.MULTILINE)
+
+
+def what_we_covered(text: str) -> str | None:
+    """The first paragraph under "## What we covered", collapsed to one
+    line and truncated to 160 characters at a word boundary. None if the
+    section or its paragraph is missing (a listing description is then
+    just omitted, not left broken)."""
+    m = _WHAT_WE_COVERED_RE.search(text)
+    if not m:
+        return None
+    lines: list[str] = []
+    for line in text[m.end():].splitlines():
+        stripped = line.strip()
+        if not stripped:
+            if lines:
+                break
+            continue
+        if stripped.startswith(("#", "-", "*")) or re.match(r"^\d+[.)]", stripped):
+            break
+        lines.append(stripped)
+    if not lines:
+        return None
+    para = re.sub(r"\s+", " ", TS_RE.sub("", " ".join(lines))).strip()
+    if not para:
+        return None
+    if len(para) <= 160:
+        return para
+    return para[:160].rsplit(" ", 1)[0]
+
+
 def referenced_images(text: str) -> list[str]:
     seen: list[str] = []
     for md_path, html_path in _IMG_RE.findall(text):
@@ -166,22 +228,22 @@ def render(path: Path) -> tuple[bool, str]:
     return proc.returncode == 0, (proc.stderr or "") + (proc.stdout or "")
 
 
-def publish(notes: Path, dest: Path) -> list[Path]:
-    notes = Path(notes)
-    dest = Path(dest)
-    dest.mkdir(parents=True, exist_ok=True)
+def copy_referenced_images(text: str, src_root: Path, dest_root: Path) -> list[Path]:
+    """Copy every image `text` references (Markdown or `<img>`) from
+    `src_root` into `dest_root`, preserving relative subpaths. A reference
+    that resolves outside `src_root` (or is absolute) is skipped rather
+    than followed, the same guard the old `publish` used."""
+    src_root = Path(src_root).resolve()
     copied: list[Path] = []
-    notes_root = notes.parent.resolve()
-    for rel in ["notes.qmd", "ts.css"] + referenced_images(
-            notes.read_text(encoding="utf-8")):
-        if Path(rel).is_absolute() or not (notes.parent / rel).resolve().is_relative_to(notes_root):
+    for rel in referenced_images(text):
+        if Path(rel).is_absolute() or not (src_root / rel).resolve().is_relative_to(src_root):
             print(f"  (publish: {rel} points outside the notes folder; skipped)")
             continue
-        src = notes.parent / rel
+        src = src_root / rel
         if not src.exists():
             print(f"  (publish: {rel} is referenced but missing)")
             continue
-        target = dest / rel
+        target = Path(dest_root) / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, target)
         copied.append(target)
