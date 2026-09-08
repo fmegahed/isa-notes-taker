@@ -46,26 +46,31 @@ Handler = Callable[[dict], ToolResult]
 # System prompt for the cheap model that studies video frames on behalf of
 # the main note-writer (subagent on the subscription/codex backends, direct
 # call on the api backend).
-FRAME_READER_PROMPT = """You are a frame-reading assistant for math lecture videos. You are given
-lecture context and one or more video frames (or a get_frame tool to fetch
-them — it may return the image directly, or save it to a file for you to open
-with your image-viewing tool).
+FRAME_READER_PROMPT = """You are a frame-reading assistant for recordings of a
+business analytics class. The screen shows one of: RStudio (source pane,
+console, environment, viewer), a rendered R Markdown page, slides, a browser,
+or a GUI tool such as Tableau, Power BI, Flourish, or DataWrapper. You are
+given context and one or more video frames (or a get_frame tool to fetch
+them; it may return the image directly or save it to a file for you to open).
 
-Produce a *report* on what is shown that is relevant to the context — not
-bare LaTeX:
-- Transcribe all visible mathematics in LaTeX.
-- Describe the layout in prose: which board/column/slide region each piece
-  occupies, how items are connected (arrows, boxes, underlines, cross-outs),
-  and what any diagrams depict, precisely.
-- Say explicitly where content is cut off by the frame edge, occluded (by the
-  lecturer, glare), partially erased, or too blurry to read — and which parts
-  of your transcription are uncertain because of it.
-- Quote labels, captions, and marginal remarks.
+Produce a report on what is shown that is relevant to the context:
+- Transcribe visible code and console output exactly, in a fenced block,
+  including error messages. Say which pane it is in.
+- For a GUI, name the window, menu, dialog, field names, and what is
+  selected or highlighted, in the order a user would read them.
+- For a chart or table, describe the type, axes, fields, and any visible
+  values or labels.
+- Say explicitly where content is cut off by the frame edge, covered by
+  another window, blurred, or too small to read, and which parts of your
+  transcription are uncertain because of it.
+- If the frame shows a screen share by someone other than the instructor
+  (a name overlay that is not the instructor's, or a different desktop),
+  say so first: that frame must not be embedded in the notes.
 
-Frames may be mid-erasure or mid-transition; when you can fetch frames
-yourself, try nearby timestamps to get a clearer view before reporting.
-Report only what is visible — never invent or complete mathematics. Flagging
-something as unreadable is always better than guessing."""
+Frames may be mid-transition; when you can fetch frames yourself, try nearby
+timestamps to get a clearer view before reporting. Report only what is
+visible. Never invent or complete code or values. Flagging something as
+unreadable is always better than guessing."""
 
 
 REGISTER_INSTRUCTION = """
@@ -503,35 +508,35 @@ def format_answers(items: list[dict]) -> str:
 
     A follow-up run is a fresh context: the agent no longer remembers what it
     asked or what it provisionally wrote, and only has this block plus the
-    \\todo marker to work from. So every answer restates the question and the
-    agent's own guess — without them a bare answer like "yes, the second one"
+    todo comment to work from. So every answer restates the question and the
+    agent's own guess; without them a bare answer like "yes, the second one"
     is unusable."""
     lines = []
     for q in items:
         at = f" [{q['timestamp']}]" if q.get("timestamp") else ""
         guess = q.get("guess") or ""
         if q["kind"] == "clarify":
-            head = f"- Answer #{q['id']}{at} — transcript read \"{q['text']}\""
+            head = f"- Answer #{q['id']}{at}: transcript read \"{q['text']}\""
             head += (f"; your guess was \"{guess}\"." if guess
                      else " (you made no guess).")
         else:
-            head = f"- Answer #{q['id']}{at} — you asked: \"{q['text']}\""
+            head = f"- Answer #{q['id']}{at}: you asked: \"{q['text']}\""
             head += (f"; provisionally you used: {guess}." if guess else ".")
         lines.append(head)
 
         if q.get("deferred"):
-            lines.append("  DEFERRED by the user — keep your provisional "
-                         "version and its \\todo; a later follow-up run may "
-                         "resolve it.")
+            lines.append("  DEFERRED by the user: keep your provisional "
+                         "version and its todo comment; a later follow-up "
+                         "run may resolve it.")
         elif q["kind"] == "clarify":
             final = q["answer"] or guess
             if final == guess:
                 lines.append(f"  CONFIRMED: it reads \"{final}\". Remove the "
-                             f"matching \\todo.")
+                             f"matching todo comment.")
             else:
                 lines.append(f"  CORRECTED: it should read \"{final}\", not "
                              f"\"{guess}\". Fix the text and remove the "
-                             f"matching \\todo.")
+                             f"matching todo comment.")
         else:
             lines.append(f"  User's answer: {q['answer']}")
     return "\n".join(lines)
@@ -936,7 +941,7 @@ def build_handlers(ctx: NotesToolContext) -> dict[str, Handler]:
 
     def _marker(q: dict) -> str:
         at = f" @ {q['timestamp']}" if q.get("timestamp") else ""
-        return f"\\todo{{awaiting answer #{q['id']}{at}}}"
+        return f"<!-- todo: awaiting answer #{q['id']}{at} -->"
 
     def clarify_transcript(inp: dict) -> ToolResult:
         stamp, note = _question_time(inp)

@@ -60,18 +60,19 @@ Questions to the user (ask_user, clarify_transcript) are asynchronous: the
 tool queues the question and returns immediately, and the user answers while
 you keep working. Do not stop and wait for an answer. Adopt your best
 provisional version, mark the spot with
-\\todo{awaiting answer #N @ hh:mm:ss}, and continue. Always give the question
-a timestamp, copied from the transcript line it arose from: it is how the
-user finds the moment in the video, and a question they cannot locate is a
-question they cannot answer. Tell ask_user what your provisional choice was,
-and clarify_transcript your best guess — the answer may come back in a
-follow-up run, where you are a fresh context with no memory of either, and
-a reply of "yes, that one" is only usable if you are told what you proposed. Call get_user_answers before you finish, to incorporate answers
-that have already arrived; answers that arrive by the end of your pass are
-delivered in a follow-up turn, in which you revise the file (apply the
-answers and remove the resolved \\todo markers) rather than rewriting it.
-Questions the user has not answered (or has deferred) by then stay open —
-keep their \\todo markers; a later follow-up run resolves them."""
+<!-- todo: awaiting answer #N @ hh:mm:ss --> on its own line, and continue.
+Always give the question a timestamp, copied from the transcript line it
+arose from: it is how the user finds the moment in the recording, and a
+question they cannot locate is a question they cannot answer. Tell ask_user
+what your provisional choice was, and clarify_transcript your best guess. The
+answer may come back in a follow-up run, where you are a fresh context with
+no memory of either, and a reply of "yes, that one" is only usable if you are
+told what you proposed. Call get_user_answers before you finish, to
+incorporate answers that have already arrived; answers that arrive by the end
+of your pass are delivered in a follow-up turn, in which you revise the file
+(apply the answers and remove the resolved todo comments) rather than
+rewriting it. Questions the user has not answered (or has deferred) by then
+stay open: keep their todo comments; a later follow-up run resolves them."""
 
 RESEARCH_INSTRUCTION = """
 
@@ -161,8 +162,11 @@ def open_question_count(output_file: Path) -> int:
     return sum(1 for q in saved if is_open(q))
 
 
+_TODO_RE = re.compile(r"<!--\s*todo\b", re.IGNORECASE)
+
+
 def count_todos(text: str) -> int:
-    return len(re.findall(r"\\todo\b", text))
+    return len(_TODO_RE.findall(text))
 
 
 def collect_followup_answers(ctx: NotesToolContext, output_file: Path,
@@ -230,9 +234,9 @@ def _revision_message(items: list[dict]) -> str:
         "The user has answered your earlier questions:\n\n"
         + format_answers(items)
         + "\n\nRevise the notes file accordingly: apply the corrections, "
-          "remove the \\todo markers that are now resolved, and leave "
-          "everything else untouched. Reply with a one-line summary of what "
-          "you changed."
+          "remove the <!-- todo --> comments that are now resolved, and "
+          "leave everything else untouched. Reply with a one-line summary "
+          "of what you changed."
     )
 
 
@@ -379,8 +383,8 @@ def _write_instruction(backend: str, output_file: Path,
     if revise:
         base = (
             f"\n\n---\n**Output**: revise the existing file `{output_file}` "
-            f"in place — read it first, then apply targeted edits rather than "
-            f"rewriting the whole file, and do NOT include LaTeX in your "
+            f"in place. Read it first, then apply targeted edits rather than "
+            f"rewriting the whole file, and do NOT include the notes in your "
             f"reply text. Reply with a one-line summary of the edits."
         )
         if backend == "api":
@@ -390,13 +394,13 @@ def _write_instruction(backend: str, output_file: Path,
             return base + " Use your Read and Edit tools."
         return base
     base = (
-        f"\n\n---\n**Output**: write the final LaTeX to the file "
-        f"`{output_file}` — do NOT include the LaTeX source in your reply "
-        f"text. Build the file incrementally: work through the transcript in "
-        f"order, segment by segment (10–15 minutes of lecture at a time), "
-        f"appending each completed part before moving on — the final third "
-        f"of the lecture deserves the same detail as the first. Once the "
-        f"file is complete, reply with a one-line confirmation."
+        f"\n\n---\n**Output**: write the final Quarto Markdown to the file "
+        f"`{output_file}`. Do NOT include the notes in your reply text. "
+        f"Build the file incrementally: work through the transcript in "
+        f"order, 10 to 15 minutes of class at a time, appending each "
+        f"completed part before moving on. The final third of the class "
+        f"deserves the same detail as the first. Once the file is complete, "
+        f"reply with a one-line confirmation."
     )
     if backend == "api":
         return base + (
@@ -1023,9 +1027,9 @@ FRAME_DELEGATION_SUBSCRIPTION = """
 Frame analysis: video frames are token-expensive for you. By default, delegate
 frame reading to the 'frame-reader' subagent (via the Task tool): tell it the
 timestamp(s), what the transcript says around that moment, and what to look
-for; it will fetch and study the frames and report the board/slide contents.
-Only call get_frame yourself when the subagent's report is ambiguous,
-incomplete, or mathematically implausible and the passage is important."""
+for; it will fetch and study the frames and report what is on screen. Only
+call get_frame yourself when the subagent's report is ambiguous, incomplete,
+or implausible and the passage is important."""
 
 
 def _run_subscription(system_prompt: str, user_text: str,
