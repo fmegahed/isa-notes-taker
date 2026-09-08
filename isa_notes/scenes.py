@@ -22,7 +22,7 @@ from pathlib import Path
 
 from media import format_timestamp
 
-_PTS = re.compile(r"pts_time:\s*([0-9.]+)")
+_PTS = re.compile(r"Parsed_showinfo\S*.*?pts_time:\s*([0-9.]+)")
 
 
 def _duration(video: Path) -> float:
@@ -45,15 +45,32 @@ def _first_frame(video: Path, dest: Path) -> bool:
 
 def _cuts(video: Path, tmp_dir: Path, threshold: float) -> list[tuple[float, Path]]:
     """Run scene detection once. Returns (time, jpeg) per detected change."""
-    pattern = tmp_dir / "cut-%04d.jpg"
+    pattern = tmp_dir / "cut-%06d.jpg"
     vf = f"scale=960:-2,select=gt(scene\\,{threshold:.3f}),showinfo"
     proc = subprocess.run(
         ["ffmpeg", "-y", "-v", "info", "-i", str(video), "-vf", vf,
          "-fps_mode", "vfr", "-q:v", "3", str(pattern)],
         capture_output=True, text=True, encoding="utf-8", errors="replace")
     times = [float(m.group(1)) for m in _PTS.finditer(proc.stderr)]
-    files = sorted(tmp_dir.glob("cut-*.jpg"))
+    files = sorted(tmp_dir.glob("cut-*.jpg"),
+                    key=lambda p: int(p.stem.split("-")[1]))
     return list(zip(times, files))
+
+
+def _sample_evenly(cuts: list[tuple[float, Path]],
+                    n_keep: int) -> list[tuple[float, Path]]:
+    """Evenly spaced subsample of `cuts`, spanning the whole list, so a scan
+    that never converges under the guard still has stills past its
+    midpoint instead of only ones from the start."""
+    if n_keep <= 0:
+        return []
+    if len(cuts) <= n_keep:
+        return cuts
+    if n_keep == 1:
+        return [cuts[0]]
+    idxs = sorted({round(i * (len(cuts) - 1) / (n_keep - 1))
+                   for i in range(n_keep)})
+    return [cuts[i] for i in idxs]
 
 
 def detect(video: Path, out_dir: Path, threshold: float = 0.30,
@@ -66,28 +83,38 @@ def detect(video: Path, out_dir: Path, threshold: float = 0.30,
     tmp = out_dir / "_tmp"
     tmp.mkdir()
 
-    t = threshold
-    for attempt in range(4):
-        for f in tmp.glob("*.jpg"):
-            f.unlink()
-        cuts = _cuts(video, tmp, t)
-        if len(cuts) + 1 <= max_scenes or attempt == 3:
-            break
-        print(f"  scene detection at {t:.2f} gave {len(cuts)} changes; "
-              f"raising the threshold", flush=True)
-        t = t * 1.5 if t > 0 else 0.3
+    try:
+        t = threshold
+        for attempt in range(4):
+            for f in tmp.glob("*.jpg"):
+                f.unlink()
+            cuts = _cuts(video, tmp, t)
+            if len(cuts) + 1 <= max_scenes or attempt == 3:
+                break
+            print(f"  scene detection at {t:.2f} gave {len(cuts)} changes; "
+                  f"raising the threshold", flush=True)
+            t = t * 1.5 if t > 0 else 0.3
 
-    cuts = cuts[:max_scenes - 1]
-    duration = _duration(video)
-    starts: list[tuple[float, Path]] = []
-    first = out_dir / "scene-001.jpg"
-    if _first_frame(video, first):
+        if len(cuts) > max_scenes - 1:
+            cuts = _sample_evenly(cuts, max_scenes - 1)
+            print(f"  scene detection stayed above {max_scenes} after 4 "
+                  f"attempts; keeping an even sample of "
+                  f"{max_scenes - 1} changes", flush=True)
+
+        duration = _duration(video)
+        starts: list[tuple[float, Path]] = []
+        first = out_dir / "scene-001.jpg"
+        if not _first_frame(video, first):
+            raise SystemExit(
+                f"could not extract the first frame of {video}; is the "
+                f"file a readable video?")
         starts.append((0.0, first))
-    for n, (at, src) in enumerate(cuts, start=len(starts) + 1):
-        dest = out_dir / f"scene-{n:03d}.jpg"
-        shutil.move(str(src), dest)
-        starts.append((at, dest))
-    shutil.rmtree(tmp, ignore_errors=True)
+        for n, (at, src) in enumerate(cuts, start=len(starts) + 1):
+            dest = out_dir / f"scene-{n:03d}.jpg"
+            shutil.move(str(src), dest)
+            starts.append((at, dest))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
     result = []
     for i, (at, path) in enumerate(starts):

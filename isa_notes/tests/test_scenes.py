@@ -61,3 +61,28 @@ with tempfile.TemporaryDirectory() as d:
     assert "Scene   1: 00:00:00 to 00:00:02" in idx, idx
     assert found[0]["path"] in idx
     print("marks splice into the transcript; index lists intervals and paths")
+
+    # Truncation must sample evenly across the whole scan, not keep only
+    # the earliest cuts. cuts.mp4 above yields only 2 raw cuts at threshold
+    # 0 (flat colours score 0 between identical frames), and a gradient
+    # testsrc video's per-frame changes score below 0.3, so both converge
+    # under the guard's threshold escalation before truncation is ever
+    # reached. A video with a hard colour cut every second keeps 5 raw cuts
+    # that all score near 1.0, which survives escalation through 3
+    # attempts and forces the truncation path on the 4th.
+    flicker = d / "flicker.mp4"
+    colors = ["red", "blue", "green", "yellow", "magenta", "cyan"]
+    inputs = []
+    for c in colors:
+        inputs += ["-f", "lavfi", "-i", f"color=c={c}:s=320x240:d=1:r=10"]
+    n = len(colors)
+    filt = "".join(f"[{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=0"
+    subprocess.run(["ffmpeg", "-y", "-v", "error", *inputs,
+                     "-filter_complex", filt, "-pix_fmt", "yuv420p",
+                     str(flicker)], check=True)
+    sampled = scenes.detect(flicker, d / "sampled", threshold=0.0, max_scenes=3)
+    assert len(sampled) == 3, sampled
+    starts = [s["start"] for s in sampled]
+    assert starts == sorted(starts) and len(set(starts)) == 3, starts
+    assert abs(sampled[-1]["end"] - 6.0) < 0.3, sampled[-1]
+    print("even sample spans the whole scan instead of just the start")
