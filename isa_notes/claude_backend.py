@@ -275,7 +275,9 @@ def run_agent(
             shutil.copy2(output_file, backup)
         else:
             # Keep the previous version and let us detect the agent's write.
-            output_file.rename(backup)
+            # replace(), not rename(): on Windows rename refuses when the
+            # .bak from an earlier pass already exists.
+            output_file.replace(backup)
 
     ctx.usage = Usage()  # filled by the backend; read by callers afterwards
     resolved_model = model or {"subscription": SUBSCRIPTION_MODEL,

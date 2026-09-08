@@ -23,3 +23,17 @@ ctx_v = NT.NotesToolContext(refs_dir=HERE / "unused", video_path=Path("x.mp4"))
 assert "get_frame" in {t["name"] for t in NT.build_tools(ctx_v)}
 assert "subscription" in CB.BACKENDS
 print("vendored modules import; fetch tools removed; question and frame tools kept")
+
+# A --regen on Windows died with FileExistsError because run_agent moved
+# notes.qmd to notes.qmd.bak with rename(), which refuses to overwrite the
+# .bak an earlier verify pass had left. replace() overwrites on every platform.
+src = (HERE / "claude_backend.py").read_text(encoding="utf-8")
+assert "output_file.rename(backup)" not in src, "rename() refuses an existing .bak on Windows"
+assert "output_file.replace(backup)" in src
+import os, tempfile
+with tempfile.TemporaryDirectory() as d:
+    f, b = Path(d) / "n.qmd", Path(d) / "n.qmd.bak"
+    f.write_text("new"); b.write_text("old")
+    f.replace(b)                      # what run_agent now does
+    assert not f.exists() and b.read_text() == "new"
+print("backup move overwrites an existing .bak")
