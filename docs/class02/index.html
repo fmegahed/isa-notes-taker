@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-08-26">
+<meta name="description" content="The first third of the session finished the Class 01 deck: the analytics journey, the three shapes of data, unit of analysis, and visual encoding, including a">
+
+<title>02: Git Foundations + Reproducibility – ISA 401 Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a12129f24db7b5e8b0fdb4b6c93d7bee.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">ISA 401 Notes</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/fmegahed/isa401#schedule"> 
+<span class="menu-text">Slides and schedule</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-we-covered" id="toc-what-we-covered" class="nav-link active" data-scroll-target="#what-we-covered">What we covered</a></li>
+  <li><a href="#finishing-the-class-01-deck" id="toc-finishing-the-class-01-deck" class="nav-link" data-scroll-target="#finishing-the-class-01-deck">Finishing the Class 01 deck</a>
+  <ul class="collapse">
+  <li><a href="#encoding" id="toc-encoding" class="nav-link" data-scroll-target="#encoding">Encoding</a></li>
+  </ul></li>
+  <li><a href="#before-we-start-zoom-and-github-desktop" id="toc-before-we-start-zoom-and-github-desktop" class="nav-link" data-scroll-target="#before-we-start-zoom-and-github-desktop">Before we start: Zoom and GitHub Desktop</a></li>
+  <li><a href="#part-1-why-scripts" id="toc-part-1-why-scripts" class="nav-link" data-scroll-target="#part-1-why-scripts">Part 1: Why scripts?</a>
+  <ul class="collapse">
+  <li><a href="#spreadsheets-that-made-the-news" id="toc-spreadsheets-that-made-the-news" class="nav-link" data-scroll-target="#spreadsheets-that-made-the-news">Spreadsheets that made the news</a></li>
+  <li><a href="#the-same-chart-two-ways" id="toc-the-same-chart-two-ways" class="nav-link" data-scroll-target="#the-same-chart-two-ways">The same chart, two ways</a></li>
+  <li><a href="#code-is-just-text" id="toc-code-is-just-text" class="nav-link" data-scroll-target="#code-is-just-text">Code is just text</a></li>
+  </ul></li>
+  <li><a href="#part-2-git-github" id="toc-part-2-git-github" class="nav-link" data-scroll-target="#part-2-git-github">Part 2: Git + GitHub</a>
+  <ul class="collapse">
+  <li><a href="#why-this-is-on-the-syllabus-at-all" id="toc-why-this-is-on-the-syllabus-at-all" class="nav-link" data-scroll-target="#why-this-is-on-the-syllabus-at-all">Why this is on the syllabus at all</a></li>
+  <li><a href="#what-an-ai-agent-does-with-git" id="toc-what-an-ai-agent-does-with-git" class="nav-link" data-scroll-target="#what-an-ai-agent-does-with-git">What an AI agent does with Git</a></li>
+  <li><a href="#git-vs-github" id="toc-git-vs-github" class="nav-link" data-scroll-target="#git-vs-github">Git vs GitHub</a></li>
+  <li><a href="#the-vocabulary" id="toc-the-vocabulary" class="nav-link" data-scroll-target="#the-vocabulary">The vocabulary</a></li>
+  <li><a href="#what-you-already-did-in-assignment-0" id="toc-what-you-already-did-in-assignment-0" class="nav-link" data-scroll-target="#what-you-already-did-in-assignment-0">What you already did in Assignment 0</a></li>
+  <li><a href="#live-demo-clone-change-commit-push" id="toc-live-demo-clone-change-commit-push" class="nav-link" data-scroll-target="#live-demo-clone-change-commit-push">Live demo: clone, change, commit, push</a></li>
+  <li><a href="#the-vocabulary-again-one-step-at-a-time" id="toc-the-vocabulary-again-one-step-at-a-time" class="nav-link" data-scroll-target="#the-vocabulary-again-one-step-at-a-time">The vocabulary again, one step at a time</a></li>
+  <li><a href="#publishing-a-career-portfolio-with-chatisa" id="toc-publishing-a-career-portfolio-with-chatisa" class="nav-link" data-scroll-target="#publishing-a-career-portfolio-with-chatisa">Publishing a career portfolio with ChatISA</a></li>
+  <li><a href="#text-files-vs-binary-files" id="toc-text-files-vs-binary-files" class="nav-link" data-scroll-target="#text-files-vs-binary-files">Text files vs binary files</a></li>
+  <li><a href="#undo-and-revert" id="toc-undo-and-revert" class="nav-link" data-scroll-target="#undo-and-revert">Undo and revert</a></li>
+  </ul></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping up</a></li>
+  <li><a href="#questions-from-class" id="toc-questions-from-class" class="nav-link" data-scroll-target="#questions-from-class">Questions from class</a></li>
+  <li><a href="#loose-ends" id="toc-loose-ends" class="nav-link" data-scroll-target="#loose-ends">Loose ends</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">02: Git Foundations + Reproducibility</h1>
+<p class="subtitle lead">ISA 401: Business Intelligence &amp; Data Visualization</p>
+</div>
+
+<div>
+  <div class="description">
+    The first third of the session finished the Class 01 deck: the analytics journey, the three shapes of data, unit of analysis, and visual encoding, including a
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 26, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://fmegahed.github.io/isa401/fall2026/class02/02_git_foundations.html">Slides</a> | <a href="index.pdf">PDF</a></p>
+<p>The recording is on Canvas. Timestamps before each paragraph are hh:mm:ss into the recording; drag the player there to hear the passage.</p>
+<section id="what-we-covered" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-covered">What we covered</h2>
+<p>The first third of the session finished the Class 01 deck: the analytics journey, the three shapes of data, unit of analysis, and visual encoding, including a live Excel detour into why 3D bar charts mislead. The rest was setup and Git. Everyone installed GitHub Desktop, signed in, and configured Git, and then we cloned a repository, edited a file, committed, pushed, pulled, and reverted. We finished by generating a career portfolio site with the ChatISA portfolio builder, which is the starting point for Assignment 02.</p>
+<p>Today’s objectives, from the deck:</p>
+<ul>
+<li><strong>Explain</strong> why scripted languages enable <strong>reproducible analysis</strong>.</li>
+<li><strong>Initialize and use Git</strong> for version control.</li>
+</ul>
+</section>
+<section id="finishing-the-class-01-deck" class="level2">
+<h2 class="anchored" data-anchor-id="finishing-the-class-01-deck">Finishing the Class 01 deck</h2>
+<p><span class="ts">00:00:06</span> We picked up where Class 01 stopped. The plan for the day: go back and close out the previous deck, then move to the basics of scripting in R and to Git and GitHub.</p>
+<p><span class="ts">00:00:54</span> The recap started with the analytics journey and its four steps. <strong>Pre-analytics</strong> is where you get data from different sources, internal or external to the organization, and put it either into a database or into some local storage you can then access and analyze. <strong>Descriptive</strong> analytics is where you try to understand patterns in the data, and you go about it by plotting and by computing mathematical summaries; the two complement each other. <strong>Predictive</strong> modeling, which we do not do in this class, tells you what would happen in the future through statistical modeling or machine learning. <strong>Prescriptive</strong> modeling comes after: if you have a model that predicts, with some reasonable error, how stocks will behave over the next year, you still need to know how to invest your money and manage your portfolio, and that is what prescriptive modeling lets you decide.</p>
+<p><span class="ts">00:02:48</span> Then the three shapes of data, using the ISA Job Scout data that had about 1,400 jobs in it at the time. To do business intelligence well, in many cases you want your end product to be structured data that you can visualize in Tableau or Power BI. Looking at one job ad, the blurb is <strong>unstructured</strong>: the responsibilities are listed in bullet points, the salary range might or might not be there, the location might or might not be explicit. Think of it as something you would have in a Google Doc, just a wall of text. When you pull that text programmatically, and especially when you connect to an API, you typically get it back as <strong>semi-structured</strong> data: JSON or XML. If a job lists a skill ten times, you then have to make a deliberate decision about how to encode it back into your database. Do you want a long data set with a job ID and a skill, so that ten skills means ten rows? Do you want it wide? Do you want to separate the skills with a comma? That is what semi-structured means: there is some structure in it, but there is still keying to be done before it goes into a CSV file or a database. Once you have a data table in a database, or data laid out properly in an Excel file, that is <strong>structured</strong>.</p>
+<p><span class="ts">00:05:39</span> The crash data set was the example for unit of analysis: what does a row of data mean? There a row corresponded to a person involved in a crash, which is not necessarily the level you want to analyze at. Usually you would roll it up to the crash and ask how many crashes happened in a given day or a given week. For those of you who have had ISA 345, this is the same idea as asking what the key is for that data set; here it is the instance ID.</p>
+<p><span class="ts">00:06:31</span> A navigation tip for the slides: pressing <code>O</code> gives you an overview of the whole deck.</p>
+<section id="encoding" class="level3">
+<h3 class="anchored" data-anchor-id="encoding">Encoding</h3>
+<p><span class="ts">00:06:57</span> Encoding is a fancy way of asking how we take the values in a data set and represent them in a chart. On the cholera slide, showing deaths in London in the 1850s, the unit of analysis is a person who died. If you imagine that data in an Excel file you would probably say two or three variables: something identifying the person, maybe a name, maybe an identifier, maybe just a record number, and then the latitude and longitude of the house. The map uses those coordinates as the x and y position to plot each house, and each person is drawn as a circle. On a map you are always using x and y position to capture the thing you are interested in, whether that is a county’s boundary lines, a country, or, as here, a symbol for a person who lived at that address.</p>
+<p><span class="ts">00:09:03</span> The Top Skills chart from the dashboard got the same treatment. The total length of the bar is the sum of the required and preferred counts for that skill. The y-axis position captures the skill, and note that it is not alphabetical: it is in descending order of the total number of jobs that listed the skill either as required or as preferred. In Excel that data set would be three columns: the skill, the count of jobs that listed it as preferred, and the count of jobs that listed it as required, and the visualization software adds them to get the full bar. Color is a third encoding channel here, splitting the two kinds: dark red for required, the lighter red for preferred.</p>
+<p><span class="ts">00:11:07</span> The last Class 01 example was the “What If a Typical Family Spent Money Like the Federal Government?” infographic. Asked what data is in it, the answer is a categorical variable for the category of government spending and a numeric variable for the dollar amount being spent or owed. Fadel noted that data in this course will come from many places, sometimes from popular media, and that there is no political agenda behind it.</p>
+<p><span class="ts">00:11:59</span> There are, however, two data-visualization agendas that are not hidden: do not make 3D charts, and do not make pie charts. The infographic is the example for the first. Its encodings are the x-axis position for the categorical spending variable, with median income first, then the government’s equivalent figure, and so on across the chart, and the height of the stack of $100 bills for the numeric variable.</p>
+<!-- todo: awaiting answer #1 @ 00:11:59 - the second "agenda" is garbled in the transcript ("is find this"); I wrote "pie charts". Please confirm. -->
+<p><span class="ts">00:13:11</span> The chart was praised before it was criticized. It is memorable: you would still recall it six weeks later. It does a genuinely good job of explaining government debt to a layperson, with no business class required. “I don’t really understand trillions of dollars. My brain doesn’t really capture that.” Rescaled to an average family, it says the government spends about 20% more than it makes every year, which is the difference going onto a credit card, and carries a debt several times its annual income. As data storytelling, an amazing job.</p>
+<p><span class="ts">00:14:48</span> The trade-off got a live demonstration in Excel. In a blank workbook we typed four categories with the values 10, 4, 8, 16, and inserted a 3D bar chart. The perspective in a 3D bar chart is always the same: the 10 clearly appears to be less than 10, the 4 less than 4, the 8 less than 8, and the 16 less than 16. The purpose of making a chart is to let people get insights quicker, so a chart that systematically reads low is a deceptive chart. Then the same data, in the same software, as a plain 2D bar chart: much clearer. Nothing about the software changed.</p>
+<p><span class="ts">00:16:20</span> Back on the infographic, the same distortion is at work. If the numbers were not printed on it and you were asked how much larger the tall stack is than the short one, most of the room would guess ten times or more. The reason is what you can actually see. On the tall stack you clearly see the front, the sides, and a little of the top, three dimensions. On the short stacks you get much less of that, so you read only two. Your perception is skewed by how many faces of the stack you were shown, and that is not data.</p>
+<p><span class="ts">00:17:32</span> The Class 01 recap slide closed the loop on terminology. <strong>Unit of analysis:</strong> in the crash data, the rows did not correspond to crashes. <strong>Counts versus rates:</strong> we do not know the denominator, so we cannot say anything about safety, and you always need to think about how the data was generated. <strong>Visual encoding:</strong> literally how each variable in your data set is represented in the chart. You will also hear the phrase <em>encoding channel</em>: the x position, the y position, the length of a bar, the height of a bar, color. Those are the channels we use to represent a variable on a 2D screen.</p>
+</section>
+</section>
+<section id="before-we-start-zoom-and-github-desktop" class="level2">
+<h2 class="anchored" data-anchor-id="before-we-start-zoom-and-github-desktop">Before we start: Zoom and GitHub Desktop</h2>
+<p><span class="ts">00:19:01</span> Since this was only the second time on the lab computers, the opening slide set two tasks (or four, depending on how you count). Zoom is installed on the lab machines but not connected to your account, and there is now a Zoom link for the class in the Week 0 module on Canvas. Log in to Zoom from the lab machine so that when you hit an error you have the option to share your screen. It is more useful for the whole class to see what happened than for Fadel to go and talk to three different people about the same error, and it is also a chance to see how we approach errors.</p>
+<p><span class="ts">00:19:56</span> Second, type “GitHub Desktop” into the Windows search bar and run the installer; it takes about a minute and opens by itself. Pinning it to the taskbar is a good idea, since we will be using it often. Then sign in to github.com with the account you made in Assignment 0.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="crops/crop-001.jpg" class="img-fluid figure-img"></p>
+<figcaption>The GitHub Desktop welcome screen. Signing in opens your browser, you authorize the app there, and it hands you back to Desktop.</figcaption>
+</figure>
+</div>
+<p><span class="ts">00:21:00</span> The browser opens an “Authorize GitHub Desktop” page; pick your account and click Continue. Hopefully you know your username and password.</p>
+<p><span class="ts">00:21:21</span> GitHub Desktop then asks which account name and email address to use, so that commits can be tracked back to you. Keep the name and email you use on GitHub, then click Finish.</p>
+<p><span class="ts">00:21:40</span> That is three steps in GitHub Desktop: install it, sign in, and configure Git. On top of that, log in to Zoom. The room got a couple of minutes on the timer, with the standing instruction to ask a neighbor, ask Fadel, or share a screen on Zoom.</p>
+<p><span class="ts">00:24:09</span> The only snag in the room was a forgotten GitHub password, which means waiting; there is not much that can be done about it in class.</p>
+<p><span class="ts">00:24:35</span> Fadel had not done Assignment 0, so a repository was made live on github.com just to have something to follow along with. When you made yours, you should have added the README. A license is optional; Fadel typically uses the MIT license. This one was named <code>isa401a</code>, because everything for the course goes under ISA 401.</p>
+</section>
+<section id="part-1-why-scripts" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-why-scripts">Part 1: Why scripts?</h2>
+<p><span class="ts">00:25:34</span> The framing first: the goal is not to transform you into a software developer. It is that many jobs now want version control, and Git is the most common way to do it. Ten years ago there was Git and SVN. Right now most people use Git; they might not use GitHub, they might use something else, but Git is the underlying technology people use.</p>
+<!-- todo: awaiting answer #2 @ 00:25:47 - transcript has "GET and SPM"; I wrote "Git and SVN". Please confirm. -->
+<p><span class="ts">00:26:09</span> Four things for the day. First, be able to say why we use R. Fadel is not anti-Excel, and what you learned in Excel is very valuable, but Excel has some issues that today highlights, and the point of the tools in the analytics curriculum, whether R or Python, is to make reusable analysis easier. Second, R basics and setup: there is a significant amount of setup today, and that is a sunk cost that lets us work more efficiently later. Part of that cost is already paid, since you now have GitHub Desktop on your laptop or your lab computer, so whenever we produce something you have artifacts you can show. Third, version control on that work, so that if you break something you can go back to a previous version. Fourth, setting RStudio up so that Fadel’s file paths and your file paths match, and code that runs on one machine runs on yours after you download it from Canvas and put it in the right place.</p>
+<section id="spreadsheets-that-made-the-news" class="level3">
+<h3 class="anchored" data-anchor-id="spreadsheets-that-made-the-news">Spreadsheets that made the news</h3>
+<p><span class="ts">00:27:49</span> The question behind this part is why we bother with programming languages that you write in scripts, meaning R and Python, rather than things you run in a GUI, meaning JMP or Excel.</p>
+<p><span class="ts">00:28:15</span> If you look at the news at any point in time there are always miserable examples where Excel failures led to significant issues. In 2012, JP Morgan lost about $6 billion because something was copied and pasted incorrectly. During COVID, England missed somewhere around 15,000 to 16,000 people: the data arrived as CSV files, was pasted into Excel in the old <code>.xls</code> format, and that format caps out at close to 65,000 rows, 65,536 being the exact number. They went over it, so the last roughly 16,000 cases were not saved. More recently a county in California got payments to school districts wrong because the file was shifted by one row and nobody could see it. Fadel did not go into more detail than that; the news sources are linked on the slide so you can read them yourself.</p>
+<p><span class="ts">00:29:35</span> There is also a research paper from a couple of years ago reporting that about 94% of the business spreadsheets audited contained errors. The conclusion is not that Excel is a bad tool. It is that mistakes are common in Excel and that Excel is a really hard tool for figuring out what you actually did. With a scripted language you can just read what it did, and that makes your life easier.</p>
+</section>
+<section id="the-same-chart-two-ways" class="level3">
+<h3 class="anchored" data-anchor-id="the-same-chart-two-ways">The same chart, two ways</h3>
+<p><span class="ts">00:30:08</span> The comparison on the slide is the crashes-by-weekday chart from Class 01, built twice from the same CSV. In Excel it is about six steps, with the corresponding output. In R it is the block below. The beauty of it, for anyone with a terrible memory: if you did it in Excel you can do it, but explaining four weeks later what you did is a much higher lift, because you have to go back and look at every single function. Here the code itself is not the point; the fact that you can read it is.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-2" class="code-annotation-target"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a>crashes <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"data/cincy_2025_crashes.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-4" class="code-annotation-target"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">datetime =</span> lubridate<span class="sc">::</span><span class="fu">ymd_hms</span>(crashdate),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-1-5" class="code-annotation-target"><a href="#annotated-cell-1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">weekday  =</span> lubridate<span class="sc">::</span><span class="fu">wday</span>(datetime, <span class="at">label =</span> <span class="cn">TRUE</span>)</span>
+<span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-1-7" class="code-annotation-target"><a href="#annotated-cell-1-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(instanceid, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span>
+<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-hidden="true" tabindex="-1"></a>crashes <span class="sc">|&gt;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-1-10" class="code-annotation-target"><a href="#annotated-cell-1-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(<span class="at">group =</span> weekday) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-1-11"><a href="#annotated-cell-1-11" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(</span>
+<span id="annotated-cell-1-12"><a href="#annotated-cell-1-12" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> forcats<span class="sc">::</span><span class="fu">fct_rev</span>(group))</span>
+<span id="annotated-cell-1-13"><a href="#annotated-cell-1-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="6" onclick="event.preventDefault();">6</a><span id="annotated-cell-1-14" class="code-annotation-target"><a href="#annotated-cell-1-14" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#C3142D"</span>) <span class="sc">+</span></span>
+<span id="annotated-cell-1-15"><a href="#annotated-cell-1-15" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Crashes"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="annotated-cell-1-16"><a href="#annotated-cell-1-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">"Cincinnati crashes in 2025"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="2" data-code-annotation="1">Read the data in.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="4" data-code-annotation="2">Turn the crash date into a datetime in R.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="5" data-code-annotation="3">Extract the weekday from that datetime.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="7" data-code-annotation="4">Keep the unique values of <code>instanceid</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="10" data-code-annotation="5">Count.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="14" data-code-annotation="6">Plot.</span>
+</dd>
+</dl>
+<p><span class="ts">00:31:44</span> If you wanted the same chart for 2026 only, or for everything up to yesterday, all you change is the input. In Excel you would redo everything you had done, or write a macro and copy the macro over, and that is not as friendly as R or Python.</p>
+<p><span class="ts">00:32:22</span> The deck shows this by switching a panel. Only one line changes, the highlighted one: instead of grouping by weekday, group by month, and you get a different chart.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>crashes <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(<span class="at">group =</span> month) <span class="sc">|&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> forcats<span class="sc">::</span><span class="fu">fct_rev</span>(group))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#C3142D"</span>) <span class="sc">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_text</span>(</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">label =</span> scales<span class="sc">::</span><span class="fu">comma</span>(n)),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.15</span>, <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_x_continuous</span>(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> ggplot2<span class="sc">::</span><span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.18</span>))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Crashes"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">"Cincinnati crashes in 2025"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="ts">00:32:39</span> That is the motivation: can I reuse what I have done for another question? It applies to any scripted language, R or Python, take your pick.</p>
+</section>
+<section id="code-is-just-text" class="level3">
+<h3 class="anchored" data-anchor-id="code-is-just-text">Code is just text</h3>
+<p><span class="ts">00:33:03</span> The other thing that is nice about a scripted language is that it is really just text. You can copy and paste the code that is provided. It is text you can read, and it is much easier to read than what we do in Excel. R and Python are open source, so people develop things and package them, and the amount of material out there is enormous, which also means the AI tools have a really good understanding of these languages: every piece of documentation, every package, every function, and a lot of examples online give them context for what you have done. You can reuse it, as the month-versus-weekday switch showed. And part of today’s conversation is that you can look at the difference between one version and the next.</p>
+</section>
+</section>
+<section id="part-2-git-github" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-git-github">Part 2: Git + GitHub</h2>
+<section id="why-this-is-on-the-syllabus-at-all" class="level3">
+<h3 class="anchored" data-anchor-id="why-this-is-on-the-syllabus-at-all">Why this is on the syllabus at all</h3>
+<p><span class="ts">00:34:25</span> In roughly 15 years of teaching, Fadel tries to keep what is taught tied to how the job market is actually reacting, and to use what people are asking for right now rather than what students who graduated six years ago report. The ISA Job Scout data is where that check comes from.</p>
+<p><span class="ts">00:34:50</span> The Job Scout data was refreshed with Sunday’s postings, so it now holds about 1,900 jobs, up from the 1,400 used in Class 01. About 8% of all postings mention something about version control, which is obviously not a huge portion. But among postings that are technical, the ones asking for Python or R, it is about 22%, so roughly 3.5 to 3.75 times more common in a technical job than in a non-technical one. In analytics and data engineering roles, where you are building the data pipelines and pulling data from different sources, the chart’s third bar is higher still, at 38%.</p>
+<p><span class="ts">00:35:42</span> Those jobs typically pay a little bit more than the less technical ones. The comparison is not against consultants. It is “do some analysis in Excel and be a business analyst” against being a data scientist, a data engineer, or an applied AI scientist.</p>
+<p><span class="ts">00:36:03</span> The table under the chart lists four current postings that ask for both R and version control, in different domains: consulting at CapTech, data engineering at Booz Allen Hamilton, data science at the U.S. Soccer Federation, and a product data scientist role at Apple. All of them were posted within the last few weeks, and all of it comes from the internal ChatISA data.</p>
+<p><span class="ts">00:36:32</span> The first row, Apple, was opened live. It asks for about three years of experience, so it is probably better suited to the MSBA students, but the description is the point: the responsibilities include organizing code in GitHub, knowing SQL, knowing Tableau, and manipulating data in either Python or R.</p>
+<p><span class="ts">00:37:22</span> Apple, Fadel believes, always posts pay. It is California, so money there is not the same as in other places, but from a pay perspective it is still interesting.</p>
+</section>
+<section id="what-an-ai-agent-does-with-git" class="level3">
+<h3 class="anchored" data-anchor-id="what-an-ai-agent-does-with-git">What an AI agent does with Git</h3>
+<p><span class="ts">00:37:38</span> If you use any AI at all, the agents in the back end are doing the things we are about to name. Codex creates a separate copy of what you are working on and then asks you to merge it. The Copilot agent inside GitHub, which you can also run locally, goes through the same process. Reading the animation on the slide: the things in gray are things you created, where a commit is a snapshot, something you store to say “I want to keep a version of my folder or of my code as of this time”. The agent then makes its own copy, which is the branch in red, so it can track what you have against what it did and the two are easy to compare. Then it asks you to review, and if you are happy with it, it pushes back to your main branch.</p>
+<p><span class="ts">00:39:04</span> Fadel’s position on why this belongs in the course: it is part of your education not just to be told here is how you prompt, but to understand what is happening in the back end. If you end up using something like Codex or Claude Code, or you have your own side projects you like to play with, telling them to initialize that folder as a Git repository will get you a long way, because if the tool messes things up you can go back and revert instead of spending a lot of tokens recreating what you had three hours ago.</p>
+</section>
+<section id="git-vs-github" class="level3">
+<h3 class="anchored" data-anchor-id="git-vs-github">Git vs GitHub</h3>
+<p><span class="ts">00:39:44</span> <strong>Git</strong> does not require an internet connection once you have downloaded it onto your computer. Its purpose is that, for a specific folder you are working on, from here on the word is <em>repo</em> rather than folder, you get snapshots that track what you are doing across the files in it. Those can be CSV files, R files, Python files, text files, Markdown files. All of these flat file types are ones Git does an amazing job of tracking. It gives you snapshots, and you can go back and revert; if you made a mistake, you can get back to a working state quite quickly.</p>
+<p><span class="ts">00:40:34</span> <strong>GitHub</strong> is a technology built on top of Git that gives you cloud access to the same thing. Think of it as Google Drive for Git. There are other online providers that let you take what you have done locally in Git and push it somewhere online, Bitbucket and GitLab among them, and some of the LLM providers, Hugging Face for instance, also let you push to them with Git. GitHub itself is just a website that lets you do this. Microsoft bought it for a few billion dollars back in 2018, and the latest statistics put it at about 180 million users.</p>
+<!-- todo: awaiting answer #3 @ 00:40:56 - the alternative hosts are garbled in the transcript ("in bots" / "GetLab"); I wrote Bitbucket and GitLab. Please confirm. -->
+<p><span class="ts">00:41:41</span> Assignment 0 asked you to make a <code>business_intelligence</code> folder. The intent is that you have a folder that showcases what you have learned in this class to employers. Even if you have already accepted a job, two or three years down the line you may decide you want a different one, and it is much harder to show skills you worked on inside a company than skills you worked on in a class, because none of the class work is proprietary. Fadel will not force you to put it on your resume, and has no control over that anyway, but having something like it on a resume opens more doors. Whether you want a technical job or not does not really matter; you can at least tell them you can do the technical work and then say what kind of role you want.</p>
+</section>
+<section id="the-vocabulary" class="level3">
+<h3 class="anchored" data-anchor-id="the-vocabulary">The vocabulary</h3>
+<p><span class="ts">00:42:52</span> Six keywords, walked through in order. A <strong>repo</strong> is a fancy way of saying the folder you are backing up. Before <strong>commit</strong> you will hear people say <strong>stage</strong>, which says “I want to track these specific files within this folder”; in GitHub Desktop that is essentially done for you by default. A <strong>commit</strong> then says: I have done some stuff, it is 9:13:27, and I want a history, a snapshot, a saved version of what I just did up till now, so that I can go back to it.</p>
+<p><span class="ts">00:43:48</span> The analogy for a commit is Google Docs version history. If you are writing a document with a co-author, before handing it off you might open the history and name the version: this is what I did, I wrote the introduction, call it draft 1. Then your co-author works on it, cuts a paragraph from the introduction, and renames their snapshot to say draft 1.1 of the introduction, removed the last paragraph. That is the idea behind committing. You have these snapshots, and you can go back and say you want the version from before someone else worked on it.</p>
+<p><span class="ts">00:45:09</span> So the commit message matters. When you go back and look at what changed over two or three weeks of work, you want to be able to understand what each saved snapshot means. In GitHub Desktop, put something descriptive in the commit summary: what you changed, and maybe why.</p>
+<p><span class="ts">00:45:33</span> <strong>Push</strong> takes the snapshot you just created and sends it to GitHub, or whatever online cloud server you are using. <strong>Pull</strong> is the other direction: it brings the latest version of the repo from the online cloud down to your computer. That is what lets you work from more than one machine, say your M drive in the lab and your personal computer, without copying and pasting between applications.</p>
+<p><span class="ts">00:46:42</span> A strong recommendation, especially if you are working alone: always pull before you start working on a different computer, so that what you have is in sync and you do not create problems for yourself.</p>
+<p><span class="ts">00:46:56</span> A <strong>branch</strong> is what an agent like Codex does, and it is also what you do professionally. Take someone working on a codebase with ten million lines of code. They make a change and they do not want to push it straight to the deployed version; they want it reviewed by somebody else who can test it before it goes out. So they create their own branch, their own copy of the code, make the change there, and someone else looks at the difference between what is in that branch and what is in the main one. It might be one line of code, and the reviewer can say that line is fine, so it gets merged back into the main repository.</p>
+<p><span class="ts">00:48:01</span> A <strong>pull request</strong> is a fancy way of saying “please merge my branch, and here is what I have done”. It is a description of what makes the branch different from the last snapshot, and it lets you have a back-and-forth conversation with whoever you are working with until you are both happy. If there are no conflicts, you merge. <strong>Merge</strong> is just accepting it into main.</p>
+<p><span class="ts">00:48:31</span> We practiced the first three or four of those today.</p>
+</section>
+<section id="what-you-already-did-in-assignment-0" class="level3">
+<h3 class="anchored" data-anchor-id="what-you-already-did-in-assignment-0">What you already did in Assignment 0</h3>
+<p><span class="ts">00:48:39</span> In Assignment 0 you created the repository, named it <code>business_intelligence</code>, and made it public so Fadel can see it. All of you did that on github.com. You did not start from your local computer; you started from GitHub’s servers, now owned by Microsoft, to create that folder.</p>
+<p><span class="ts">00:49:28</span> Then you added the README to say what you are doing in the course, and you committed it. So you probably have two commits on that repository: an initial commit from creating it, and one for the README.</p>
+<p><span class="ts">00:49:47</span> Bringing that folder down onto your computer, with its history attached, is called <strong>cloning</strong>. You clone once, and you get the folder plus the Git history synced to your machine.</p>
+<p><span class="ts">00:50:18</span> The slide carries a written description of each step. You do not have to follow it, since Fadel walks through it live, but it is there if you want the extra context when you come back to it.</p>
+</section>
+<section id="live-demo-clone-change-commit-push" class="level3">
+<h3 class="anchored" data-anchor-id="live-demo-clone-change-commit-push">Live demo: clone, change, commit, push</h3>
+<p><span class="ts">00:50:38</span> The repository we cloned was <code>isa401a</code>, the one created a couple of minutes before class, rather than <code>business_intelligence</code>. On github.com the address is the username, <code>fmegahed</code>, and then the repository name. Copy that.</p>
+<p><span class="ts">00:51:04</span> In GitHub Desktop, the File menu offers three ways to put a repository in front of you, and it is worth knowing which is which. <strong>New repository</strong> means create a new repository, that is, make a new folder on your computer. <strong>Add local repository</strong> is for something you already have on your computer that is already Git-backed, already initialized, with some version control already done on it. What we want is <strong>Clone repository</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="crops/crop-002.jpg" class="img-fluid figure-img"></p>
+<figcaption>GitHub Desktop’s File menu: New repository, Add local repository, Clone repository.</figcaption>
+</figure>
+</div>
+<p><span class="ts">00:51:40</span> Typing the repository name into the GitHub.com tab of the Clone dialog did not find it, so we switched to the <strong>URL</strong> tab and pasted the whole address in there instead.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="crops/crop-003.jpg" class="img-fluid figure-img"></p>
+<figcaption>The Clone a repository dialog, on the URL tab. The Local path field is what you change next.</figcaption>
+</figure>
+</div>
+<p><span class="ts">00:52:06</span> For the local path, the assumption is that you want this on your M drive, so that you can also reach it if you are on the VM. Choose a different path, navigate to the M drive, and click Select Folder. There was no <code>isa401a</code> folder on the M drive yet, so cloning creates one. When it lands, that folder should have the LICENSE file, <code>README.md</code>, and the Git tracking piece as well. Clicking Clone downloads the folder with its history from Microsoft’s servers to the M drive.</p>
+<p><span class="ts">00:53:42</span> Now we are inside the repository, with its history. The initial commit is there, showing the two files that were pushed. The color coding at the file level is the thing to learn here: <strong>green</strong> means a new file that did not exist before, <strong>red</strong> means a file you deleted, and mustard yellow or orange means you edited an existing file. For files that are text-like, meaning R files, Python files, RMD files, Python notebooks, CSV files, Markdown files and the like, you can also track line by line what changed. Since these files never existed before, every line in them counts as an addition: the diff for that commit reads +23 across the two files, with nothing removed.</p>
+<p><span class="ts">00:54:39</span> Change something later and you get to compare it against the previous version, so you can see visually what was there before and what is there now. On the computer, the folder now holds the LICENSE and the README, with the Git history embedded in it.</p>
+<p><span class="ts">00:55:22</span> Then we made a change to the README so the process is visible end to end. It was opened in Notepad, though R would have been fine too, and a small <strong>Tools</strong> section was added listing Git, GitHub and R, then saved.</p>
+<p><span class="ts">00:56:12</span> Back in GitHub Desktop the file now shows orange: something changed here. Notepad does weird things with the line breaks, which is why the diff looked odd. Fadel prefers Sublime as a text editor.</p>
+<p><span class="ts">00:56:41</span> The commit summary said, in plain words, that the tools we are using in class had been added. If you are working with somebody else and you know their GitHub handle, you can add it to the commit so that two people are credited for the change.</p>
+<p><span class="ts">00:57:17</span> Clicking Commit created a second snapshot of the repository, and that second snapshot lives locally. It is not yet on GitHub, it is just in the local folder. In the history, the first commit included two files; the second is orange, meaning the README was modified. Push is what takes those changes and puts them on github.com.</p>
+<p><span class="ts">00:57:59</span> Refreshing github.com shows two commits, the latest within the last minute. It also showed that the Markdown had not rendered the way it was meant to: the two hash signs did not come out as a heading, and Notepad had left a stray backslash and some extra spaces in the file. Rather than a failure, this was treated as a good experience, since it is the kind of thing you fix as you go.</p>
+<p><span class="ts">00:58:28</span> The fix was done on github.com itself: click edit, delete the backslash and the extra spaces, and use the preview to check that it looks better. GitHub’s editor proposes a commit message with AI; Fadel replaced it with one saying the extra spaces were removed and the Tools line was made render as a section header. If you are working in the web interface on github.com, committing commits and pushes automatically.</p>
+<p><span class="ts">00:59:36</span> Back in GitHub Desktop, <strong>Fetch</strong> compares what you have locally with what is online. It showed that the web edit was not in the local history yet. <strong>Pull</strong> then brings it from GitHub down to the computer, and the history now carries all three changes. You can see the file was edited, though the diff for the whitespace change is not easy to read, since the spaces get a little weird.</p>
+</section>
+<section id="the-vocabulary-again-one-step-at-a-time" class="level3">
+<h3 class="anchored" data-anchor-id="the-vocabulary-again-one-step-at-a-time">The vocabulary again, one step at a time</h3>
+<p><span class="ts">01:01:32</span> Prompted by a question from the room, the whole thing was replayed slowly. First, the Markdown: two hash signs mean a second-level header, which had not been mentioned before. The bullets were written as dashes, and asterisks would have worked too. Then the file was saved, and GitHub Desktop reported that something had changed.</p>
+<p><span class="ts">01:01:59</span> For the demonstration a line for RStudio was added to the README, and Desktop reported exactly that: you added RStudio to this file. Committing turns that into a snapshot with a message naming what was added. It is as if you went into a Google Doc and said you want to track the change to the README where the RStudio line went in.</p>
+<p><span class="ts">01:02:38</span> That is also where <strong>staging</strong> shows up. In GitHub Desktop it happens by default: any file you change gets a tick next to it, and the tick means capture the changes in that specific file. If you made two different changes and want to commit each of them separately, you can untick one of the files, commit the first, then commit the second.</p>
+<p><span class="ts">01:03:18</span> And then <strong>push</strong>, made concrete. Even after committing on the computer, the README on github.com still did not show RStudio. Pushing says: take the version of the file I have now, the one I saved and snapshotted, and make sure it goes to github.com. It takes the current change with its history and sends it to the online server. Refresh github.com afterwards and RStudio is there.</p>
+</section>
+<section id="publishing-a-career-portfolio-with-chatisa" class="level3">
+<h3 class="anchored" data-anchor-id="publishing-a-career-portfolio-with-chatisa">Publishing a career portfolio with ChatISA</h3>
+<p><span class="ts">01:04:16</span> The last live piece was for fun, and is also part of the next assignment: build a career portfolio quickly, so that you have something to bring to the career fair, which the room worked out was about ten days away. At a minimum you have all had ISA 104, so there is one course where you coded something; some of you used R in 225 and some did not.</p>
+<p><span class="ts">01:04:43</span> The builder is the Career portfolio option at <code>chatisa.fsb.miamioh.edu/portfolio</code>. It starts by asking for your resume, which you might have to dig out of your email. Fadel thinks it has to be a PDF, but was not certain of that on the spot.</p>
+<p><span class="ts">01:05:39</span> From the resume it passes the text to an LLM to extract useful things: your education, your major. “I probably should have extracted your GPA.” Then you pick which courses you have had, ISA 125, 225, 235, 345 for sure, and 401 that you are in now, which is the minimum, and you can add others if you want.</p>
+<p><span class="ts">01:06:15</span> Next you add project examples. Fadel already had one in the browser’s history from demoing this in ISA 381 on Monday. Asked what their end project in ISA 104 was, a student pointed out that they had not taken 104, so the question was rephrased for the room: do you have any class where you used code to build something? If so, upload it here. You can add files without even giving them a title. Showcase your code, not necessarily the data, since the data may be a privacy issue.</p>
+<p><span class="ts">01:07:39</span> You can also add a picture. Fadel would not, and the reason is privacy: be careful about putting your resume online, because if you publish it, your phone number and your address go online with it. That is why the builder reads the resume to work out who you are but does not necessarily publish it. By default it protects you: if you upload a file called resume, it does not get uploaded, and if you upload a data file, by default that does not get uploaded either.</p>
+<p><span class="ts">01:08:21</span> Then <strong>Generate my site</strong>. Fadel had never run it on an account that already had a portfolio, so an error was possible, but in your case it will work because you do not have a portfolio folder yet. Before you push it, you get the chance to edit the text, and the headline was changed on the spot to show that. The result is an HTML file with a link to the project, skills extracted from the project, a history taken from the CV, and, correctly in this case, the two universities on it.</p>
+<p><span class="ts">01:09:28</span> The GitHub step: Fadel’s account already said connected, from the 381 demo. In your case it will say you need to connect, and you just need to be signed in to GitHub on that computer. If you are signed in on Chrome and you are using Chrome, that process should work.</p>
+<p><span class="ts">01:09:54</span> Naming the repository is where it got interesting. Trying to reuse an existing repository name first produced a connection error, fixed by disconnecting and connecting again, and then the builder said the repository already exists and refused to overwrite it, asking for a different name, which became “Portfolio 2”. Publishing then reported that the site is live, and it takes a couple of minutes to render.</p>
+<p><span class="ts">01:11:06</span> Looking at what was published: everything is in that one HTML file, and it is not pretty. It was written out as essentially one long line. Untangling it is the first thing Assignment 02 asks for, and Fadel will show you how to untangle it in R so you can copy and paste what was done. The HTML itself does not matter at all here; do not go adding colors or anything fancy. The point is that you are happy with the order of the sections and that the generated text says what you want it to say.</p>
+<p><span class="ts">01:11:49</span> There are fancy WYSIWYG editors that show your HTML rendered next to the source. This is not an HTML class, so it does not matter: open the file in Notepad, in R, in whatever you like, and make the changes there. Fadel suggested R.</p>
+<p><span class="ts">01:12:08</span> Then commit. “I don’t really care at all about the HTML, I care about the English.” Assignment 02 is really a plain English assignment that shows you can clone this to where you want it, make changes, and commit, and it asks for at least three commits: one that changes how the file is rendered, so it is pretty-printed across multiple lines instead of one; one that changes the text; and one that moves a section, since you probably do not want your education all the way at the bottom, or your skills as the second section. Fadel was upfront that not a lot of thought went into the generated ordering.</p>
+<p><span class="ts">01:14:11</span> The wider point behind all of it: this class always wants you to have something to showcase what you have done. “This is something I’m going to try to do, and if I move away from that in the middle of semester, keep me honest.”</p>
+</section>
+<section id="text-files-vs-binary-files" class="level3">
+<h3 class="anchored" data-anchor-id="text-files-vs-binary-files">Text files vs binary files</h3>
+<p><span class="ts">01:14:24</span> This slide was deliberately skipped over quickly. The one thing to take from it is that Git does not do an amazing job with binary files: PDFs, images, Word documents, PowerPoints, Excel files. It can tell you that the file changed, but it cannot show you line by line what changed inside it. For a CSV, an HTML file, an R file, a Python file and so on, it can: on the slide’s example, a weather code of 99 becomes a 1, shown as a deleted line and an added line, and then a new row is added below.</p>
+<p><span class="ts">01:15:20</span> Again, the purpose is not to make you a developer. It is to let you see the changes you made over the history of a project in a much deeper way, instead of what Fadel did as a PhD student, naming files version 1, version 1.1, version 1.2, version 7, final version, third final version.</p>
+</section>
+<section id="undo-and-revert" class="level3">
+<h3 class="anchored" data-anchor-id="undo-and-revert">Undo and revert</h3>
+<p><span class="ts">01:15:50</span> The last thing demonstrated was getting out of trouble. If you decide you did not want the RStudio line after all, right-click the commit in <strong>History</strong> and choose <strong>Revert changes in commit</strong>. That does not delete the fact that the commit happened; it takes the files back to the state they were in before it, which here means the RStudio line comes out. You then have a new change sitting there, and you can push it if that is what you want.</p>
+<p><span class="ts">01:16:38</span> Or you can decide it was fine after all and <strong>undo</strong> the commit instead, and, if you want, discard the change permanently from the right-click menu. Nothing was lost either way: the history still shows the RStudio commit. So you have a process for both outcomes, whether you want to keep the change or take it back.</p>
+</section>
+</section>
+<section id="wrapping-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrapping-up">Wrapping up</h2>
+<p><span class="ts">01:17:46</span> With three minutes left, the deadlines for Assignments 02 and 03 were pushed to Wednesday, so that nobody has to rush. Note that this supersedes the Monday date mentioned earlier in the session; check Canvas for the exact time.</p>
+<p><span class="ts">01:17:46</span> Next class is R projects in RStudio, because that is what gives everyone the same file paths. Within your <code>business_intelligence</code> folder there will be a specific set of folders to create, so that code written on one machine runs on another. If you have struggled with file paths in other courses, this is what avoids that.</p>
+<p><span class="ts">01:18:14</span> And a note for anyone who has not had Fadel before: “I absolutely don’t care which slide I end with. And I absolutely love having questions from y’all.” If you did not understand why something was done, ask for it a different way. Sharing your screen is genuinely wanted, not a way of putting you on the spot, because that is how we learn to debug and fix things.</p>
+</section>
+<section id="questions-from-class" class="level2">
+<h2 class="anchored" data-anchor-id="questions-from-class">Questions from class</h2>
+<p><span class="ts">01:00:56</span> A student asked about the README edits and said the push step was not clear. The answer went one step at a time. In Markdown, two hash signs make a second-level header, which had not been explained; the bullets were written with dashes, and asterisks would work too. Then, using a new RStudio line as the example: saving the file makes GitHub Desktop notice a change; ticking the file is the staging step, and it happens by default; committing records a snapshot with a message, but that snapshot lives only on your computer, which is why github.com still showed the old README; pushing is the step that sends it to github.com. After the push, refreshing the page showed the RStudio line.</p>
+</section>
+<section id="loose-ends" class="level2">
+<h2 class="anchored" data-anchor-id="loose-ends">Loose ends</h2>
+<!-- todo: awaiting answer #1 @ 00:11:59 - the second "not hidden agenda" is garbled ("is find this"); I wrote "pie charts". -->
+<!-- todo: awaiting answer #2 @ 00:25:47 - "GET and SPM"; I wrote "Git and SVN". -->
+<!-- todo: awaiting answer #3 @ 00:40:56 - alternative Git hosts garbled ("in bots" / "GetLab"); I wrote Bitbucket and GitLab. -->
+<!-- todo: next class was promised to cover R projects in RStudio and the exact folder structure to create inside business_intelligence (01:17:52). Confirm that lands in the Class 03 notes. -->
+<!-- todo: the two Mentimeter polls in the deck (the "which Git verbs did ChatISA run" poll after the portfolio slide, and the "Before You Go" poll) do not appear in the recording. Confirm they were skipped for time so the notes do not need to cover them. -->
+<!-- todo: the browser address bar during class read .../class02/02_r_foundations.html, but the link at the top of this page is 02_git_foundations.html (frames around 00:19:20). Check which URL is the published one. -->
+<!-- todo: at 00:53:42 the spoken line count for the initial commit ("21 new lines") is the LICENSE file's length; the diff header on screen reads +23 for the whole commit. The notes now state what was on screen. -->
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

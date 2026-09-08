@@ -163,7 +163,20 @@ with tempfile.TemporaryDirectory() as d:
         if pdf_path.exists():
             t7 = (notes_site / "class07" / "index.qmd").read_text(encoding="utf-8")
             assert "[PDF](index.pdf)" in t7, t7
+            assert (notes_site / "class07" / "index.pdf").exists(), \
+                "the PDF must be kept beside the source page"
             print("stage_publish rendered a PDF and linked it from the page")
+
+            # -- another class's publish must not drop class 7's PDF: the
+            # project render prunes what it did not produce, so the PDF has
+            # to come back in as a declared resource every time -----------
+            out8, src8 = make_session(d, 8, "Spatial Data",
+                                      "We covered maps and joins.")
+            S.stage_publish(out8, src8, S.parse_args(["sessions/class08", "--publish"]))
+            assert pdf_path.exists(), "class 7's PDF vanished after class 8's publish"
+            t7_keep = (notes_site / "class07" / "index.qmd").read_text(encoding="utf-8")
+            assert "[PDF](index.pdf)" in t7_keep
+            print("a later publish keeps every earlier class's PDF")
 
             # -- a later failed typst render must remove the stale PDF and
             # the now-dangling link, not leave the old one reachable ------

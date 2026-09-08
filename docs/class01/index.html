@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-08-24">
+<meta name="description" content="First class of the semester. Fadel laid out how the course runs, then used two real datasets, a year of Cincinnati traffic crashes and a harvest of analytics">
+
+<title>01: Introduction to BI and Data Viz – ISA 401 Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a12129f24db7b5e8b0fdb4b6c93d7bee.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">ISA 401 Notes</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/fmegahed/isa401#schedule"> 
+<span class="menu-text">Slides and schedule</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-we-covered" id="toc-what-we-covered" class="nav-link active" data-scroll-target="#what-we-covered">What we covered</a></li>
+  <li><a href="#part-1-how-this-class-runs" id="toc-part-1-how-this-class-runs" class="nav-link" data-scroll-target="#part-1-how-this-class-runs">Part 1: How this class runs</a></li>
+  <li><a href="#part-2-chatisa-and-the-ai-comparison" id="toc-part-2-chatisa-and-the-ai-comparison" class="nav-link" data-scroll-target="#part-2-chatisa-and-the-ai-comparison">Part 2: ChatISA and the AI comparison</a>
+  <ul class="collapse">
+  <li><a href="#the-activity-claude-opus-5-vs-gpt-5.6-sol" id="toc-the-activity-claude-opus-5-vs-gpt-5.6-sol" class="nav-link" data-scroll-target="#the-activity-claude-opus-5-vs-gpt-5.6-sol">The activity: Claude Opus 5 vs GPT-5.6 Sol</a></li>
+  </ul></li>
+  <li><a href="#part-3-the-analytics-journey" id="toc-part-3-the-analytics-journey" class="nav-link" data-scroll-target="#part-3-the-analytics-journey">Part 3: The analytics journey</a>
+  <ul class="collapse">
+  <li><a href="#pre-analytics-the-cincinnati-crash-data" id="toc-pre-analytics-the-cincinnati-crash-data" class="nav-link" data-scroll-target="#pre-analytics-the-cincinnati-crash-data">Pre-analytics: the Cincinnati crash data</a></li>
+  <li><a href="#counts-are-not-rates" id="toc-counts-are-not-rates" class="nav-link" data-scroll-target="#counts-are-not-rates">Counts are not rates</a></li>
+  <li><a href="#pre-analytics-as-a-stage" id="toc-pre-analytics-as-a-stage" class="nav-link" data-scroll-target="#pre-analytics-as-a-stage">Pre-analytics as a stage</a></li>
+  <li><a href="#descriptive-what-the-data-says" id="toc-descriptive-what-the-data-says" class="nav-link" data-scroll-target="#descriptive-what-the-data-says">Descriptive: what the data says</a></li>
+  <li><a href="#predictive-and-prescriptive" id="toc-predictive-and-prescriptive" class="nav-link" data-scroll-target="#predictive-and-prescriptive">Predictive and prescriptive</a></li>
+  <li><a href="#where-the-isa-curriculum-fits" id="toc-where-the-isa-curriculum-fits" class="nav-link" data-scroll-target="#where-the-isa-curriculum-fits">Where the ISA curriculum fits</a></li>
+  </ul></li>
+  <li><a href="#part-4-business-intelligence-from-data-to-decisions" id="toc-part-4-business-intelligence-from-data-to-decisions" class="nav-link" data-scroll-target="#part-4-business-intelligence-from-data-to-decisions">Part 4: Business intelligence, from data to decisions</a>
+  <ul class="collapse">
+  <li><a href="#the-job-market-explorer" id="toc-the-job-market-explorer" class="nav-link" data-scroll-target="#the-job-market-explorer">The Job Market Explorer</a></li>
+  <li><a href="#what-the-class-asked-of-the-dashboard" id="toc-what-the-class-asked-of-the-dashboard" class="nav-link" data-scroll-target="#what-the-class-asked-of-the-dashboard">What the class asked of the dashboard</a></li>
+  <li><a href="#one-job-ad-three-shapes" id="toc-one-job-ad-three-shapes" class="nav-link" data-scroll-target="#one-job-ad-three-shapes">One job ad, three shapes</a></li>
+  </ul></li>
+  <li><a href="#part-5-so-what-is-data-visualization" id="toc-part-5-so-what-is-data-visualization" class="nav-link" data-scroll-target="#part-5-so-what-is-data-visualization">Part 5: So what is data visualization?</a>
+  <ul class="collapse">
+  <li><a href="#the-1854-cholera-map" id="toc-the-1854-cholera-map" class="nav-link" data-scroll-target="#the-1854-cholera-map">The 1854 cholera map</a></li>
+  <li><a href="#critiquing-the-top-skills-chart" id="toc-critiquing-the-top-skills-chart" class="nav-link" data-scroll-target="#critiquing-the-top-skills-chart">Critiquing the Top Skills chart</a></li>
+  </ul></li>
+  <li><a href="#recap-and-what-comes-next" id="toc-recap-and-what-comes-next" class="nav-link" data-scroll-target="#recap-and-what-comes-next">Recap and what comes next</a></li>
+  <li><a href="#questions-from-class" id="toc-questions-from-class" class="nav-link" data-scroll-target="#questions-from-class">Questions from class</a></li>
+  <li><a href="#loose-ends" id="toc-loose-ends" class="nav-link" data-scroll-target="#loose-ends">Loose ends</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">01: Introduction to BI and Data Viz</h1>
+<p class="subtitle lead">ISA 401: Business Intelligence &amp; Data Visualization</p>
+</div>
+
+<div>
+  <div class="description">
+    First class of the semester. Fadel laid out how the course runs, then used two real datasets, a year of Cincinnati traffic crashes and a harvest of analytics
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 24, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://fmegahed.github.io/isa401/fall2026/class01/01_introduction.html">Slides</a> | <a href="index.pdf">PDF</a></p>
+<p>The recording is on Canvas. Timestamps before each paragraph are hh:mm:ss into the recording; drag the player there to hear the passage.</p>
+<section id="what-we-covered" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-covered">What we covered</h2>
+<p>First class of the semester. Fadel laid out how the course runs, then used two real datasets, a year of Cincinnati traffic crashes and a harvest of analytics job postings, to walk through the analytics journey and the three shapes data comes in. Two ideas ran through the whole session: know your unit of analysis, and do not state a conclusion your data cannot support. The learning objectives on Slide 2:</p>
+<ul>
+<li>Describe the <strong>analytics journey</strong> and the role of <strong>business intelligence (BI)</strong> within it.</li>
+<li>Differentiate between <strong>structured</strong>, <strong>semi-structured</strong>, and <strong>unstructured</strong> data.</li>
+<li>Map <strong>real-world data sources</strong> to appropriate <strong>data types</strong>.</li>
+</ul>
+</section>
+<section id="part-1-how-this-class-runs" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-how-this-class-runs">Part 1: How this class runs</h2>
+<p><span class="ts">00:00:19</span> The class is about turning data into decisions, on the premise that every company today is a data company and a technology company. It is divided into three phases. The first is getting, reading and understanding data from different data sources, and it is the most coding-oriented phase. Fadel said the choice of language does not matter much, R or Python, but historically this class has used R for that first portion. The second phase is visualization, itself split in two: the mechanical side, using about four different pieces of software so you leave with some experience in more than one tool, and then the part Fadel called the more important one, visualizing data the right way. That means how people perceive data, and making sure a reader does not take the wrong insight away from a chart because of how you presented it. The last part, roughly two to four classes depending on the schedule, uses data mining techniques not to predict but to organize and categorize data and explore it.</p>
+<p><span class="ts">00:02:49</span> There is no final exam. The course ends with a group project, two or three people, where you do everything the semester covered: pull data from different sources, integrate them, ask interesting questions of them, and answer them. It is deliberately open-ended, which is the part students both hate and love. Fadel does not hand you a dataset. You find something you care about, and the bar for insight is real: analyzing basketball data to conclude that LeBron James was one of the best players of the last decade does not clear it. Reaching a real insight usually means merging more than one data source.</p>
+<!-- todo: awaiting answer #1 @ 00:03:43 - "better than an OU student could give" and "that's not illegal" are both garbled; I paraphrased around them -->
+<p><span class="ts">00:04:09</span> Every class is recorded. Fadel expects you in the room and knows 8:30 on a Monday is hard, but records so you can go back over material, or catch up after an interview or an illness. You do not have to explain an absence, though you are welcome to. For the coding sessions you are asked to log in to Zoom on your own computer, so that when you hit an error you can share your screen and the class can work through it together. The reasoning: you are probably not the only person with that error, and even people who did not hit it learn something for next time.</p>
+<p><span class="ts">00:04:58</span> On AI, Fadel was direct about being unusual here. AI use is not prohibited on any assignment or exam. On the second exam every question will be one that has been put to an AI model, with the model’s answer supplied, and your job is to say whether it is right, wrong, or partly right, and if partly, which part. The framing was: you are paying a great deal for this education, so tell me. The concern is not use but over-reliance. If you delegate your thinking and your agency to a tool, the question becomes why anyone should hire you.</p>
+<p><span class="ts">00:06:31</span> Canvas is organized in modules by week, nothing fancier, and the course home page links straight to them. Week 1 is live; later weeks open as they are released. Recordings go up sometime around one o’clock after class, from one of the two sections, and in classes where code is typed the code file goes up too. There will not be a syllabus day.</p>
+<p><span class="ts">00:07:14</span> Office hours are one to three on Mondays and Wednesdays; Fadel looked them up on Canvas under Pages and thought they were probably in the course guide too. Rather than have you queue in the hallway, which Fadel called a complete waste of your time, you book a 15-minute slot through the scheduling link. Book back-to-back slots if you need longer. The point is that the 15 or 30 minutes is fully yours rather than split across four or five students at once. Booking closes about two hours ahead, so a one o’clock meeting has to be booked by about eleven. If the week is full, email and it will get worked out. Fadel is in Oxford three days a week, so a Tuesday or Thursday meeting will probably be suggested as a Zoom unless you would rather come to the office.</p>
+<p><span class="ts">00:09:25</span> The slides are HTML rather than PDF. If you take notes on a tablet, Ctrl-P and save as PDF works. The HTML form is what lets the slides be interactive and walked through in class. The decks themselves are written in R Markdown, if you want to look at the back end.</p>
+<p><span class="ts">00:10:12</span> The stated goal for today, beyond the three formal objectives, was to give you a feel for how the class runs and why it matters. Whatever you end up doing, you will be looking at dashboards, building dashboards, making visualizations, or interpreting them. Fadel’s aside: it is relevant even for fantasy football.</p>
+<p><span class="ts">00:10:59</span> Alongside the analytics journey, today also gave a 10,000-foot view of why the ISA curriculum is built the way it is. On data types, the point of departure is that courses like ISA 125, 225 and 345 mostly work with data that is already tidy, sitting in a database table or a CSV, ready to analyze. That is a common source but not the only one. A manufacturer like GE Aerospace also holds warranty complaints and maintenance reports from clients, and the question of how those relate to process quality, and how to use them to improve production, is a real one. In marketing, a preliminary market analysis mixes numbers with text you have to digest. Part of today is mapping those sources onto data types.</p>
+<!-- todo: awaiting answer #2 @ 00:11:42 - transcript has "water complaints"; I wrote "warranty complaints" -->
+</section>
+<section id="part-2-chatisa-and-the-ai-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-chatisa-and-the-ai-comparison">Part 2: ChatISA and the AI comparison</h2>
+<p><span class="ts">00:12:31</span> Slide 3 lays out ChatISA, the tool Fadel has developed and maintained since August 2023 for ISA students. The slide as shown was slightly behind: another module was added the week before class. It is not ChatGPT and not Claude; it is access to 17 or 18 different large language models, some open-weight and some commercial, paid for through the department so you are not paying twenty dollars for Claude, another twenty for ChatGPT and ten for GitHub Copilot. You are free to pay for your own tools; this is there so you do not have to. Some assignments will nudge you toward specific modules: an online portfolio you can share with employers, or Job Scout for jobs that may not appear on Handshake. Fadel does not track who uses it.</p>
+<p><span class="ts">00:13:49</span> The modules that will come up during the semester are the Coding Tutor, the Coding Studio, and, today, Job Scout. Job Scout connects to two different APIs and pulls jobs, focused mainly on ISA-type roles. If you are a double major you will not find much finance or supply chain, though some postings share keywords with analytics and IS jobs. From there you can have AI tailor a resume or cover letter to a posting.</p>
+<p><span class="ts">00:14:26</span> The word of caution at the bottom of Slide 3 got its own emphasis. AI tools give you the right answer for 90 to 95% of applications. The problem is the other 5 or 10%, where the wrong answer still looks convincing. It usually does not come back as an error; it comes back as something plausible. That is why your own understanding has to be good: you do not have to be a software developer to do interesting things, you have to understand the business, but when the tool makes a wrong assumption you need to be able to spot it.</p>
+<section id="the-activity-claude-opus-5-vs-gpt-5.6-sol" class="level3">
+<h3 class="anchored" data-anchor-id="the-activity-claude-opus-5-vs-gpt-5.6-sol">The activity: Claude Opus 5 vs GPT-5.6 Sol</h3>
+<p><span class="ts">00:15:48</span> The first activity, on Slide 5, is a head-to-head comparison. Go to <a href="https://chatisa.fsb.miamioh.edu" class="uri">https://chatisa.fsb.miamioh.edu</a> and sign in with your Miami account. The login is gated to <code>@miamioh.edu</code> accounts so the API credits being paid for go to Miami students. Sessions do not carry across machines, so signing in on your laptop does not bring over what you did on another computer.</p>
+<p><span class="ts">00:16:39</span> From there, open the <strong>AI Comparison</strong> module, at the end of the module list. Pick two models: Claude Opus 5, which is the second-highest Claude model available in ChatISA, and GPT-5.6 Sol, the highest OpenAI model available in ChatISA and the highest OpenAI offers publicly. Ask both the same single question from the slide:</p>
+<blockquote class="blockquote">
+<p>I am taking a business intelligence (BI) course. Give me a short definition of business intelligence. Create a flowchart that captures this process.</p>
+</blockquote>
+<p><span class="ts">00:17:21</span> The module is built so you can compare either blind, if you want to know whether you like a model you have not used before without knowing which it is, or with a model you already use as the baseline, to decide whether the twenty dollars a month you are spending is still worth it. Click Compare and both answers stream in. In class the differences were in speed, in how each laid the answer out, and in how each rendered its flowchart. The flowcharts come back as Mermaid, so you can copy the block into an online Mermaid renderer to see the diagram drawn.</p>
+<p><span class="ts">00:18:53</span> Then the class voted on the Class Poll tab, at menti.com with code 1781 1839: which model’s output did you prefer? The result was close. The poll showed percentages only, 53% for Claude Opus 5 against 47% for OpenAI’s GPT-5.6 Sol, and Fadel read that out loud as maybe 18 people, roughly nine to eight, and made the point that there is not a lot of difference in performance between the two. What does differ is cost. From Miami’s point of view, the model that Fadel described as cheaper to run than Opus is worth noting when you are choosing which to use.</p>
+<!-- todo: awaiting answer #7 @ 00:18:53 - menti code: spoken as 1781 1839, but the poll embed on screen looks like 1791 1839; keeping the spoken version for now -->
+<!-- todo: 00:20:15 - Fadel says "this is a cheaper model to run than Opus" without naming which; I read it as GPT-5.6 Sol. Please confirm. -->
+<p><span class="ts">00:21:01</span> The Notes tab on that slide is an editable panel, and most activity slides have one. You can type into it during class. It saves to your browser’s local storage, so it persists between sessions on the same machine but does not follow you to a different computer. Ctrl-R clears it.</p>
+<!-- todo: 00:21:23 - Fadel said Ctrl-R clears the saved notes, described as "kind of like cookies attached to this page". Worth confirming that's a reload-clears-it behavior and not a separate reset. -->
+</section>
+</section>
+<section id="part-3-the-analytics-journey" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-the-analytics-journey">Part 3: The analytics journey</h2>
+<section id="pre-analytics-the-cincinnati-crash-data" class="level3">
+<h3 class="anchored" data-anchor-id="pre-analytics-the-cincinnati-crash-data">Pre-analytics: the Cincinnati crash data</h3>
+<p><span class="ts">00:21:37</span> Cincinnati publishes a lot of city data, including traffic crash reports. Fadel took an extract of the last full year available, 2025, and posted it on Canvas under the Week 1 module. Slide 7 links both the source page on the Cincinnati open data portal, which carries the metadata describing what each field is, and the Canvas download of the extract.</p>
+<p><span class="ts">00:22:16</span> The activity: shake hands, fist bump, whatever you like, introduce yourself to the person next to you, and work through four questions together. How many crashes are in the dataset? How many variables? What dates does it cover, minimum and maximum? Which day of the week appears most, and what does that mean from a driving-safety perspective? Eight minutes on the clock, roughly six to work and two to discuss. Method was left entirely open: Excel, R, ChatISA, whatever you like. Type your answer into the Your Solution panel on the slide.</p>
+<p><span class="ts">00:25:31</span> A practical note: on Mac laptops the downloaded CSV opens in Numbers by default. Right-click and Open With gets you into Excel. Fadel did not change the default application so that the other section would see the same behavior.</p>
+<p><span class="ts">00:28:51</span> On the debrief, the count of variables came back as 13, one per column. The date range is January 1 2025 to December 31 2025, which is the full year Fadel had said the extract covered. As it turns out there was a crash on the first day of the year and one on the last, so both endpoints are real.</p>
+<p><span class="ts">00:29:50</span> The crash count question is where the class slowed down. A student gave 14,962. Fadel did not commit to an exact figure in the moment, and the reason matters more than the number: <strong>every row of this dataset is not a crash</strong>.</p>
+<p><span class="ts">00:30:55</span> This is the term to write down and expect all semester: the <strong>unit of analysis</strong>. In plain English, what does one row mean, and is that what you want? Here, scrolling into the file, three consecutive rows share the same <code>instanceid</code> and the same crash date. What changes between them are the person columns.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="crops/crop-001.jpg" class="img-fluid figure-img"></p>
+<figcaption>Three rows of the crash CSV sharing one instanceid, differing only in the person fields</figcaption>
+</figure>
+</div>
+<p><span class="ts">00:31:47</span> Reading those rows, this is a two-car crash. One car had a driver and an occupant, the other a single driver, and the file reports injury severity for each of the three people involved: a 47-year-old female driver, a female occupant of the same age riding with her, and a 60-year-old male driver. So the unit of analysis is a person involved in a crash, not a crash. Whatever tool you use, Power BI, R, Python, Excel, counting crashes means counting <strong>unique <code>instanceid</code> values</strong>.</p>
+<p><span class="ts">00:33:05</span> The same logic applies to the day-of-week question, and Fadel was open about having asked it loosely. If the question is about crashes, you first reduce the data to one row per <code>instanceid</code>, keeping roughly the first few columns, and then count days. That is the more appropriate route. As best Fadel recalled, the answer comes out the same either way: Friday.</p>
+</section>
+<section id="counts-are-not-rates" class="level3">
+<h3 class="anchored" data-anchor-id="counts-are-not-rates">Counts are not rates</h3>
+<p><span class="ts">00:34:02</span> Then the harder question: so what? If Friday is the day with the most crashes, and you are reporting that, what exactly do you write? A student offered that, statistically, more people get in accidents on a Friday than any other day of the week. Fadel’s response was that this is technically not wrong, and that is precisely the trap. As a headline it leaves the reader with the wrong impression. Put it in a report, let an agency pick it up, and it becomes “people drive badly on Fridays, take care.”</p>
+<p><span class="ts">00:34:36</span> The sharper version of the question is: is it more dangerous to drive on a Friday than on another day? And how would you answer that, if money were no object? The answer is rates, not counts. You need a denominator: how many cars were on the road on Fridays, and what fraction of them were in a crash. Suppose a million cars are out on an average Friday and 500,000 on an average Monday, and Friday’s crash count is only 1.2 times Monday’s rather than double. Then, given that you are already driving, your chance of being in a crash is higher on Monday.</p>
+<p><span class="ts">00:37:19</span> Fadel was careful to say this is not a claim that Friday is safe. We simply cannot assess it from this data, because we do not have the denominator. Traffic studies usually do not use the number of cars either; they use vehicle miles travelled, because someone driving 100 miles has more exposure than someone driving one mile. Normalizing by miles driven gives the better model.</p>
+<p><span class="ts">00:38:03</span> Two takeaways from the exercise, and Fadel named them as the main ones: know what your unit of analysis is, and when you make a statement, be precise enough that you are not implying something the data does not support. This is the business-logic layer underneath all the mechanical work the course does, and the piece not to lose. It is also why the datasets in this course will be real rather than canned.</p>
+</section>
+<section id="pre-analytics-as-a-stage" class="level3">
+<h3 class="anchored" data-anchor-id="pre-analytics-as-a-stage">Pre-analytics as a stage</h3>
+<p><span class="ts">00:38:36</span> Fadel frames the analytics journey in four steps. The first, casually called pre-analytics, is the process of getting data; in industry it is often the data engineering job. You pull from multiple sources and put the result in a shape people can consume. Slide 8 makes the same point with the contrast between canned data, the <code>iris</code> and <code>mtcars</code> of the world, which is stale but convenient, and fresh data from places like the Cincinnati or Ohio open data portals, which is interesting and messy. Real data brings real problems: the unit of analysis is not what you assumed, so you preprocess; the data is not clean, so you clean it.</p>
+</section>
+<section id="descriptive-what-the-data-says" class="level3">
+<h3 class="anchored" data-anchor-id="descriptive-what-the-data-says">Descriptive: what the data says</h3>
+<p><span class="ts">00:39:37</span> Slide 9 shows the counts once the data is reduced to unique crashes. By day of week, Friday is highest at 2,380, though not by much against Wednesday at 2,327 and Thursday at 2,285, with Monday at 2,020 and Tuesday at 2,241; Saturday at 1,866 and Sunday at 1,664 are the light days. Fadel contrasted this with the counts on the full person-level data, where the Friday total is several thousand higher.</p>
+<!-- todo: 00:39:37 - Fadel says the Friday count on the un-deduplicated data was "close to 5,400... 4,900 and something"; ASR is unclear on which. I left the figure out. -->
+<p><span class="ts">00:40:06</span> The weather table on the same slide makes the denominator point a second time and more cleanly. Clear weather accounts for far more crashes than any other condition, 10,437 of them, against 1,991 cloudy, 1,661 rain, 476 snow, and single digits for sleet, hail, freezing rain and severe crosswinds. Sleet or freezing rain is probably more dangerous to drive in, and more slippery. It produces almost no crashes because almost nobody is out in it. Same lesson: the count is telling you about exposure, not about risk.</p>
+<p><span class="ts">00:40:36</span> Descriptive analytics is where this course lives. It is the same statistical summarizing you did in ISA 225, plus the ability to carry that summary in a visual language instead. Slide 10 is a bar chart of the same day-of-week counts. Could it have been a different chart? Yes. Fadel also made a deliberate decision <strong>not</strong> to sort the bars in descending order by count, because in this case a reader reads Monday, Tuesday, Wednesday more naturally and can compare up and down the list from there. The claim was not that this is the perfect choice; the claim is that it should be a choice. Not something you kept because Tableau or Power BI handed it to you that way, or because ChatGPT or Gemini returned that chart. You can ask for it to be changed.</p>
+<p><span class="ts">00:41:52</span> Slide 11 puts the whole year on a calendar, one cell per day, darker for more crashes. The weekday pattern from the bar chart shows up again as visibly lighter Saturday and Sunday columns. Fadel also picked out a cluster in late October, around Halloween, with more people involved in crashes, and said plainly that the reason was not known. The daily range runs from the lightest days, which Fadel put at fewer than 15 or 20 crashes, up to about 90 on the darkest; the legend on the slide is labelled 30, 50, 70, 90, so the lightest cells sit below its lowest tick.</p>
+</section>
+<section id="predictive-and-prescriptive" class="level3">
+<h3 class="anchored" data-anchor-id="predictive-and-prescriptive">Predictive and prescriptive</h3>
+<p><span class="ts">00:42:57</span> The third step is predictive analytics, which asks what will happen. Do the patterns from 2023, 2024 and 2025 carry into 2026? The curriculum answers that with statistical models, machine learning models, and forecasting models. The caveat Fadel attached: junk in, junk out. Everything you did in the data management and exploration stages, making sure you have the right data, making sure you are not making inferences about people involved in crashes when the question was about crashes, propagates forward into the model.</p>
+<p><span class="ts">00:43:46</span> The fourth step is prescriptive analytics, which asks what we should do about it. If you are the Cincinnati Police Department: more traffic stops, more enforcement of the speed limits, more checks for impaired driving. You have limited resources, so you do not apply the same effort everywhere. Perhaps four patrol cars on a Monday and five on a Friday. The point is turning the model into an allocation that reduces the chance of a crash.</p>
+<!-- todo: awaiting answer #4 @ 00:44:07 - transcript has "potential thefts of wrong driving"; I wrote "checks for impaired driving" -->
+</section>
+<section id="where-the-isa-curriculum-fits" class="level3">
+<h3 class="anchored" data-anchor-id="where-the-isa-curriculum-fits">Where the ISA curriculum fits</h3>
+<p><span class="ts">00:44:46</span> Slide 13 is Fadel’s own mapping of the ISA courses onto those four stages. <strong>ISA 345</strong> is the main data management course, covering databases, database design, schema types, and extracting information from them; it is a prerequisite for this class. <strong>ISA 401 and ISA 414</strong> both spend time getting data out of other sources, APIs and web scraping, but for different ends: 414 goes on to analyze that text with natural language processing, while here the goal is to get the data into a form you can hand to a dashboard, and to build your own dataset. On the descriptive side, <strong>ISA 225</strong> is the statistical treatment and <strong>ISA 401</strong> is the visualization one, including interactive visualizations and dashboards. <strong>ISA 391</strong> uses statistics to explain what happened in the past. <strong>ISA 491</strong> is the machine learning and data mining course, the one that answers a question like: given a Friday in the mid-70s with the Reds in town and nice weather, how many crashes should I expect? <strong>ISA 444</strong> is the trends-over-time course, where time itself is part of the fit; Fadel’s made-up example was Cincinnati’s population rising 15% over a decade and whether crashes rose proportionally. On the prescriptive side, <strong>ISA 321</strong> is mathematical modeling and optimization, allocating a limited budget across choices you have predictions for, whether that is stocks or a fantasy football roster. <strong>ISA 365</strong> is experimental design, the course that lets you answer whether changing the color of Amazon’s purchase button actually did anything, through A/B testing.</p>
+</section>
+</section>
+<section id="part-4-business-intelligence-from-data-to-decisions" class="level2">
+<h2 class="anchored" data-anchor-id="part-4-business-intelligence-from-data-to-decisions">Part 4: Business intelligence, from data to decisions</h2>
+<p><span class="ts">00:47:43</span> Business intelligence and data visualization are the two terms in the course name. Fadel’s working definition of the first is the process of going from data, to information, to knowledge, to decisions. Slide 15 gives the textbook version, from Sharda, Delen and Turban: interactive access to data, sometimes in real time, the ability to manipulate it and run appropriate analysis, and the transformation of data into information, then decisions, then actions. The image on that slide is a stock market prediction tool built with Bin Weng.</p>
+<p><span class="ts">00:48:41</span> Slide 16 is the process diagram, and Fadel’s gloss was that you should not picture one person at a computer. You have data sources that need organizing and a standardized way of capturing them. That goes into a database or a data warehouse. On top of the warehouse you build interfaces, dashboards in Power BI or whatever tool you like, so that managers and decision makers can generate insights without writing code. Those dashboards can be retrospective, aggregating last month or last quarter, or they can be real-time.</p>
+<p><span class="ts">00:49:35</span> Which one you build depends on the decision being supported. Data for a staffing or configuration decision looks quite different from data for a strategic choice about where to put the next warehouse. The aggregation is different and the unit of analysis is different. That is the thing to stay aware of.</p>
+<section id="the-job-market-explorer" class="level3">
+<h3 class="anchored" data-anchor-id="the-job-market-explorer">The Job Market Explorer</h3>
+<p><span class="ts">00:50:05</span> Slide 17 embeds a dashboard Fadel built from the Job Scout side of ChatISA. Job Scout harvests new postings every Sunday; this extract is the one from the Sunday before the previous one, retrieved August 16 2026 per the slide’s footnote, and holds 1,437 postings from the ActiveJobs and USAJobs APIs. Moving your cursor over the dashboard reads out the counts. Because postings expire, there is a posting-status filter, and with it set to Still Active the dashboard shows 781 of the 1,437.</p>
+<!-- todo: awaiting answer #6 @ 00:50:13 - transcript says "the Sunday the 4th"; the slide footnote says retrieved August 16, 2026 -->
+<p><span class="ts">00:50:55</span> The activity on Slide 18 gives you a few minutes to explore the dashboard, start in the Job Explorer tab and find one posting you would actually apply to, internships count, and then answer two Mentimeter questions. What is one question you would want this dashboard to answer to help you make a career decision? And what is one question you would ask about the data itself before trusting the answer? Fadel thought the full dashboard had also been posted to Canvas but was not certain, and the standalone full-page version is linked from the slide either way.</p>
+<p><span class="ts">00:51:36</span> The framing is the same one the crash data got. Having data does not mean you can do everything with it, and noticing where it runs out is what tells you which other source you need to bring in.</p>
+<p><span class="ts">00:52:12</span> Alongside the dashboard, Fadel walked through building a profile in Job Scout itself. You tick the ISA courses you have taken or are taking, grouped by level, and the skills panel on the right fills in as you go: each skill is marked Strong or Working and lists the courses it came from. The assumption for a 400-level class is that you have had ISA 125, 225 and probably 345, with 391 less certain. Then save. Without saving, nothing sticks.</p>
+<p><span class="ts">00:53:09</span> With courses saved you get a list of matching jobs. Fadel was frank that the ordering is not good yet: postings where you match more skills can end up below ones where you match fewer. You can filter full-time against internships. The postings are real, so clicking one takes you to the actual ad, and some have already expired and come back as no longer available. Fadel noted that a still-available filter would be a sensible thing to add.</p>
+<!-- todo: 00:54:01 - Fadel says "maybe eventually I should put a filter here, whether it's still available or not". Flagging in case that ships before students read this. -->
+<p><span class="ts">00:58:06</span> A student asked mid-activity how to get back to the page where you enter your classes. The path: ChatISA, then Job Scout, then My Profile, then tick the courses and save. Unticking a course removes it again.</p>
+<p><span class="ts">00:58:50</span> You can also add skills by hand rather than only inheriting them from courses. Fadel’s examples: mark a strong foundation in probability if you have one. Communication in particular is not captured explicitly from any course, but as an FSB student you have done a lot of presentations and some technical writing, and as a Miami student at a liberal-arts-style school problem solving and communication are probably things you are already strong in. Put them in yourself.</p>
+</section>
+<section id="what-the-class-asked-of-the-dashboard" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-class-asked-of-the-dashboard">What the class asked of the dashboard</h3>
+<p><span class="ts">00:59:56</span> The responses that came back clustered on two things: expected salary for a position, and how to close a gap when a posting wants a skill you do not have. On the second, Fadel said there is an idea already: since each course has skills attached to it, the tool could run that mapping backwards and tell you which two courses would build your machine learning or AI skills. On salary, that is genuinely not in the data, and the rest of the class was built on that gap.</p>
+<p><span class="ts">01:00:31</span> Fadel was explicit that the student answers were all fine and not what was being complained about, but pointed at a different thing the visualization supports. Because the harvest was aimed at ISA-type jobs, this is not the whole market. Fadel also tried to filter to postings asking for zero to two years of experience as a proxy for entry level, and said plainly it does not work consistently, because the underlying text is unstructured and does not say it the same way twice. What the dashboard is good for is the question of whether your skills are usable, what you should improve, and how that informs which classes you take next semester, whether you have one semester left or three.</p>
+<p><span class="ts">01:01:54</span> The limitations, stated as such: there is not much salary information, and the skills were extracted by an AI model, so they are imperfect and would need cleaning. With that said, moving from the whole job market to some insight about the job market has utility.</p>
+<p><span class="ts">01:02:40</span> And the reason for spending class time on it. Fadel will bring in charts from the news during the semester, and said the politics behind them are not the point. As an ISA student, minor or major, you should be able to look at a visualization and say whether the data behind it supports the conclusion being drawn. When someone puts a chart up in a board meeting or a technical meeting, that is your job in the room. It is a hard skill, not one you read out of a textbook, which is why examples will keep arriving. Exam 2 is exactly this exercise with AI outputs: Fadel will supply the recording of the prompting so you can see nothing strange was done, and then ask you how the models interpreted the data.</p>
+</section>
+<section id="one-job-ad-three-shapes" class="level3">
+<h3 class="anchored" data-anchor-id="one-job-ad-three-shapes">One job ad, three shapes</h3>
+<p><span class="ts">01:03:51</span> The last big idea of the day uses a single posting to show the three data types. Slide 19 is the job ad as a human, or Job Scout, actually reads it: Research Data Scientist on the Magic Eye team at Google, Mountain View, posted 2026-08-12. It wants a master’s in a quantitative field and three years of experience, which puts it outside the entry-level window Fadel was aiming for, and an MSBA student might be qualified. The ad has a salary range in it, and responsibilities, and a description of the team. That is a lot of information, but it is unstructured: free text, no fixed fields, and none of it readily consumable. As the slide’s footnote puts it, the salary is right there in the text and no filter or chart can reach it until someone or some model extracts it.</p>
+<p><span class="ts">01:05:07</span> Slide 20 is the same posting after Job Scout’s model has read it: a JSON list of skills, each one a <code>skillId</code> with an <code>importance</code> of required or preferred. Fadel called this semi-structured, and gave the reason: <code>skillId</code> repeats. It is not yet something you can drop straight into a CSV table, because you have to decide how to handle the repeats. Do you comma-separate them into one cell? Do you repeat the job ID and make the data long? Those decisions are what stand between this shape and a data table. This ad carries 12 skills; another might carry 4, which is exactly what makes the shape flexible. JSON, JavaScript Object Notation, is what a great many APIs return, and parsing it is a few weeks out.</p>
+<p><span class="ts">01:06:23</span> Slide 21 is the structured version: one row in the <code>scout_postings</code> table, with <code>source</code>, <code>title</code>, <code>company</code>, <code>location_city</code> and <code>location_state</code>, <code>posted_at</code>, <code>category</code>, and so on, the same fields for every posting. For the skills, Fadel said the approach would be to key them by the posting ID and repeat that ID once per skill, making a long table. That shape lets you count how many skills a job asks for, and lets you ask how many jobs require problem solving. It is the easiest way to consume that information. Worth noticing on this slide: there is no salary column. It did not survive the trip.</p>
+<p><span class="ts">01:07:25</span> Slide 22 puts the three side by side. Unstructured is the job ad, and it does not have to be text; it can be audio or video. You get at it with text mining, or with an LLM, or with regular expressions, which is what ISA 414 teaches. Semi-structured is the JSON, which is what APIs hand back, and it is also what you should ask an LLM for when you are using one to extract information, precisely because it is more structured than free text. Structured is the database row, which you work with in spreadsheets, SQL, or R data frames. Much of this course is about moving data from left to right.</p>
+<p><span class="ts">01:08:22</span> Slide 23 is why one source is rarely enough, and it starts from the salary question the class raised. Suppose Google will pay $200,000 in San Francisco for a role wanting a master’s and three to five years. That is all good, but it means something only next to comparison data. If similar jobs with the same qualifications in that area pay $160,000, the $200,000 is very good. If the average is $200,000, it is just the going rate. So you supplement with something like BLS wage data, or levels.fyi for tech salaries, and check whether it is consistent with what other companies pay in that location. Salary depends on location, on experience, and on field, and having that context is what would let you actually assess these postings.</p>
+<!-- todo: awaiting answer #5 @ 01:09:06 - transcript has "levers.io"; I wrote levels.fyi -->
+<p><span class="ts">01:10:07</span> Slide 24 is the value chain in four rows: what happened, which is raw facts; what does it mean, which is context; why did it happen, which is patterns; and what should we do, which is action. Fadel ran the job data through it, and flagged the numbers as real rather than invented. Roughly 1,400 postings, of which maybe 700 or 800 were active. SQL was tagged in 31%. Communication appeared in 79%.</p>
+<p><span class="ts">01:10:44</span> The decision that follows: because these are ISA-type jobs, there is an expectation of business relevance alongside the technical work. So learn to code, build on what ISA 345 started, extend it in 401 or 381. And at the same time do not forget you are not a developer. Your value added is being able to explain what these things mean so the business can make better decisions. That is the move from 1,400 raw postings to a summary of what they say, to a decision about how you spend the rest of your degree.</p>
+</section>
+</section>
+<section id="part-5-so-what-is-data-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="part-5-so-what-is-data-visualization">Part 5: So what is data visualization?</h2>
+<p><span class="ts">01:11:49</span> With about nine minutes left, the short definition: data visualization is the process of presenting data in some graphical format.</p>
+<p><span class="ts">01:12:03</span> Slide 26 carries an animation of Cedric Scherer’s ggplot, where a single dataset is redrawn again and again. The point Fadel drew from it is that this iteration has become very cheap now that LLMs can both search and write the plotting code, so there is no excuse for settling. Do not stop at “I made this chart because I know how to do a boxplot in this software.” Ask whether it is the right level of detail and what is missing, and use AI to push the visualization further. That part is on you, and being meticulous is what makes a chart show the data better.</p>
+<p><span class="ts">01:12:58</span> Slide 27 lists the goals. Recording information, which sometimes means a table, and Fadel noted you can combine visualizations with tables. Analyzing data. Communicating it to other people. And interacting with it, which is what a dashboard adds: you can ask your own question. The example given was going to the Job Market Explorer and asking how many jobs requiring data visualization sit in the Midwest, picking Ohio, Illinois, Michigan and Indiana, and getting back the counts and the skills for exactly that slice.</p>
+<section id="the-1854-cholera-map" class="level3">
+<h3 class="anchored" data-anchor-id="the-1854-cholera-map">The 1854 cholera map</h3>
+<p><span class="ts">01:13:47</span> Slide 28 is the classic example, and Fadel pulled two separate lessons out of it. The first is the story. This is one of the first maps built for the purpose of data analysis, made in the 1800s in London by a physician named John Snow, who plotted where the people who died of cholera lived. If you watch crime shows you have seen the same move. What Snow noticed was a clustering of deaths around the Broad Street intersection, and when he went to that area there was a well. The prevailing hypothesis at the time was that cholera came from the air. Snow’s hypothesis from the map was that it was waterborne. They shut the well down, the numbers came down, and later analysis confirmed that dirty water causes cholera. That is storytelling driving a decision.</p>
+<!-- todo: awaiting answer #3 @ 01:13:56 - the street name and "cholera deaths" are badly garbled in the transcript; I wrote Broad Street from the standard account. Please confirm that is what was said. -->
+<p><span class="ts">01:15:10</span> The second lesson is a term that will run through the semester: <strong>data encoding</strong>, meaning how the data you have gets turned into marks on a chart. On this map, as on any map, the encoding is x and y position: the coordinates carry where each person lived. Each person is then represented as a circle. That is the whole encoding, and the slide’s note adds that we perceive position more accurately than other encoding channels.</p>
+</section>
+<section id="critiquing-the-top-skills-chart" class="level3">
+<h3 class="anchored" data-anchor-id="critiquing-the-top-skills-chart">Critiquing the Top Skills chart</h3>
+<p><span class="ts">01:16:04</span> Slide 29 turns the same questions on a chart from our own dashboard, the interactive Top Skills bar chart. Start with what data is represented and what the unit of analysis is. What you have is a categorical variable, the skill name, and a count. Arguably three variables rather than two, because the count is split: the dark red segment is the number of postings where the skill was required, the lighter pink the number where it was preferred. Add them and you get the total for that skill. For communication that total is 1,130, out of the 1,437 postings, though Fadel hedged on the exact figure out loud. So the underlying table has one row per skill, with a required count and a preferred count.</p>
+<p><span class="ts">01:17:25</span> The encoding, then: the length of the bar carries the total number of jobs asking for that skill, and position on the y-axis carries rank, so communication is at the top, then problem solving at 902, then data analysis at 741. Whether that encoding is effective Fadel deliberately left with you. Two concrete directions were offered. You could use color to group technical skills against softer or communication skills, rather than spending it on required versus preferred. And you could print the required-versus-preferred split, because the bars already carry the total but you cannot read off how much of communication’s 1,130 was required and how much was merely preferred.</p>
+<p><span class="ts">01:18:53</span> Slide 30 is a chart taken from the wild, a Heritage Foundation infographic headlined “What If a Typical Family Spent Money Like the Federal Government?”, with the same three questions attached. Fadel stopped rather than rush it, and asked you to take a stab at it before next class so we can go through it together.</p>
+<p><span class="ts">01:19:04</span> One clarification on the wording of those questions, because it matters for how you answer. When the slide asks what data is represented, the question in plain English is: if this were an Excel file, what would the columns be? Then, how is each of those columns visually encoded? Then, is that encoding effective, which is where the next class picks up.</p>
+</section>
+</section>
+<section id="recap-and-what-comes-next" class="level2">
+<h2 class="anchored" data-anchor-id="recap-and-what-comes-next">Recap and what comes next</h2>
+<p><span class="ts">01:19:25</span> Slide 32 restates the three objectives, and along the way the class practiced the skills underneath them: finding the unit of analysis, telling counts apart from rates, questioning where data came from, and reading a chart’s encodings.</p>
+<p><span class="ts">01:19:55</span> Fadel closed on pacing, prompted by something noticed during class. If you think the pace is too fast, say so. The expectation is that you show up and understand the material, and whether that means we get through two slides or all of them does not matter. That only works if you speak up.</p>
+<p>Editorially: class ran out of time before the last few slides, so nothing below was said aloud. Slide 34 lists the optional prep for next class, which is R basics: the Introduction and Workflow Basics chapters of <em>R for Data Science</em>, and a gentle introduction to LLMs if you are curious. None of it is required. Slide 35’s Assignment 01 on Canvas is.</p>
+</section>
+<section id="questions-from-class" class="level2">
+<h2 class="anchored" data-anchor-id="questions-from-class">Questions from class</h2>
+<p><span class="ts">00:55:26</span> A student asked where to find the dashboard outside the slide. Fadel opened the standalone full-page version from the link on the slide, which is the same dashboard with the whole browser window to work in, and confirmed everything in it is clickable: the skills chart, the Job Explorer tab, and the Behind the Data tab that shows how the postings were collected.</p>
+<p><span class="ts">00:58:06</span> A student asked how to get back to the page where you enter the classes you have taken. From ChatISA, go to Job Scout, then My Profile, tick your courses, and save. The save is easy to forget and nothing persists without it.</p>
+</section>
+<section id="loose-ends" class="level2">
+<h2 class="anchored" data-anchor-id="loose-ends">Loose ends</h2>
+<!-- todo: awaiting answer #1 @ 00:03:43 - "better than an OU student could give" / "that's not illegal" both look like ASR errors; I paraphrased around them -->
+<!-- todo: awaiting answer #2 @ 00:11:42 - "water complaints" -> "warranty complaints"? -->
+<!-- todo: awaiting answer #3 @ 01:13:56 - John Snow street name garbled; I wrote Broad Street -->
+<!-- todo: awaiting answer #4 @ 00:44:07 - "potential thefts of wrong driving" -> "checks for impaired driving"? -->
+<!-- todo: awaiting answer #5 @ 01:09:06 - "levers.io" -> levels.fyi? -->
+<!-- todo: awaiting answer #6 @ 00:50:13 - "the Sunday the 4th" vs the slide's "Retrieved August 16, 2026" -->
+<!-- todo: awaiting answer #7 @ 00:18:53 - menti code 1781 1839 (spoken) vs 1791 1839 (on screen) -->
+<!-- todo: 00:20:15 - Fadel says one of the two models is "cheaper to run than Opus" without naming it; I read it as GPT-5.6 Sol. Confirm. -->
+<!-- todo: 00:29:50 - a student answered 14,962 crashes; Slide 9's per-day counts sum to 14,783 unique crashes with a non-missing date. Worth saying which number you want students to take away. -->
+<!-- todo: 00:39:37 - the Friday count on the un-deduplicated person-level data is spoken as "close to 5,400... 4,900 and something"; I omitted the figure -->
+<!-- todo: 00:51:11 - Fadel was unsure whether the full dashboard was posted to Canvas; please confirm so this can be stated plainly -->
+<!-- todo: 00:54:01 - a still-available filter for Job Scout was floated as a future addition -->
+<!-- todo: 00:56:19 to 00:58:06 - a couple of minutes of the recording are Fadel fixing a Mentimeter link; nothing in the transcript is recoverable there. Confirm nothing of substance was said. -->
+<!-- todo: 01:18:53 - Slide 30 (the Heritage Foundation chart) was deferred to next class; carry the critique forward into the class 02 notes -->
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

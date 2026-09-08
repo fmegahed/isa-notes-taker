@@ -1,6 +1,10 @@
 project:
   type: website
   output-dir: _site
+  # Each class's PDF is kept beside its source page and copied into the
+  # render on every build, so a later class's publish cannot drop it.
+  resources:
+    - "class*/index.pdf"
 
 website:
   title: "ISA 401 Notes"

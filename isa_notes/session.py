@@ -284,63 +284,59 @@ def stage_publish(out: Path, src: dict, args) -> Path:
     n = src["n"]
     target = NOTES_SITE / f"class{n:02d}"
     target.mkdir(parents=True, exist_ok=True)
-    # notes_site/ is a website project, so even a single-file render
-    # lands in its output-dir (_site/classNN/...), not next to the
-    # source index.qmd.
+    # notes_site/ is a website project, so a single-file render lands in
+    # its output-dir (_site/classNN/...), not next to the source index.qmd.
     site_pdf = NOTES_SITE / "_site" / f"class{n:02d}" / "index.pdf"
+    # The PDF that survives lives in the SOURCE folder and is declared a
+    # project resource in _quarto.yml, so every whole-site render copies
+    # all classes' PDFs into _site. Leaving it only in _site loses it on
+    # the next class's publish, since a project render prunes files it
+    # did not produce.
+    source_pdf = target / "index.pdf"
 
     original_text = notes.read_text(encoding="utf-8")
     description = qmd.what_we_covered(original_text)
 
-    # The site copy has no ts.css beside it (notes_site/'s own scss
-    # already carries the same .ts rules), so its header omits css:.
-    header = header_for(src, description=description, css=None)
-    text = qmd.replace_front_matter(original_text, header)
-    (target / "index.qmd").write_text(text, encoding="utf-8")
-    qmd.copy_referenced_images(text, out, target)
+    def write_page(extra_links: dict[str, str] | None) -> str:
+        # The site copy has no ts.css beside it (notes_site/'s own scss
+        # already carries the same .ts rules), so its header omits css:.
+        header = header_for(src, description=description,
+                            extra_links=extra_links, css=None)
+        page = qmd.replace_front_matter(original_text, header)
+        (target / "index.qmd").write_text(page, encoding="utf-8")
+        return page
 
-    # Render the whole project before attempting a PDF: a full project
-    # render cleans output-dir of anything not part of this pass, which
-    # is what actually removes a stale PDF left by an earlier publish
-    # (rendering the PDF first and the project second would have quarto
-    # clean the PDF right back out, since a project render only keeps
-    # what its own pass produces).
-    proc = subprocess.run(["quarto", "render"], cwd=str(NOTES_SITE),
-                          capture_output=True, text=True, encoding="utf-8",
-                          errors="replace")
-    if proc.returncode != 0:
-        raise SystemExit("quarto render (notes_site) failed:\n"
-                         + (proc.stderr or "") + (proc.stdout or ""))
+    text = write_page(None)
+    qmd.copy_referenced_images(text, out, target)
 
     if args.pdf:
         proc = subprocess.run(["quarto", "render", "index.qmd", "--to", "typst"],
                               cwd=str(target), capture_output=True, text=True,
                               encoding="utf-8", errors="replace")
         if proc.returncode == 0 and site_pdf.exists():
-            print(f"  pdf: {site_pdf}")
-            header = header_for(src, description=description,
-                                extra_links={"PDF": "index.pdf"}, css=None)
-            text = qmd.replace_front_matter(original_text, header)
-            (target / "index.qmd").write_text(text, encoding="utf-8")
-            # A single-file render only touches this page's own output,
-            # so it picks up the new link without disturbing the rest of
-            # the just-rendered site (or the PDF just produced above).
-            proc2 = subprocess.run(
-                ["quarto", "render", "index.qmd", "--to", "html"],
-                cwd=str(target), capture_output=True, text=True,
-                encoding="utf-8", errors="replace")
-            if proc2.returncode != 0:
-                raise SystemExit(
-                    "quarto render (class page, after pdf) failed:\n"
-                    + (proc2.stderr or "") + (proc2.stdout or ""))
+            shutil.copy2(site_pdf, source_pdf)
+            print(f"  pdf: {source_pdf}")
+            text = write_page({"PDF": "index.pdf"})
         else:
             tail = ((proc.stderr or "") + (proc.stdout or ""))[-2000:]
             print("  pdf render failed (best effort; continuing):")
             print(tail)
-            # A partial PDF from this failed attempt must not linger
-            # next to a page whose header does not link one.
+            # A partial or stale PDF must not linger next to a page whose
+            # header does not link one.
             site_pdf.unlink(missing_ok=True)
-            (target / "index.pdf").unlink(missing_ok=True)
+            source_pdf.unlink(missing_ok=True)
+    elif source_pdf.exists():
+        # Published earlier with --pdf; keep the link to the PDF we still have.
+        text = write_page({"PDF": "index.pdf"})
+
+    # The whole project renders last: the listing needs every page, and
+    # the resources rule copies every class's PDF into _site.
+    proc = subprocess.run(["quarto", "render"], cwd=str(NOTES_SITE),
+                          capture_output=True, text=True, encoding="utf-8",
+                          errors="replace")
+    if proc.returncode != 0:
+        raise SystemExit("quarto render (notes_site) failed:\n"
+                         + (proc.stderr or "") + (proc.stdout or ""))
 
     _rebuild_docs()
     print(f"  published: {target}")
