@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import base64
 import json
+import os
 import re
 import sys
 import threading
@@ -259,6 +260,21 @@ def ask_user_input(prompt_text: str, should_abort=None) -> str | None:
     Returns "" if no terminal is available, or None if should_abort() became
     true before any input arrived (the wait is polled, so a stale prompt can
     be cancelled instead of stealing a later prompt's input)."""
+    # Windows select() accepts only sockets, so console input is polled
+    # with msvcrt instead.
+    if os.name == "nt":
+        if not sys.stdin.isatty():
+            return ""
+        import msvcrt
+
+        print(prompt_text, file=sys.stderr, end="", flush=True)
+        while True:
+            if should_abort is not None and should_abort():
+                return None
+            if msvcrt.kbhit():
+                return sys.stdin.readline().strip()
+            time.sleep(0.25)
+
     import select
 
     opened = None
