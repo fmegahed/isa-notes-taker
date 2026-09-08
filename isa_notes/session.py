@@ -23,6 +23,14 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
+# Windows consoles default to cp1252, and the backend prints model text
+# verbatim; a stray character (an emoji, say) must not kill a run.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 import instructions as I                                   # noqa: E402
 import qmd                                                 # noqa: E402
 import scenes as SC                                        # noqa: E402

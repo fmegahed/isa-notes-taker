@@ -2,6 +2,8 @@
 remembering flags in state.json, building the header, and refusing to run
 on a folder that is not one class."""
 import json
+import os
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -87,3 +89,18 @@ with tempfile.TemporaryDirectory() as d:
     except SystemExit as e:
         assert "write them first" in str(e)
     print("stage_verify refuses to run without notes.qmd")
+
+# Importing session.py must not crash a run just because stdout cannot
+# encode a character the model wrote, such as an emoji, in cp1252. Strip
+# PYTHONIOENCODING/PYTHONUTF8 from the child's env so a UTF-8 default set
+# on this machine cannot mask the console's real (cp1252) encoding.
+code = (
+    "import sys; sys.path.insert(0, r'" + str(HERE) + "'); "
+    "import session; print('\\U0001f3c6')"
+)
+env = os.environ.copy()
+env.pop("PYTHONIOENCODING", None)
+env.pop("PYTHONUTF8", None)
+result = subprocess.run([sys.executable, "-c", code], capture_output=True, env=env)
+assert result.returncode == 0, result.stderr
+print("console encoding cannot kill a run")
