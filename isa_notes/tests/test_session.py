@@ -64,3 +64,26 @@ with tempfile.TemporaryDirectory() as d:
     assert "github.com/fmegahed/isa401a/blob/main/markdowns/03_r_basics.Rmd" in header
     assert "fmegahed.github.io/isa401/fall2026/class03/03_r_foundations.html" in header
     print("sources resolved from folder name, flags, and saved state; header built")
+
+    # A deck path saved in state that no longer exists on disk must not
+    # crash resolve_sources; it heals by searching for the real deck again.
+    stale_state = {"deck": str(deck_dir / "gone.Rmd")}
+    healed = S.resolve_sources(sd, S.parse_args(["sessions/class03"]),
+                               stale_state, project_root=d)
+    assert healed["deck"] == deck
+    print("stale deck path in state heals via find_deck")
+
+    # deck_meta_for falls back to a generic title when the deck is missing.
+    meta = S.deck_meta_for({"deck": Path("nope.Rmd"), "n": 3})
+    assert meta["title"] == "ISA 401 Class 03" and meta["subtitle"] == ""
+    print("deck_meta_for falls back when the deck path does not exist")
+
+    # stage_verify refuses to run without notes.qmd, before touching the
+    # backend (no notes.qmd exists under this fresh out dir).
+    out3 = d / "sessions" / "class03_verify_only" / "out"
+    try:
+        S.stage_verify(out3, mp4, out3 / "transcript.json", [], src, args)
+        assert False, "stage_verify must refuse without notes.qmd"
+    except SystemExit as e:
+        assert "write them first" in str(e)
+    print("stage_verify refuses to run without notes.qmd")

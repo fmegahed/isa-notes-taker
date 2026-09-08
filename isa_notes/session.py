@@ -75,9 +75,13 @@ def resolve_sources(session_dir: Path, args, state: dict,
         return flag if flag not in (None, "") else state.get(key)
 
     deck = pick(args.deck, "deck")
-    deck = Path(deck) if deck else qmd.find_deck(n, project_root / "isa401")
+    deck = Path(deck) if deck else None
+    if deck is None or not deck.exists():
+        deck = qmd.find_deck(n, project_root / "isa401")
     rmd = pick(args.class_rmd, "class_rmd")
-    rmd = Path(rmd) if rmd else qmd.find_class_rmd(n, project_root / "class_code")
+    rmd = Path(rmd) if rmd else None
+    if rmd is None or not rmd.exists():
+        rmd = qmd.find_class_rmd(n, project_root / "class_code")
     date = state.get("date") or (qmd.zoom_date(mp4.name) if mp4 else None)
     return {
         "instructor": pick(args.instructor, "instructor") or "Fadel Megahed",
@@ -87,10 +91,16 @@ def resolve_sources(session_dir: Path, args, state: dict,
     }
 
 
+def deck_meta_for(src: dict) -> dict:
+    deck = src.get("deck")
+    if deck and Path(deck).exists():
+        return qmd.deck_meta(deck)
+    return {"title": f"ISA 401 Class {src['n']:02d}", "subtitle": ""}
+
+
 def header_for(src: dict) -> str:
     deck = src.get("deck")
-    meta = qmd.deck_meta(deck) if deck and Path(deck).exists() else \
-        {"title": f"ISA 401 Class {src['n']:02d}", "subtitle": ""}
+    meta = deck_meta_for(src)
     links = {
         "Slides": SLIDES_URL.format(n=src["n"], stem=Path(deck).stem) if deck else None,
         "Class code": CLASS_CODE_URL.format(name=Path(src["class_rmd"]).name)
@@ -149,7 +159,7 @@ def stage_write(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
     notes = out / "notes.qmd"
     (out / "ts.css").write_bytes((HERE / "ts.css").read_bytes())
     header = header_for(src)
-    meta = qmd.deck_meta(src["deck"]) if src.get("deck") else {"subtitle": ""}
+    meta = deck_meta_for(src)
     title = meta.get("subtitle") or f"Class {src['n']:02d}"
     user = I.write_message(
         title=title, date=src.get("date"), instructor=src["instructor"],
@@ -170,6 +180,8 @@ def stage_write(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
 def stage_verify(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
                  args) -> None:
     notes = out / "notes.qmd"
+    if not notes.exists():
+        raise SystemExit(f"No notes at {notes}; write them first.")
     user = I.verify_message(
         notes=notes, instructor=src["instructor"], deck=src.get("deck"),
         class_rmd=src.get("class_rmd"),
