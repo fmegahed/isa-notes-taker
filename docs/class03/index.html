@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2026-08-31">
-<meta name="description" content="The first half of the session was a Kahoot review of Week 01, which ran longer than Fadel intended because every question the room got wrong was stopped on and">
+<meta name="description" content="both parts were reached, ending with the timed type self-assessment, but the Kahoot review took about 25 minutes and Part 1 grew a live YAML walkthrough that">
 
-<title>03: Foundations – ISA 401 Notes</title>
+<title>03: Foundations – ISA 401 Teaching Notes</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -107,7 +107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">ISA 401 Notes</span>
+    <span class="navbar-title">ISA 401 Teaching Notes</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -135,42 +135,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-we-covered" id="toc-what-we-covered" class="nav-link active" data-scroll-target="#what-we-covered">What we covered</a></li>
-  <li><a href="#before-we-start" id="toc-before-we-start" class="nav-link" data-scroll-target="#before-we-start">Before we start</a></li>
-  <li><a href="#week-01-review-on-kahoot" id="toc-week-01-review-on-kahoot" class="nav-link" data-scroll-target="#week-01-review-on-kahoot">Week 01 review on Kahoot</a>
+  <li><a href="#timeline" id="toc-timeline" class="nav-link active" data-scroll-target="#timeline">Timeline</a></li>
+  <li><a href="#where-students-struggled" id="toc-where-students-struggled" class="nav-link" data-scroll-target="#where-students-struggled">Where students struggled</a>
   <ul class="collapse">
-  <li><a href="#where-business-intelligence-lives" id="toc-where-business-intelligence-lives" class="nav-link" data-scroll-target="#where-business-intelligence-lives">Where business intelligence lives</a></li>
-  <li><a href="#three-shapes-of-data" id="toc-three-shapes-of-data" class="nav-link" data-scroll-target="#three-shapes-of-data">Three shapes of data</a></li>
-  <li><a href="#data-encoding-and-why-color-is-not-encoding-the-counties" id="toc-data-encoding-and-why-color-is-not-encoding-the-counties" class="nav-link" data-scroll-target="#data-encoding-and-why-color-is-not-encoding-the-counties">Data encoding, and why color is not encoding the counties</a></li>
-  <li><a href="#commit-push-pull" id="toc-commit-push-pull" class="nav-link" data-scroll-target="#commit-push-pull">Commit, push, pull</a></li>
-  <li><a href="#which-files-can-git-diff" id="toc-which-files-can-git-diff" class="nav-link" data-scroll-target="#which-files-can-git-diff">Which files can Git diff</a></li>
-  <li><a href="#undo-versus-revert" id="toc-undo-versus-revert" class="nav-link" data-scroll-target="#undo-versus-revert">Undo versus revert</a></li>
+  <li><a href="#kahoot-question-3-how-the-county-map-encodes-counties" id="toc-kahoot-question-3-how-the-county-map-encodes-counties" class="nav-link" data-scroll-target="#kahoot-question-3-how-the-county-map-encodes-counties">Kahoot question 3: how the county map encodes counties</a></li>
+  <li><a href="#kahoot-question-4-where-a-committed-file-lives" id="toc-kahoot-question-4-where-a-committed-file-lives" class="nav-link" data-scroll-target="#kahoot-question-4-where-a-committed-file-lives">Kahoot question 4: where a committed file lives</a></li>
+  <li><a href="#kahoot-question-5-which-files-git-can-diff" id="toc-kahoot-question-5-which-files-git-can-diff" class="nav-link" data-scroll-target="#kahoot-question-5-which-files-git-can-diff">Kahoot question 5: which files Git can diff</a></li>
+  <li><a href="#kahoot-question-6-undo-versus-revert" id="toc-kahoot-question-6-undo-versus-revert" class="nav-link" data-scroll-target="#kahoot-question-6-undo-versus-revert">Kahoot question 6: undo versus revert</a></li>
+  <li><a href="#project-options-was-greyed-out" id="toc-project-options-was-greyed-out" class="nav-link" data-scroll-target="#project-options-was-greyed-out">Project Options was greyed out</a></li>
+  <li><a href="#the-code-button-did-not-appear" id="toc-the-code-button-did-not-appear" class="nav-link" data-scroll-target="#the-code-button-did-not-appear">The Code button did not appear</a></li>
+  <li><a href="#yaml-indentation-on-two-screen-shares" id="toc-yaml-indentation-on-two-screen-shares" class="nav-link" data-scroll-target="#yaml-indentation-on-two-screen-shares">YAML indentation, on two screen shares</a></li>
+  <li><a href="#crashdate-and-age-in-the-type-self-assessment" id="toc-crashdate-and-age-in-the-type-self-assessment" class="nav-link" data-scroll-target="#crashdate-and-age-in-the-type-self-assessment">crashdate and age in the type self-assessment</a></li>
   </ul></li>
-  <li><a href="#part-1-your-r-project" id="toc-part-1-your-r-project" class="nav-link" data-scroll-target="#part-1-your-r-project">Part 1: Your R project</a>
+  <li><a href="#questions-from-the-room" id="toc-questions-from-the-room" class="nav-link" data-scroll-target="#questions-from-the-room">Questions from the room</a></li>
+  <li><a href="#demo-notes-and-gotchas" id="toc-demo-notes-and-gotchas" class="nav-link" data-scroll-target="#demo-notes-and-gotchas">Demo notes and gotchas</a>
   <ul class="collapse">
-  <li><a href="#how-many-of-you-have-used-r" id="toc-how-many-of-you-have-used-r" class="nav-link" data-scroll-target="#how-many-of-you-have-used-r">How many of you have used R?</a></li>
-  <li><a href="#making-the-repository-an-rstudio-project" id="toc-making-the-repository-an-rstudio-project" class="nav-link" data-scroll-target="#making-the-repository-an-rstudio-project">Making the repository an RStudio project</a></li>
-  <li><a href="#r-markdown-or-r-script" id="toc-r-markdown-or-r-script" class="nav-link" data-scroll-target="#r-markdown-or-r-script">R Markdown or R script?</a></li>
-  <li><a href="#rstudio-settings" id="toc-rstudio-settings" class="nav-link" data-scroll-target="#rstudio-settings">RStudio settings</a></li>
-  <li><a href="#the-r-markdown-cheat-sheet" id="toc-the-r-markdown-cheat-sheet" class="nav-link" data-scroll-target="#the-r-markdown-cheat-sheet">The R Markdown cheat sheet</a></li>
-  <li><a href="#the-yaml-header" id="toc-the-yaml-header" class="nav-link" data-scroll-target="#the-yaml-header">The YAML header</a></li>
-  <li><a href="#debugging-the-yaml-in-the-room" id="toc-debugging-the-yaml-in-the-room" class="nav-link" data-scroll-target="#debugging-the-yaml-in-the-room">Debugging the YAML in the room</a></li>
-  <li><a href="#your-first-code-chunk" id="toc-your-first-code-chunk" class="nav-link" data-scroll-target="#your-first-code-chunk">Your first code chunk</a></li>
+  <li><a href="#opening-housekeeping" id="toc-opening-housekeeping" class="nav-link" data-scroll-target="#opening-housekeeping">Opening housekeeping</a></li>
+  <li><a href="#running-the-kahoot" id="toc-running-the-kahoot" class="nav-link" data-scroll-target="#running-the-kahoot">Running the Kahoot</a></li>
+  <li><a href="#the-pacing-poll" id="toc-the-pacing-poll" class="nav-link" data-scroll-target="#the-pacing-poll">The pacing poll</a></li>
+  <li><a href="#from-repository-to-project" id="toc-from-repository-to-project" class="nav-link" data-scroll-target="#from-repository-to-project">From repository to project</a></li>
+  <li><a href="#settings-and-where-they-actually-live" id="toc-settings-and-where-they-actually-live" class="nav-link" data-scroll-target="#settings-and-where-they-actually-live">Settings, and where they actually live</a></li>
+  <li><a href="#building-the-yaml-live" id="toc-building-the-yaml-live" class="nav-link" data-scroll-target="#building-the-yaml-live">Building the YAML live</a></li>
+  <li><a href="#the-first-chunk" id="toc-the-first-chunk" class="nav-link" data-scroll-target="#the-first-chunk">The first chunk</a></li>
   <li><a href="#gitignore-commit-push" id="toc-gitignore-commit-push" class="nav-link" data-scroll-target="#gitignore-commit-push">.gitignore, commit, push</a></li>
+  <li><a href="#later-demo-stalls" id="toc-later-demo-stalls" class="nav-link" data-scroll-target="#later-demo-stalls">Later demo stalls</a></li>
+  <li><a href="#closing-the-git-loop" id="toc-closing-the-git-loop" class="nav-link" data-scroll-target="#closing-the-git-loop">Closing the Git loop</a></li>
   </ul></li>
-  <li><a href="#part-2-objects-and-vectors" id="toc-part-2-objects-and-vectors" class="nav-link" data-scroll-target="#part-2-objects-and-vectors">Part 2: Objects and vectors</a>
+  <li><a href="#code-as-taught" id="toc-code-as-taught" class="nav-link" data-scroll-target="#code-as-taught">Code as taught</a>
   <ul class="collapse">
-  <li><a href="#three-assignment-operators" id="toc-three-assignment-operators" class="nav-link" data-scroll-target="#three-assignment-operators">Three assignment operators</a></li>
-  <li><a href="#object-not-found" id="toc-object-not-found" class="nav-link" data-scroll-target="#object-not-found">Object not found</a></li>
-  <li><a href="#r-is-a-vector-language" id="toc-r-is-a-vector-language" class="nav-link" data-scroll-target="#r-is-a-vector-language">R is a vector language</a></li>
-  <li><a href="#types" id="toc-types" class="nav-link" data-scroll-target="#types">Types</a></li>
-  <li><a href="#resultshold" id="toc-resultshold" class="nav-link" data-scroll-target="#resultshold">results=‘hold’</a></li>
-  <li><a href="#four-types-and-the-trap" id="toc-four-types-and-the-trap" class="nav-link" data-scroll-target="#four-types-and-the-trap">Four types, and the trap</a></li>
-  <li><a href="#the-self-assessment" id="toc-the-self-assessment" class="nav-link" data-scroll-target="#the-self-assessment">The self-assessment</a></li>
+  <li><a href="#shown-on-the-slides-not-in-the-class-rmd" id="toc-shown-on-the-slides-not-in-the-class-rmd" class="nav-link" data-scroll-target="#shown-on-the-slides-not-in-the-class-rmd">Shown on the slides, not in the class RMD</a></li>
+  <li><a href="#the-type-self-assessment" id="toc-the-type-self-assessment" class="nav-link" data-scroll-target="#the-type-self-assessment">The type self-assessment</a></li>
   </ul></li>
-  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping up</a></li>
-  <li><a href="#questions-from-class" id="toc-questions-from-class" class="nav-link" data-scroll-target="#questions-from-class">Questions from class</a></li>
-  <li><a href="#loose-ends" id="toc-loose-ends" class="nav-link" data-scroll-target="#loose-ends">Loose ends</a></li>
+  <li><a href="#for-next-time" id="toc-for-next-time" class="nav-link" data-scroll-target="#for-next-time">For next time</a></li>
+  <li><a href="#materials" id="toc-materials" class="nav-link" data-scroll-target="#materials">Materials</a></li>
   </ul>
 </nav>
     </div>
@@ -185,7 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    The first half of the session was a Kahoot review of Week 01, which ran longer than Fadel intended because every question the room got wrong was stopped on and
+    both parts were reached, ending with the timed type self-assessment, but the Kahoot review took about 25 minutes and Part 1 grew a live YAML walkthrough that
   </div>
 </div>
 
@@ -209,114 +206,258 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><a href="https://fmegahed.github.io/isa401/fall2026/class03/03_r_foundations.html">Slides</a> | <a href="https://github.com/fmegahed/isa401a/blob/main/markdowns/03_r_basics.Rmd">Class code</a> | <a href="index.pdf">PDF</a></p>
-<p>The recording is on Canvas. Timestamps before each paragraph are hh:mm:ss into the recording; drag the player there to hear the passage.</p>
-<section id="what-we-covered" class="level2">
-<h2 class="anchored" data-anchor-id="what-we-covered">What we covered</h2>
-<p>The first half of the session was a Kahoot review of Week 01, which ran longer than Fadel intended because every question the room got wrong was stopped on and re-explained. The second half was the R setup we did not reach on Wednesday: an RStudio project inside your repository, an R Markdown file with a YAML header we built up option by option, and then the first R code, a single number and a named vector of seven crash counts.</p>
-<ul>
-<li><strong>Set up</strong> an <strong>RStudio project</strong> inside your repository and work in <strong>R Markdown</strong>.</li>
-<li><strong>Create and inspect</strong> objects and <strong>vectors</strong> with <code>=</code>, <code>c()</code>, <code>names()</code>, and <code>typeof()</code>.</li>
-<li><strong>Predict</strong> how R handles <strong>types</strong>: one vector, one type, and a comparison returns a logical vector.</li>
-</ul>
+<p>The recording is on Canvas, available to ISA 401 instructors. Timestamps before each paragraph are hh:mm:ss into the recording; drag the player there to hear the passage.</p>
+<section id="timeline" class="level2">
+<h2 class="anchored" data-anchor-id="timeline">Timeline</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Start</th>
+<th>End</th>
+<th>Min</th>
+<th>Segment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>00:00:00</td>
+<td>00:02:39</td>
+<td>2.7</td>
+<td>Opening: Wednesday recap, Zoom and repository housekeeping</td>
+</tr>
+<tr class="even">
+<td>00:02:39</td>
+<td>00:05:49</td>
+<td>3.2</td>
+<td>Kahoot setup, PIN, joining</td>
+</tr>
+<tr class="odd">
+<td>00:05:49</td>
+<td>00:24:14</td>
+<td>18.4</td>
+<td>Week 01 Kahoot review, 6 questions, each one re-explained</td>
+</tr>
+<tr class="even">
+<td>00:24:14</td>
+<td>00:26:59</td>
+<td>2.8</td>
+<td>Agenda for the day, Menti poll on prior R experience</td>
+</tr>
+<tr class="odd">
+<td>00:26:59</td>
+<td>00:32:49</td>
+<td>5.8</td>
+<td>New project, R Markdown file, <code>markdowns</code> folder, GitHub Desktop check</td>
+</tr>
+<tr class="even">
+<td>00:32:49</td>
+<td>00:40:37</td>
+<td>7.8</td>
+<td>Project Options and Global Options, R Markdown cheat sheet</td>
+</tr>
+<tr class="odd">
+<td>00:40:37</td>
+<td>00:46:49</td>
+<td>6.2</td>
+<td>YAML header built option by option</td>
+</tr>
+<tr class="even">
+<td>00:46:49</td>
+<td>00:52:40</td>
+<td>5.8</td>
+<td>Student screen shares, YAML errors</td>
+</tr>
+<tr class="odd">
+<td>00:52:40</td>
+<td>00:59:05</td>
+<td>6.4</td>
+<td>First code chunk, <code>.gitignore</code>, commit and push</td>
+</tr>
+<tr class="even">
+<td>00:59:05</td>
+<td>01:04:22</td>
+<td>5.3</td>
+<td>Assignment operators, object not found, R as a vector language</td>
+</tr>
+<tr class="odd">
+<td>01:04:22</td>
+<td>01:10:45</td>
+<td>6.4</td>
+<td>Types in the class RMD: <code>typeof()</code>, the integer <code>L</code>, the native pipe, <code>results='hold'</code></td>
+</tr>
+<tr class="even">
+<td>01:10:45</td>
+<td>01:18:02</td>
+<td>7.3</td>
+<td>Four types on the slides, then the timed type self-assessment</td>
+</tr>
+<tr class="odd">
+<td>01:18:02</td>
+<td>01:20:48</td>
+<td>2.8</td>
+<td>Closing: commit and push, undo versus revert, what comes next</td>
+</tr>
+</tbody>
+</table>
+<p>The segments sum to about 80.8 minutes, which covers the 1:20:48 recording with no unaccounted gap. Against the plan, the Kahoot, which the deck’s notes place right after the setup timer so latecomers can settle, instead absorbed roughly a third of the session, Part 1 expanded into a YAML walkthrough and two screen-share repairs that the deck does not allow for, and everything in the Recap section fell off the end.</p>
 </section>
-<section id="before-we-start" class="level2">
-<h2 class="anchored" data-anchor-id="before-we-start">Before we start</h2>
-<p><span class="ts">00:00:03</span> A housekeeping note first: the notes on the Week 01 slides have been filled in, so if you go back to those decks you will see written out what was only said out loud in class. Wednesday’s class was the motivation for R: it is a language you can read, and that lets you carry an analysis from one dataset to another far faster than you could in a spreadsheet, at least for Fadel. This week the focus moves from why to how.</p>
+<section id="where-students-struggled" class="level2">
+<h2 class="anchored" data-anchor-id="where-students-struggled">Where students struggled</h2>
+<p>Fadel re-explained every Kahoot question, not only the ones that went badly, so each entry below says whether the recording gives any sign that the room actually missed it.</p>
+<section id="kahoot-question-3-how-the-county-map-encodes-counties" class="level3">
+<h3 class="anchored" data-anchor-id="kahoot-question-3-how-the-county-map-encodes-counties">Kahoot question 3: how the county map encodes counties</h3>
+<p><span class="ts">00:12:52</span> The question showed the county-level map and asked how the counties are encoded. Fadel’s response to the scoreboard was to say he was going to smile, and then to go back past the question itself to two terms from Class 01.</p>
+<p><span class="ts">00:13:13</span> The first term he re-stated was unit of analysis, which is the question of what one row of data means. In the crash dataset the unit of analysis was not a crash, it was a person involved in a crash. The second was data encoding, which he glossed as a fancy way of asking how a variable in a file gets represented in a picture. He had already covered this in Class 01 and again on Wednesday, and said so. On this map the counties are drawn: the x and y position traces the border, and Butler County sits where it does because it is in southwestern Ohio, next to Montgomery and Warren.</p>
+<p><span class="ts">00:14:35</span> Only then did he take the miss itself. Color is not the encoding for counties because color is not being used to tell Butler from Warren. The New York Times used color for the case count per capita, light orange for few cases and dark red or maroon for many. Nobody is saying Warren is orange and Cuyahoga green as a way of telling them apart. Fadel checked twice that this had landed, once by asking whether the room would get it right on an exam, and noted that the recording is there for it.</p>
+</section>
+<section id="kahoot-question-4-where-a-committed-file-lives" class="level3">
+<h3 class="anchored" data-anchor-id="kahoot-question-4-where-a-committed-file-lives">Kahoot question 4: where a committed file lives</h3>
+<p><span class="ts">00:15:43</span> The question was: you edit a file, save it, and commit it, so where does that file live now? Enough of the room answered that it is now on every computer where they are signed into GitHub Desktop that Fadel used the result as an argument for the class asking him more questions.</p>
+<p><span class="ts">00:16:21</span> The cause is treating Git and GitHub as one thing. His re-explanation separated the operations. Git operations happen on the local computer. Ticking the checkbox in GitHub Desktop marks a file to be tracked, and clicking commit takes a snapshot of that file as of 8:46:59 a.m. on August 31st, which he called the equivalent of naming a version in a Google Doc history.</p>
+<p><span class="ts">00:17:13</span> Committing puts nothing on the server; push does that. Having the file on a second computer needs two things, a push and then a pull of the latest version of the repository onto that other machine. Pushing means it is on the cloud server at github.com, nothing more, and every other computer needs its own pull.</p>
+</section>
+<section id="kahoot-question-5-which-files-git-can-diff" class="level3">
+<h3 class="anchored" data-anchor-id="kahoot-question-5-which-files-git-can-diff">Kahoot question 5: which files Git can diff</h3>
+<p><span class="ts">00:19:21</span> Nothing in what Fadel says marks this one as a miss, but the re-explanation is worth having because it is where the binary-versus-flat distinction got settled. Wednesday’s slide split files into two colors, binary and not binary; Fadel recalled the binary one as grey, thought the other was blue, and said he did not really remember. For binary files, a Word document, an image, a PDF, Git can say the version changed but not line by line what happened. For a Markdown file, a text file, a CSV rather than an Excel file, an R file, a Python file, anything flat, Git can say exactly what changed, as the class saw on Wednesday when a line was added to the skills list in a Markdown document.</p>
+</section>
+<section id="kahoot-question-6-undo-versus-revert" class="level3">
+<h3 class="anchored" data-anchor-id="kahoot-question-6-undo-versus-revert">Kahoot question 6: undo versus revert</h3>
+<p><span class="ts">00:21:34</span> Fadel handled this one by asking the room to take the question apart before answering. Pushing a commit is two things, taking a snapshot of the version containing the mistake and sending that snapshot up to GitHub, so the mistake is already on the cloud. Keeping the history honest means adding a version that is the state of things before the mistake, leaving the original, the mistake and the correction all visible. The term is reverting.</p>
+<p><span class="ts">00:22:47</span> He then walked the distractors. There is no real undo in GitHub Desktop once a commit has been pushed. Deleting the repository and starting over, which nobody picked, loses the history. Pulling the latest repository from github.com just brings the mistake down to another machine, because the mistake is what is up there.</p>
+</section>
+<section id="project-options-was-greyed-out" class="level3">
+<h3 class="anchored" data-anchor-id="project-options-was-greyed-out">Project Options was greyed out</h3>
+<p><span class="ts">00:34:34</span> Someone in the room could not open Project Options at all; the menu entry was greyed out. Fadel guessed the cause immediately, which is that they had not created a project yet, and the entry is only live inside one. The fix he gave from the podium was New Project, then Existing Directory, then browse to the folder they already have, then Create Project, after which Project Options becomes available.</p>
+</section>
+<section id="the-code-button-did-not-appear" class="level3">
+<h3 class="anchored" data-anchor-id="the-code-button-did-not-appear">The Code button did not appear</h3>
+<p><span class="ts">00:46:49</span> A question from the room about the two code options led straight into the session’s main error. Fadel’s answer was that both <code>code_folding</code> and <code>code_download</code> put a Code button on the knitted page, <code>code_folding</code> adding show-all and hide-all and <code>code_download</code> adding the link to download the <code>.Rmd</code>, and that if the options are added and nothing appears, the problem is almost certainly the spacing. He asked anyone in that situation to say so, and someone did.</p>
+</section>
+<section id="yaml-indentation-on-two-screen-shares" class="level3">
+<h3 class="anchored" data-anchor-id="yaml-indentation-on-two-screen-shares">YAML indentation, on two screen shares</h3>
+<p><span class="ts">00:47:57</span> Two screen shares came up over Zoom, and in both cases the failure was in the YAML block rather than in any R. The common error in the first case is keys under <code>output:</code> that are not lined up with each other, which makes knit fail. Fadel’s fix was not to count spaces but to rebuild the block from <code>output:</code> downwards, pressing Enter after each key and letting RStudio place the line below it. He said out loud while doing it that he had thought those lines needed to be indented and that they would see, and once the indentation was consistent the knit succeeded. He drew the general lesson afterwards, which is to type the key and its colon, press Enter, and let RStudio tab it rather than counting spaces.</p>
+<p><span class="ts">00:51:24</span> The second share had a different cause. Knit produced no error message at all, and the thing to check in that case is whether part of the YAML header has gone missing rather than being misaligned. That one was resolved on the call.</p>
+<p>Editorially: if a successor is debugging the same block, the check that separates the two cases is whether every key at the same level starts in the same column and whether a key with children ends in a colon.</p>
+</section>
+<section id="crashdate-and-age-in-the-type-self-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="crashdate-and-age-in-the-type-self-assessment">crashdate and age in the type self-assessment</h3>
+<p><span class="ts">01:15:32</span> The two columns that needed the most work were the two the deck’s own speaker notes predict. For <code>crashdate</code>, Fadel put a question back to the room about which function they use to read a CSV in R, and a student answered <code>read.csv</code>. He accepted that, then introduced <code>readr::read_csv()</code>, which guesses types better and recognizes this column as a date-time, which makes it a double, numeric underneath.</p>
+<p><span class="ts">01:16:13</span> For <code>age</code> the trap is that the column should be numeric but contains some non-numeric values, and that makes the whole thing character. He turned this into the rule to carry out of the session, and noted it is not only an R rule: a vector holds one type, and mixing types generalizes to the most general type that can hold everything. Integers and doubles together, <code>401L</code> and <code>44.7</code>, generalize to double. Numbers and text together generalize to character.</p>
+<p><span class="ts">01:17:14</span> Working the rest of the table, <code>instanceid</code> looks like words so it is character, <code>dayofweek</code> is text so it is character, <code>latitude_x</code> has a decimal point so it is a double, and <code>injuries</code> is text. The Answer tab on the slide carries the code that produces the six answers together with the two gotchas written out. Fadel invited notes from the discussion into the editable box on that slide.</p>
+</section>
+</section>
+<section id="questions-from-the-room" class="level2">
+<h2 class="anchored" data-anchor-id="questions-from-the-room">Questions from the room</h2>
+<p><span class="ts">00:29:10</span> A student asked whether someone using R in other classes should set up a separate project directory for each of them. Fadel said yes, and called it a good recommendation: a project per class. His reason was that somewhere between 10 and 20 percent of the trouble people have reading files in R is a wrong file path, and if everyone shares the same folder structure the code he posts online runs as-is, provided the person running it is inside the project and has downloaded any data file it needs.</p>
+<p><span class="ts">00:30:00</span> Fadel then put a question back to the room, R scripts or R Markdown, and said he would follow the recommendation. The room said Markdown, and that is what the course uses from here.</p>
+<p><span class="ts">00:46:49</span> A student asked what <code>code_folding</code> and <code>code_download</code> each do, given that both put a Code button on the page. The answer, and the spacing failure it uncovered, is in the section above.</p>
+<p><span class="ts">01:15:32</span> Asked of the room during the self-assessment: which function do you use to read a CSV in R? Someone answered <code>read.csv</code>, which Fadel used as the way into <code>readr::read_csv()</code>.</p>
+</section>
+<section id="demo-notes-and-gotchas" class="level2">
+<h2 class="anchored" data-anchor-id="demo-notes-and-gotchas">Demo notes and gotchas</h2>
+<section id="opening-housekeeping" class="level3">
+<h3 class="anchored" data-anchor-id="opening-housekeeping">Opening housekeeping</h3>
+<p><span class="ts">00:00:03</span> Fadel opened by saying he had filled in the notes on the Week 01 slides since last time, so the decks now carry in writing what was only said aloud. His one-sentence summary of Wednesday was the motivation for R: it is a language you can read, and that lets an analysis carry from one dataset to another far faster than in a spreadsheet, at least for him.</p>
 <!-- todo: awaiting answer #1 @ 00:00:31 (transcript has "why we're using RMSpot ... primarily about a descriptive language"; provisionally written as R being a readable language) -->
-<p><span class="ts">00:01:20</span> The setup for the day: join the Zoom from the Week 0 module on Canvas so you can share your screen if you hit an error, and work from the computer that has your <code>business_intelligence</code> repository on it, because we add files to it today. If you are on a different machine, clone it first. RStudio is pinned to the taskbar on the lab machines; typing <em>RStudio</em> in the Windows search bar finds it. If you are on your own laptop, Assignment 0 already walked you through installing it.</p>
+<p><span class="ts">00:01:20</span> The housekeeping worth repeating: join the Zoom from the Week 0 module on Canvas so anyone who hits an error can share a screen, and work from the machine that already has the repository, because files get added to it today. Fadel has RStudio pinned to his taskbar, and it is also found by typing RStudio in the Windows search bar. Assignment 0 covered installing it on personal laptops.</p>
 </section>
-<section id="week-01-review-on-kahoot" class="level2">
-<h2 class="anchored" data-anchor-id="week-01-review-on-kahoot">Week 01 review on Kahoot</h2>
-<p><span class="ts">00:02:39</span> The plan is roughly five Kahoots, give or take, as a check on how the understanding is going.</p>
+<section id="running-the-kahoot" class="level3">
+<h3 class="anchored" data-anchor-id="running-the-kahoot">Running the Kahoot</h3>
+<p><span class="ts">00:02:39</span> Fadel described the format as about five of these, give or take, as a check on how the understanding is going, with six questions today evenly split between Class 01 and Class 02.</p>
 <!-- todo: awaiting answer #7 @ 00:02:39 (transcript reads "about 5 of these cahoots ... followed by 5 of these cahoots"; the second half may name a different tool, e.g. Mentimeter. Provisionally written as five Kahoots with the second clause dropped.) -->
-<p>Six questions today, evenly split between Class 01 and Class 02. When you join, use your first and last name so the bonus can be matched to you: if three people call themselves Andrew, that becomes work. Fadel played along on the projector but does not count, and said so twice.</p>
-<section id="where-business-intelligence-lives" class="level3">
-<h3 class="anchored" data-anchor-id="where-business-intelligence-lives">Where business intelligence lives</h3>
-<p><span class="ts">00:05:49</span> The first question asked which two stages of the analytics journey business intelligence lives in, and the answer is pre-analytics and descriptive. The point of BI is to pull data, typically from several sources, and put it in front of people as an interactive dashboard so they can ask their own questions. The Job Scout example from Class 01 was both halves at once: scraping job ads, organizing them, and putting them in a readable table in a database is the pre-analytics part; the interactive charts on top, where you can ask for jobs in Ohio that want Tableau and Power BI, are the descriptive part. The data management piece is the work you did in 345. What this class adds is pulling data from sources outside your own organization.</p>
-<p><span class="ts">00:07:24</span> Descriptive analytics itself splits in two: statistical summaries of the data, and visualizations people can understand. Predictive analytics is typically machine learning. Prescriptive got two buckets. One is experimental design, the sort of thing you would do in ISA 335: if Amazon moves its buy button to a different place and runs an A/B test, do more people buy? The other is the optimization side from ISA 321. You might have a good predictive model of how stocks will do over six months, but that does not mean you put all $10,000 in one of them. You want to maximize return while minimizing risk, which means deciding how much of the $10,000 goes into each stock.</p>
+<p><span class="ts">00:03:47</span> Players join at kahoot.it with a six-digit code, on a phone or in a browser. Two practical points he made from the podium: ask for first and last name so the bonus can be matched to a person, since duplicate first names make more work for him at grading time, and expect his own name on the scoreboard because he had been testing the game. He told the room twice that he does not count.</p>
+<p><span class="ts">00:23:39</span> The winner gets the 0.15 bonus on Assignment 02.</p>
+<p>The questions actually run in the room were not the deck’s bank in the deck’s order. Five of the six match, but the deck’s fifth question, on which visual encoding carried each day’s count in the crashes-by-weekday chart, was replaced by a question on how a county-level map encodes counties, and the commit and diff questions came after it rather than before. A successor working from the deck’s speaker notes should check the live Kahoot before assuming they match.</p>
+<p><span class="ts">00:05:49</span> The content he re-taught on the way through: business intelligence lives in pre-analytics and descriptive, the Job Scout example from Class 01 being both halves at once, with scraping and organizing job ads into a database as the pre-analytics part and the interactive charts on top as the descriptive part. The data management piece is the work from 345; what this class adds is pulling data from sources outside the organization.</p>
+<p><span class="ts">00:07:24</span> Descriptive analytics splits into statistical summaries and visualizations people can understand. Predictive is typically machine learning. Prescriptive got two buckets, experimental design of the ISA 335 kind, with Amazon moving its buy button and A/B testing whether more people buy, and the optimization side from ISA 321, where a good six-month prediction of stock performance still does not mean putting all $10,000 into one of them.</p>
 <!-- todo: awaiting answer #3 @ 00:07:43 (course numbers heard as "IA35" and "ISA 3.21"; written as ISA 335 and ISA 321) -->
-<p><span class="ts">00:08:55</span> BI is associated with dashboarding above all: generating insights from a dashboard in Tableau or Power BI, either retrospectively (how did we do last quarter) or in real time (in the Ford plant up in Michigan, what are we producing right now).</p>
-<!-- todo: awaiting answer #4 @ 00:12:01 (course numbers heard as "391" and "225") -->
-</section>
-<section id="three-shapes-of-data" class="level3">
-<h3 class="anchored" data-anchor-id="three-shapes-of-data">Three shapes of data</h3>
-<p><span class="ts">00:10:13</span> The second question was the JSON one, and the room did better on it. The three buckets, in the order the Job Scout example produces them: the wall of text describing a job is <strong>unstructured</strong>, because text and images are not structured by design. The skills that come back from the job-ads API arrive as <strong>JSON</strong>, and for a given job you might have ten skills. That is more organized than free text, but to put it in a data table you still have to decide <em>how</em>. Do you compress all the skills into one cell separated by commas or semicolons? Or do you build a long table with a job ID and a skill, so a job with five skills is five rows and a job with fifteen skills is fifteen rows? That decision is yours to make, and having to make it is what <strong>semi-structured</strong> means. <strong>Structured</strong> data is what you handled in 345: anything that already sits in a data table, the nice CSV you consume when you run a regression.</p>
+<p><span class="ts">00:08:55</span> He closed that question on dashboarding: insight from a dashboard in Tableau or Power BI, either retrospectively, as in how did we do last quarter, or in real time, as in what is the Ford plant up in Michigan producing right now.</p>
+<p><span class="ts">00:10:13</span> The three shapes of data came out of the JSON question, which went better. The wall of text describing a job is unstructured, because text and images are not structured by design. The skills coming back from the job-ads API arrive as JSON, more organized than free text but still needing a decision before they reach a table: all skills compressed into one cell separated by commas or semicolons, or a long table with a job ID and a skill, so a job with five skills is five rows and one with fifteen skills is fifteen. Having to make that decision is what semi-structured means. Structured data is the 345 material, anything that already sits in a data table.</p>
 <!-- todo: awaiting answer #2 @ 00:10:43 (job-ads API name heard as "Active.cv") -->
+<!-- todo: awaiting answer #4 @ 00:12:01 (course numbers heard as "391" and "225") -->
+<p><span class="ts">00:18:32</span> A stance he stated in the middle of the review and repeated later: this is not a sprint, and if the room needs something explained in more detail it gets explained in more detail.</p>
 </section>
-<section id="data-encoding-and-why-color-is-not-encoding-the-counties" class="level3">
-<h3 class="anchored" data-anchor-id="data-encoding-and-why-color-is-not-encoding-the-counties">Data encoding, and why color is not encoding the counties</h3>
-<p><span class="ts">00:12:52</span> The third question showed the county-level map and asked how the counties are encoded. This one drew a pause, and Fadel used it to re-state two terms from Class 01.</p>
-<p><span class="ts">00:13:13</span> The first is the <strong>unit of analysis</strong>: what does one row of data mean? In the crash dataset the unit of analysis was not a crash, it was a person involved in a crash. The second is <strong>data encoding</strong>, which is a fancy way of asking how a variable in your file gets represented in a picture. On this map the counties are <em>drawn</em>: the x and y position on the map traces the border. Butler County sits where it does because it is in southwestern Ohio, next to Montgomery and Warren.</p>
-<p><span class="ts">00:14:35</span> So why is color not the encoding for counties? Because color is not being used to tell Butler from Warren. The New York Times used color for the case count per capita: light orange means few cases, dark red or maroon means many. Nobody is saying Warren is orange and Cuyahoga is green as a way of telling them apart. Color encodes the case rate, not the county identity. Fadel checked twice that this had landed, noting the recording is there for it.</p>
+<section id="the-pacing-poll" class="level3">
+<h3 class="anchored" data-anchor-id="the-pacing-poll">The pacing poll</h3>
+<p><span class="ts">00:26:00</span> Before the demo he ran a Mentimeter poll to set the pace, asking whether students had used R before, joinable at menti.com with a code or by scanning the QR code on the slide. The revealed board showed 28 of 28 responded: 8 for “Yes, comfortable with it”, 20 for “Yes, but I do not trust my skills”, and none for “No”. His read to the room was that on a positive note everybody who voted had used R before, and that the class would take it one step at a time from there.</p>
+<!-- todo: awaiting answer #9 @ 00:26:43 (Menti counts) is now settled from the recording itself: at 00:26:50 the board reads 8 / 20 / 0 with "28 of 28 responded". Text already says that; no change needed when the answer arrives. -->
 </section>
-<section id="commit-push-pull" class="level3">
-<h3 class="anchored" data-anchor-id="commit-push-pull">Commit, push, pull</h3>
-<p><span class="ts">00:15:43</span> The fourth question: you edit a file, save it, and commit it. Where does that file live now? The room got this one wrong enough that Fadel took it as an invitation to ask more questions in class.</p>
-<p><span class="ts">00:16:21</span> Git and GitHub are different things, and Git operations happen on your computer. Ticking the checkbox in GitHub Desktop means you want to track a particular file. Clicking <strong>commit</strong> means you want a snapshot of that file as of 8:46:59 a.m. on August 31st. That is the equivalent of naming a version in a Google Doc history: this is the version I want to track, and if everything worked up to that point, this is the version I can come back to.</p>
-<p><span class="ts">00:17:13</span> So for everyone who answered that the file is now on every computer where you are signed into GitHub Desktop: not yet. Committing does not put anything on the server. That is the <strong>push</strong> operation. And to have the file on a second computer you need two things: that you pushed it, and that you <strong>pulled</strong> the latest version of the repository onto that other machine. Pushing means it is on the cloud server at github.com, nothing more. If you want your laptop, or a gaming machine at home, to match your M drive, you open GitHub Desktop on that machine, go to the repository, and pull. Every other computer needs its own pull.</p>
-<p><span class="ts">00:18:32</span> A note that sets the tone for the rest of the session: this is not a sprint. If the room needs something explained in more detail, it gets explained in more detail.</p>
+<section id="from-repository-to-project" class="level3">
+<h3 class="anchored" data-anchor-id="from-repository-to-project">From repository to project</h3>
+<p><span class="ts">00:27:30</span> The rationale he gave for working exclusively in a project environment is that if everyone has the folders set up the same way, his code runs on their computer without editing. On the projector: File, New Project, Existing Directory, because the folder already exists from last class. His own is the <code>isa401a</code> folder on the M drive; the students’ should be <code>business_intelligence</code>. Browse to it, then Create Project.</p>
+<p><span class="ts">00:28:32</span> What the project buys is that every R session started in it begins in that folder, so paths are relative to the project root rather than absolute. He said he would come back to what that means as the semester goes on.</p>
+<p><span class="ts">00:30:14</span> The file was created through File, New File, R Markdown, with the title <code>03 - R Basics</code> and his own name in the author field. Successors should note a mismatch with the deck: the demo slide names the file <code>class03.Rmd</code>, while the class code repository holds <code>markdowns/03_r_basics.Rmd</code>.</p>
+<p><span class="ts">00:30:48</span> With the file open he toured the panes: the source file top left, the console below it where output appears and which he called a throwaway place to try things that should not end up in the record, the Environment pane where objects like a data frame show up, and the Files pane. The project name in the corner read <code>isa401a</code>.</p>
+<p><span class="ts">00:31:27</span> He then made a <code>markdowns</code> folder inside the project and saved the file into it.</p>
+<p><span class="ts">00:32:12</span> Switching to GitHub Desktop to show where that landed, the repository showed the <code>.Rproj</code> file and the new R Markdown with everything in it green, meaning none of it existed before, plus a <code>.Rproj.user</code> folder dealt with later.</p>
 </section>
-<section id="which-files-can-git-diff" class="level3">
-<h3 class="anchored" data-anchor-id="which-files-can-git-diff">Which files can Git diff</h3>
-<p><span class="ts">00:18:58</span> The fifth question: for which file can Git show you exactly which lines changed?</p>
-<p><span class="ts">00:19:21</span> Wednesday’s slide split files into two colors, binary and not binary. Fadel could not recall which color went with which and said so. Binary files are things like a Word document, an image, a PDF. For those, Git can tell you the version changed, but not line by line what happened. For a Markdown file, a text file, a CSV (not an Excel file, a CSV), an R file, a Python file, anything flat, Git can tell you exactly what you changed. That is what we saw on Wednesday when a line was added to the skills list in the Markdown document: Git showed there was no line here before, and now there is one. Edit a line and it shows the old line and the new line side by side. With a <code>.docx</code>, a <code>.png</code>, or a PowerPoint, Git can save the prior version, but all it can tell you is that the new version differs, not how.</p>
+<section id="settings-and-where-they-actually-live" class="level3">
+<h3 class="anchored" data-anchor-id="settings-and-where-they-actually-live">Settings, and where they actually live</h3>
+<p><span class="ts">00:32:49</span> This is the part of the demo most likely to trip a successor. Fadel did the setup in Tools, Project Options, noting that the slide shows the same settings in Global Options and that off the top of his head he did not know which settings live in one and which in the other, only that they share a lot. Doing it per project is useful if another class has a faculty member with different preferences.</p>
+<p><span class="ts">00:33:12</span> In Project Options, General, all three Workspace settings go to no: restore .RData into workspace at startup, save workspace to .RData on exit, and always save history. His reason is that a <code>DF</code> left in the environment from a different session and a different dataset makes it easy to run an analysis on the wrong data without noticing.</p>
+<p><span class="ts">00:33:58</span> In Project Options, Code Editing, tick use native pipe operator. On Windows <code>Ctrl + Shift + M</code> then types the pipe, M as in Markdown, which is how he remembers it. He glossed the pipe as a fancy way of saying the output from the first function becomes the first input to the next.</p>
+<p><span class="ts">00:36:01</span> Appearance is optional and he flagged it as optional twice. He uses the Tomorrow Night Bright editor theme, and the only advantage he claimed for matching it is that the colors on a student screen then match the colors on the projector. The claim that a dark theme is easier on the eye he offered as theory rather than fact.</p>
+<p><span class="ts">00:36:53</span> One pane in Project Options he passed over without settling: he said it is actually different from Global Options, that it is not what he is used to, that he would leave it as yes or no up to the room, and that the class will not be using Python. The pane on screen at that moment is the R Markdown pane, with the Python entry visible below it in the sidebar.</p>
+<!-- todo: awaiting answer #8 @ 00:36:53 (which Project Options control was being left to preference; the frame shows the R Markdown pane selected, Visual Mode and markdown output options, with Python listed below it in the sidebar. Provisionally written as an unsettled pane with the Python line as an aside.) -->
+<p><span class="ts">00:37:09</span> Then Tools, Global Options for what is not available per project. Editor font size is personal and he likes it bigger. Under Code, Display, tick highlight R function calls and use rainbow parentheses. The first gives a function name its own color, distinct from the package name. The second gives each nesting level of parentheses its own color, so it is visible at a glance whether a parenthesis that was opened has been closed. Neither changes how the code runs. The effect was visible the moment he clicked Apply.</p>
+<p><span class="ts">00:38:51</span> In the R Markdown pane of Global Options he set the equation and image previews dropdown to Never, hedging that he tends to do this “if I’m not mistaken”. He then went looking for the setting that controls where chunk output appears rather than inline, could not find it in that pane, checked Advanced, and moved on with “when we run it, I’ll figure it out”. What he settled on later, at 01:06:37, was show output preview in, offering Window and Viewer Pane.</p>
+<!-- todo: 00:38:51 you looked for the R Markdown inline-output setting, could not find it, and said "when we run it, I'll figure it out"; it turned up at 01:06:37 as Show output preview in. Confirm that is what you were after, or say what the missing setting was. The frame at 00:39:05 also shows "Show output inline for all R Markdown documents" ticked in that same pane, which may be the one you meant. -->
+<p><span class="ts">00:39:43</span> Help, Cheat Sheets, R Markdown Cheat Sheet downloads a PDF. He noted there are two R Markdown entries in that menu and could not remember which was which. The one that opened lists the YAML options and shows what each format looks like, and he confirmed on screen that it is still two pages.</p>
 </section>
-<section id="undo-versus-revert" class="level3">
-<h3 class="anchored" data-anchor-id="undo-versus-revert">Undo versus revert</h3>
-<p><span class="ts">00:21:09</span> The last question: you pushed a commit with a mistake in it. What is the fix that keeps the history honest? Fadel asked the room to take the sentence apart first.</p>
-<p><span class="ts">00:21:34</span> You pushed a commit, which is two things: you took a snapshot of the version containing the mistake, and you sent that snapshot up to GitHub. The mistake is already on the cloud. To keep the history honest you say: I made a mistake, that was version 2, and version 3 is going to be the state of things before the mistake. So the history reads as what you started with, then the mistake, then a new version that undoes it, with every step still visible. The term for that is <strong>reverting</strong>.</p>
-<p><span class="ts">00:22:47</span> The other options do not work. There is no real undo in GitHub Desktop once you have pushed. Deleting the repository and starting over, which nobody picked, loses the history entirely. And pulling the latest repo from github.com just brings the mistake down to another computer, because the mistake is what is up there.</p>
-<p><span class="ts">00:23:39</span> The winner of the Kahoot gets the 0.15 bonus on Assignment 02.</p>
-<p><span class="ts">00:24:14</span> That review took about 25 minutes, more than intended. Fadel’s view: if reviewing what we covered is what it takes for everyone to be on the same page going forward, that is a win, not a loss. The plan for the rest of the session: RStudio as the interface to R, a little syntax, and a lot of indexing, which is really basic, really fundamental, and the source of about half the errors you will get. Custom functions and <code>if</code>/<code>else</code> statements are nice-to-haves that may not happen at all; <code>for</code> loops will get their own treatment, maybe next week, maybe the week after.</p>
+<section id="building-the-yaml-live" class="level3">
+<h3 class="anchored" data-anchor-id="building-the-yaml-live">Building the YAML live</h3>
+<p><span class="ts">00:40:37</span> This walkthrough is not in the deck, which simply tells students to delete everything below the setup chunk. It took roughly six minutes. Fadel defined the block between the two rows of three dashes, lines 1 to 6 of a new file, as the YAML, standing for Yet Another Markup Language, and hedged that the one-line gloss may not be fully accurate but is good enough as a mental model: this is where the metadata goes and where the look of the file is specified. Out of the box, Knit produces an HTML file next to the <code>.Rmd</code> in <code>markdowns/</code>.</p>
+<p><span class="ts">00:41:31</span> The habit he built the rest of the demo on: YAML is whitespace-sensitive in a way R is not, so rather than count spaces, type the key and its colon first, then press Enter and let RStudio indent the next line. He wrote <code>html_document:</code> with the colon in place before pressing Enter specifically to show the automatic indent.</p>
+<p><span class="ts">00:42:14</span> From there each option went in one at a time with a knit after each. <code>toc: TRUE</code> put a table of contents at the top, which on the template file listed R Markdown and Including Plots. He arranged the windows side by side to show source and output together.</p>
+<p><span class="ts">00:42:52</span> <code>toc_float: TRUE</code> moved the contents to the left and made it follow the scroll, which is what long documents need. At this point he also ticked Knit on Save so that saving re-knits, which is what made the side-by-side comparison work for the rest of the hour.</p>
+<p><span class="ts">00:43:26</span> <code>number_sections: TRUE</code> numbered the headings, turning the two template sections into 1 and 2.</p>
+<p><span class="ts">00:44:18</span> <code>code_folding: show</code> works only in HTML documents and does two things: a Code button at the top right of the knitted page with show-all and hide-all, and a show/hide toggle per chunk.</p>
+<p><span class="ts">00:44:48</span> <code>code_download: TRUE</code> is the one he uses so only one file has to be handed out. With it set, someone holding only the HTML can download the <code>.Rmd</code> from the page.</p>
+<p><span class="ts">00:45:48</span> He pointed back at the cheat sheet, whose YAML section documents most of these along with what each format looks like.</p>
+<p><span class="ts">00:46:13</span> Last step before any R: everything from the <code>R Markdown</code> heading down is template boilerplate, so he deleted it and knitted again to an empty page. He said he expects to be quicker about this in future classes and showed it today because it is an option worth knowing.</p>
+<p><span class="ts">00:48:18</span> One request that came out of the screen shares and is worth making before the demo rather than during it: anyone joining the Zoom from their own computer should use the Zoom desktop app rather than Zoom in a browser tab, because the app lets Fadel ask for remote control and fix things directly instead of describing keystrokes.</p>
+</section>
+<section id="the-first-chunk" class="level3">
+<h3 class="anchored" data-anchor-id="the-first-chunk">The first chunk</h3>
+<p><span class="ts">00:53:33</span> His recommendation is never to type the three backticks by hand, but to use the insert-chunk button in the editor toolbar and pick R.</p>
+<p><span class="ts">00:53:55</span> Reading a chunk header left to right: the programming language first, and R Markdown can run several in one document, with Python needing the reticulate package. Then the chunk name, which he recommends making descriptive and which cannot contain spaces, so <code>cincy crashes</code> has to become <code>cincy_crashes</code>. Then the chunk options.</p>
+<p><span class="ts">00:54:24</span> Two ways to get output, and the order of operations is the only difference. Knit always saves the file first. Knit on Save is the other way round. Either way the knitted document holds code and output together.</p>
+<p><span class="ts">00:58:10</span> Two ways to run code in a chunk: <code>Ctrl + Enter</code> for the current line, or the whole chunk at once. He writes one line at a time and runs it, to be sure it works before moving on.</p>
+</section>
+<section id="gitignore-commit-push" class="level3">
+<h3 class="anchored" data-anchor-id="gitignore-commit-push">.gitignore, commit, push</h3>
+<p><span class="ts">00:54:50</span> The <code>.Rproj.user</code> folder RStudio creates is not something anyone wants in a repository. In GitHub Desktop, right-click one of those changed files, choose to ignore the folder, and pick the top-level folder. He was careful to say that skipping this is not an error, just that those files are of no interest to anyone.</p>
+<p><span class="ts">00:55:47</span> Ignoring the folder created a <code>.gitignore</code> with one line in it. On the projector this took the changes list from 19 files down to 4: the new <code>.gitignore</code>, the <code>.Rproj</code> file, which he said one might want to keep, and the <code>.Rmd</code> and <code>.html</code> in <code>markdowns/</code>.</p>
+<p><span class="ts">00:56:15</span> The demonstration worth keeping. He typed a commit summary, misspelled it, retyped it, and committed. Then, before pushing, he opened his repository page on github.com to show that nothing new was there and the last commit was five days ago. Only after Push origin and a refresh did the <code>markdowns</code> folder appear. That sequence is what makes the Kahoot question on commit versus push concrete, and it is worth doing in that order rather than pushing first.</p>
+<p><span class="ts">00:57:26</span> He also spent a moment looking for a way to suppress an inline preview element in the editor and did not find it, saying there used to be a way and maybe in this version of RStudio there is not.</p>
+<p><span class="ts">00:58:35</span> The ritual he set for every class from here: open the project, work in an R Markdown, and before leaving, knit, commit and push.</p>
+</section>
+<section id="later-demo-stalls" class="level3">
+<h3 class="anchored" data-anchor-id="later-demo-stalls">Later demo stalls</h3>
+<p><span class="ts">01:04:48</span> The <code>typeof()</code> demonstration stalled on a naming fumble, and the recovery is the useful part. Fadel could not remember whether the object was <code>crashes</code> or <code>crashes_per_day</code> or <code>crashes_by_day</code>, went back to the earlier chunk to check, and copied the name rather than retyping it.</p>
+<p><span class="ts">01:06:30</span> The knit appeared to succeed but the output did not show, and he said he did not know why, wondering aloud whether he had suppressed something he should not have. This is what sent him back to Tools, Global Options, R Markdown, where he found show output preview in, with Window and Viewer Pane as the two choices, and set it so the preview appeared where he wanted.</p>
+<p><span class="ts">01:07:43</span> Looking at the held output surfaced a real mistake in the class RMD: the chunk was printing <code>crashes_per_day</code> where it should have printed <code>crashes_by_day</code>. He corrected it on screen, and the knitted chunk then showed the two things it should, a single value and the named vector.</p>
+</section>
+<section id="closing-the-git-loop" class="level3">
+<h3 class="anchored" data-anchor-id="closing-the-git-loop">Closing the Git loop</h3>
+<p><span class="ts">01:18:02</span> With two minutes left he chose not to push into the next topic and closed the Git loop instead. The changed files showed orange rather than green because they already existed: a block of changed lines in the HTML starting around line 1600, and in the <code>.Rmd</code> the chunk gaining <code>results='hold'</code> plus a few added lines. Commit summary <code>end of class03</code>, then push.</p>
+<p><span class="ts">01:19:17</span> The last Git point was made with the commit sitting locally and not yet pushed, and he corrected himself mid-sentence to make the condition exact: not that it was uncommitted, but that it was committed and not pushed. In that state, right-clicking the commit offers undo commit, and undo does not delete the work, it puts the changes back so you can add whatever you forgot. He used it to add a line about the slide deck not being finished, then committed again and pushed. Once a commit has been pushed that option is gone and revert is the route, which is the Kahoot question seen from the other side.</p>
 </section>
 </section>
-<section id="part-1-your-r-project" class="level2">
-<h2 class="anchored" data-anchor-id="part-1-your-r-project">Part 1: Your R project</h2>
-<section id="how-many-of-you-have-used-r" class="level3">
-<h3 class="anchored" data-anchor-id="how-many-of-you-have-used-r">How many of you have used R?</h3>
-<p><span class="ts">00:26:00</span> Before starting the demo, Fadel ran a quick Menti to set the pace: <em>Did you use R before?</em> All 27 responses said yes, but only 8 of them chose “Yes, comfortable with it” against 19 for “Yes, but I do not trust my skills”. Nobody answered no. The plan from there was to take it one step at a time.</p>
-</section>
-<section id="making-the-repository-an-rstudio-project" class="level3">
-<h3 class="anchored" data-anchor-id="making-the-repository-an-rstudio-project">Making the repository an RStudio project</h3>
-<p><span class="ts">00:27:30</span> We will work exclusively in a project environment. The reason is that if we all have the folders set up the same way, the code Fadel writes will run on your computer without editing. On the projector this meant <strong>File → New Project</strong>, then <strong>Existing Directory</strong>, because the folder already exists from last class: on Fadel’s M drive that is the <code>isa401a</code> folder, and on yours it should be <code>business_intelligence</code>. Browse to it, then <strong>Create Project</strong>.</p>
-<p><span class="ts">00:28:32</span> What creating the project buys you is that every time you start an R session in it, the session starts <em>in that folder</em>. Paths are not <code>M:/Fadel/...</code> any more; everything is relative to the project root. More on what that means as the semester goes on.</p>
-<p><span class="ts">00:29:10</span> A student asked whether that means you should have a separate project for each class that uses R. Yes, and it is a good recommendation. Somewhere between 10 and 20 percent of the trouble people have reading files in R is that the file path is wrong: you are looking for <code>data.csv</code> and it is in Downloads, or on someone else’s M drive, or wherever the professor kept it. That does not travel. If we all share the same folder structure, the code posted online runs as-is, as long as you are inside the project and you have downloaded any data file it needs.</p>
-</section>
-<section id="r-markdown-or-r-script" class="level3">
-<h3 class="anchored" data-anchor-id="r-markdown-or-r-script">R Markdown or R script?</h3>
-<p><span class="ts">00:30:00</span> A second student question, and then a question back to the room: R scripts or R Markdown? The room said Markdown, so Markdown it is, for this class and for the rest of the semester. <strong>File → New File → R Markdown</strong>, title <code>03 - R Basics</code>, and your own name in the author field.</p>
-<p><span class="ts">00:30:48</span> With the file open, the four panes: the source file top left, the console below it where output gets shown and where you can try things you do not want in your record, the Environment pane where objects like a data frame show up, and the Files pane. The project name in the corner reads <code>isa401a</code>; in your case it should read <code>business_intelligence</code>.</p>
-<p><span class="ts">00:31:27</span> Then a folder called <code>markdowns</code> inside the project, and the file saved into it as <code>03_r_basics.Rmd</code>.</p>
-<p><span class="ts">00:32:12</span> Switching to GitHub Desktop to show where that landed: the repository shows a <code>.Rproj</code> file and the new R Markdown, and everything inside the R Markdown is green, meaning none of it existed before. (There is also a <code>.Rproj.user</code> folder, which we deal with shortly.)</p>
-</section>
-<section id="rstudio-settings" class="level3">
-<h3 class="anchored" data-anchor-id="rstudio-settings">RStudio settings</h3>
-<p><span class="ts">00:32:49</span> Part preference, part good practice. Fadel did this in <strong>Tools → Project Options</strong>, noting that the slide shows the same settings in Global Options, and that off the top of the head it was not clear which settings live in one and which in the other; they share a lot. Doing it per project is useful if another class has a faculty member with different preferences.</p>
-<p><span class="ts">00:33:12</span> In <strong>Project Options → General</strong>, all three Workspace settings get set to no: <em>Restore .RData into workspace at startup</em>, <em>Save workspace to .RData on exit</em>, and <em>Always save history</em>. The reason: if you have a <code>DF</code> in your environment left over from a different session and a different dataset, you can quietly run your analysis on the wrong data. Fadel’s position is that you should not have that.</p>
-<p><span class="ts">00:33:58</span> In <strong>Project Options → Code Editing</strong>, tick <strong>Use native pipe operator, <code>|&gt;</code></strong>. On Windows, <code>Ctrl + Shift + M</code> then types the pipe for you (M as in Markdown, which is how Fadel remembers it). The pipe is a fancy way of saying the output of the first function becomes the first input to the next one.</p>
-<p><span class="ts">00:34:34</span> A student following along could not reach Project Options: the entry was greyed out. That is the tell that you are not in a project. Create the project first, <strong>New Project → Existing Directory</strong>, browse to the folder you already have, <strong>Create Project</strong>, and Project Options becomes available. Fadel added, again, that the questions are welcome and this is not a race.</p>
-<p><span class="ts">00:36:01</span> <strong>Appearance</strong> is optional, and was flagged as optional twice. Fadel uses the <strong>Tomorrow Night Bright</strong> editor theme. The only real advantage of matching it is that the colors on your screen match the colors on the projector; the claim that a dark theme is easier on the eyes was offered as theory, not fact.</p>
-<p><span class="ts">00:37:12</span> Then over to <strong>Tools → Global Options</strong> for the settings that are not available per project. Editor font size is a personal thing; Fadel likes it bigger. Under <strong>Code → Display</strong>, tick <strong>Highlight R function calls</strong> and <strong>Use rainbow parentheses</strong>. The first gives a function name its own color, distinct from the package name, instead of everything in the line being one color. The second gives each nesting level of parentheses a different color, so you can see at a glance whether you closed what you opened. Neither changes how the code runs; they just make your life easier.</p>
-<p><span class="ts">00:38:51</span> Fadel then went looking for the R Markdown setting that sends chunk output to the console rather than inline, could not find it in that pane, checked Advanced, and moved on: “when we run it, I’ll figure it out.” It turns up later, at <span class="ts">01:06:37</span>, under <strong>Tools → Global Options → R Markdown</strong>: <em>Show output preview in</em>, which offers <strong>Window</strong> and <strong>Viewer Pane</strong>.</p>
-</section>
-<section id="the-r-markdown-cheat-sheet" class="level3">
-<h3 class="anchored" data-anchor-id="the-r-markdown-cheat-sheet">The R Markdown cheat sheet</h3>
-<p><span class="ts">00:39:43</span> If you have used R Markdown and forgotten how something works, <strong>Help → Cheat Sheets → R Markdown Cheat Sheet</strong> downloads a PDF. Fadel noted there are two R Markdown entries in that menu and could not remember which was which. The one that opened lists the YAML options and shows what each format looks like, and it is two pages, as it always was.</p>
-</section>
-<section id="the-yaml-header" class="level3">
-<h3 class="anchored" data-anchor-id="the-yaml-header">The YAML header</h3>
-<p><span class="ts">00:40:37</span> The block between the two rows of three dashes, lines 1 to 6 of a new file, is the <strong>YAML</strong>, which stands for Yet Another Markup Language. Fadel hedged that the one-line gloss may not be fully accurate, but that as a mental model it is good enough: this is where you specify the metadata and how you want the file to look. Out of the box, clicking <strong>Knit</strong> produces an HTML file that lands next to the <code>.Rmd</code>, in <code>markdowns/</code>.</p>
-<p><span class="ts">00:41:31</span> A small typing habit worth stealing: YAML is whitespace-sensitive in a way R is not, so instead of counting spaces, type the key and its colon first, then press Enter. RStudio indents the next line for you. Fadel deliberately wrote <code>html_document:</code> with the colon before pressing Enter to show the automatic indent.</p>
-<p><span class="ts">00:42:14</span> From there the header gets built up one option at a time, knitting after each to show what changed. <code>toc: TRUE</code> adds a table of contents at the top of the document, which on the template file listed <em>R Markdown</em> and <em>Including Plots</em>.</p>
-<p><span class="ts">00:42:52</span> <code>toc_float: TRUE</code> moves the table of contents to the left and makes it follow you as you scroll, which is what you want for the long documents you will end up writing. At this point Fadel also ticked <strong>Knit on Save</strong>, so that saving re-knits and the source and the output can be watched side by side.</p>
-<p><span class="ts">00:43:26</span> <code>number_sections: TRUE</code> numbers the headings, so the two template sections become 1 and 2.</p>
-<p><span class="ts">00:44:18</span> <code>code_folding: show</code> works only in HTML documents and does two things: a <strong>Code</strong> button appears at the top right of the knitted page with <em>Show All Code</em> and <em>Hide All Code</em>, and each chunk gets its own show/hide toggle.</p>
-<p><span class="ts">00:44:48</span> <code>code_download: TRUE</code> is the one Fadel uses so that only one file has to be handed out. With it set, someone who has only the HTML can download the <code>.Rmd</code> from the page itself.</p>
-<p>The header we ended up with is the one at the top of the class RMD:</p>
+<section id="code-as-taught" class="level2">
+<h2 class="anchored" data-anchor-id="code-as-taught">Code as taught</h2>
+<p>All of this was built in front of the room rather than opened from a finished file, but not all of it was typed. The YAML header was assembled option by option over about six minutes, with a knit after each addition. The setup chunk came with the R Markdown template and was left alone. The two lines of the first chunk were copied off the slide after a false start, and the seven integer values in the second chunk were copied from the chunk above rather than retyped. The two blocks in the last subsection stayed on the slides and were never typed into the class RMD.</p>
+<p>The header, built up option by option and knitted after each addition:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
 <span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">"03 - R Basics"</span></span>
-<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>author<span class="sc">:</span> <span class="st">"Fadel M Fadel"</span></span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>author<span class="sc">:</span> <span class="st">"Fadel M Megahed"</span></span>
 <span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-hidden="true" tabindex="-1"></a>date<span class="sc">:</span> <span class="st">'`r Sys.Date()`'</span></span>
 <span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-hidden="true" tabindex="-1"></a>output<span class="sc">:</span></span>
 <span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-hidden="true" tabindex="-1"></a>  html_document<span class="sc">:</span></span>
@@ -341,209 +482,170 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </dd>
 <dt data-target-cell="annotated-cell-1" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-1" data-code-lines="11" data-code-annotation="4">HTML only. Adds a <strong>Code</strong> button with show-all and hide-all, plus a toggle per chunk.</span>
+<span data-code-cell="annotated-cell-1" data-code-lines="11" data-code-annotation="4">HTML only. Adds a Code button with show-all and hide-all, plus a toggle per chunk.</span>
 </dd>
 <dt data-target-cell="annotated-cell-1" data-target-annotation="5">5</dt>
 <dd>
 <span data-code-cell="annotated-cell-1" data-code-lines="12" data-code-annotation="5">Puts a download link for the <code>.Rmd</code> in the HTML, so one file is enough to hand out.</span>
 </dd>
 </dl>
-<p><span class="ts">00:45:48</span> Most of these are documented in that R Markdown cheat sheet, in the YAML section, along with what each format looks like. The indentation trick is Fadel’s way around the alignment rules: add the colon, press Enter, and let RStudio sort it out.</p>
-<p><span class="ts">00:46:13</span> Last step before writing any R: everything in the file from the <code>R Markdown</code> heading down is template boilerplate that has nothing to do with this class, so delete it. Knit again and you get an empty page. Fadel noted this walkthrough will be much quicker in future classes; today it was worth showing as an option.</p>
-</section>
-<section id="debugging-the-yaml-in-the-room" class="level3">
-<h3 class="anchored" data-anchor-id="debugging-the-yaml-in-the-room">Debugging the YAML in the room</h3>
-<p><span class="ts">00:46:49</span> A student asked what the difference between the two code options is. <code>code_folding</code> is what gives you <em>Show All Code</em> and <em>Hide All Code</em>; <code>code_download</code> is what gives you the download link for the <code>.Rmd</code>. Both put a <strong>Code</strong> button on the page. If you add them and do not get the button, the problem is almost certainly the spacing.</p>
-<p><span class="ts">00:47:57</span> Which is what it was. Two people shared their screens over Zoom, and the common failure both times was the YAML block rather than anything in R: the keys were not lined up with each other. The fix Fadel talked through is to stop counting spaces and rebuild the block: put the cursor at the end of <code>output:</code>, press Enter, type <code>html_document:</code>, press Enter again, and let RStudio place each following line. Each key ends up flush with its siblings without anyone counting. Once the indentation was consistent, knit succeeded.</p>
-<p>Editorially: if you are debugging your own YAML later, the useful check is that every key at the same level starts in the same column, and that a key with children ends in a colon.</p>
-<p><span class="ts">00:48:18</span> One practical request that came out of this: if you are joining the Zoom from your own computer, use the Zoom desktop app rather than Zoom in a browser tab. With the app, Fadel can ask for remote control and fix things directly instead of describing keystrokes.</p>
-</section>
-<section id="your-first-code-chunk" class="level3">
-<h3 class="anchored" data-anchor-id="your-first-code-chunk">Your first code chunk</h3>
-<p><span class="ts">00:53:33</span> A recommendation: never type the three backticks by hand. Use the insert-chunk button in the editor toolbar and pick R.</p>
-<p><span class="ts">00:53:55</span> Reading a chunk header left to right: the first thing is the name of the <em>programming language</em>. R Markdown can run several languages in one document; Python needs a package called <strong>reticulate</strong>, but it runs. The second thing is the <em>name of the chunk</em>, and the recommendation is to give it a descriptive one so you know what you are looking at. Chunk names cannot contain spaces, so <code>cincy crashes</code> has to become <code>cincy_crashes</code>. After that come the chunk options, which we come back to.</p>
-<p>The chunk that got named <code>cincy_crashes</code>, under the heading <code># Crashes Per Day</code>, ended the session looking like this (its options are <code>results='hold'</code>, added at the very end of class):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>crashes_per_day <span class="ot">=</span> <span class="dv">30125</span> <span class="sc">/</span> <span class="dv">365</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-3" class="code-annotation-target"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>crashes_per_day</span>
-<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-hidden="true" tabindex="-1"></a>crashes_by_day <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">2241</span>, <span class="dv">2327</span>, <span class="dv">2285</span>,</span>
-<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-hidden="true" tabindex="-1"></a>                   <span class="dv">2380</span>, <span class="dv">1866</span>, <span class="dv">1664</span>)</span>
-<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(crashes_by_day) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>,</span>
-<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"Fri"</span>, <span class="st">"Sat"</span>, <span class="st">"Sun"</span>)</span>
-<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-hidden="true" tabindex="-1"></a>crashes_by_day</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="2" data-code-annotation="1">30,125 is the row count of the crash file, so this is crashes per day for 2025.</span>
-</dd>
-<dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="3" data-code-annotation="2">Typing the name on its own line is how you print it.</span>
-</dd>
-</dl>
-<p>When the chunk was first written it held only the two <code>crashes_per_day</code> lines; the vector arrives in Part 2.</p>
-<p><span class="ts">00:54:24</span> Two ways to get output. <strong>Knit</strong> always saves the file first. <strong>Knit on Save</strong> is the other order: save, and it knits. Either way the knitted document has your code and your output together.</p>
-</section>
-<section id="gitignore-commit-push" class="level3">
-<h3 class="anchored" data-anchor-id="gitignore-commit-push">.gitignore, commit, push</h3>
-<p><span class="ts">00:54:50</span> The <code>.Rproj.user</code> folder that RStudio creates is not something anyone wants to see in your repository. In GitHub Desktop, right-click one of those changed files and choose <strong>Ignore folder (add to .gitignore)</strong>, then pick the top-level folder. That is not an error if you skip it, but those files are of no interest to anyone.</p>
-<p><span class="ts">00:55:35</span> Ignoring the folder creates a new file called <code>.gitignore</code> in the repository with one line in it. On the projector this took the changes list from 19 files down to 4: the new <code>.gitignore</code>, the <code>.Rproj</code> file (which you probably do want to keep), and the <code>.Rmd</code> and <code>.html</code> in <code>markdowns/</code>.</p>
-<p><span class="ts">00:56:15</span> Commit with a summary. Fadel typed one, misspelled it, retyped it, and committed. Then, deliberately, checked GitHub before pushing: the repository page still showed nothing new, last commit five days ago. Only after clicking <strong>Push origin</strong> and refreshing did the <code>markdowns</code> folder appear on github.com.</p>
-<p><span class="ts">00:57:26</span> Fadel also spent a moment looking for a way to suppress an inline preview element in the editor and did not find it: “there used to be a way, maybe in this version of RStudio there’s not.” Not important, but it is why the screen looked slightly different from previous years.</p>
-<p><span class="ts">00:58:10</span> Two ways to run code in a chunk: <code>Ctrl + Enter</code> runs the current line, or you can run the whole chunk at once. Fadel writes one line at a time and runs it, to be sure it works before moving on.</p>
-<p><span class="ts">00:58:35</span> The ritual for every class from here: open the project, work in an R Markdown (the room chose Markdown, so Markdown it is), and before you leave, knit, commit, and push. That is how everything stays in sync.</p>
-</section>
-</section>
-<section id="part-2-objects-and-vectors" class="level2">
-<h2 class="anchored" data-anchor-id="part-2-objects-and-vectors">Part 2: Objects and vectors</h2>
-<section id="three-assignment-operators" class="level3">
-<h3 class="anchored" data-anchor-id="three-assignment-operators">Three assignment operators</h3>
-<p><span class="ts">00:59:05</span> R is a weird programming language in one specific way: you can assign a value to an object in three different ways.</p>
+<p>The template’s setup chunk, which arrived with the new file and was not discussed:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Under the heading <code># Crashes Per Day</code> and the subheading <code>## Putting the Data in RMarkdown</code>, the chunk named <code>cincy_crashes</code>. It grew through the session: when first written it held only the two <code>crashes_per_day</code> lines, the vector came next, and the <code>results='hold'</code> option went on during Part 2 rather than when the chunk was created.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>crashes_per_day <span class="ot">=</span> <span class="dv">30125</span> <span class="sc">/</span> <span class="dv">365</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>crashes_per_day <span class="ot">&lt;-</span> <span class="dv">30125</span> <span class="sc">/</span> <span class="dv">365</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-3-4" class="code-annotation-target"><a href="#annotated-cell-3-4" aria-hidden="true" tabindex="-1"></a><span class="dv">30125</span> <span class="sc">/</span> <span class="dv">365</span> <span class="ot">-&gt;</span> crashes_per_day</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>crashes_per_day</span>
+<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-hidden="true" tabindex="-1"></a>crashes_by_day <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">2241</span>, <span class="dv">2327</span>, <span class="dv">2285</span>,</span>
+<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-hidden="true" tabindex="-1"></a>                   <span class="dv">2380</span>, <span class="dv">1866</span>, <span class="dv">1664</span>)</span>
+<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(crashes_by_day) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>,</span>
+<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"Fri"</span>, <span class="st">"Sat"</span>, <span class="st">"Sun"</span>)</span>
+<span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-hidden="true" tabindex="-1"></a>crashes_by_day</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="2" data-code-annotation="1"><code>=</code>, which is what you have most likely used in your other classes and what we use here.</span>
+<span data-code-cell="annotated-cell-3" data-code-lines="2" data-code-annotation="1">30,125 is the row count of the crash file, so this is crashes per day for 2025.</span>
 </dd>
 <dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="3" data-code-annotation="2"><code>&lt;-</code>, literally an arrow: take this value and assign it back into the name. This is what you get if you ask ChatGPT for R code or find code online, and it was the default way people wrote R, Fadel guessed, ten or fifteen years ago.</span>
-</dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="4" data-code-annotation="3"><code>-&gt;</code>, pointing the other way. Uncommon, but Fadel does use it at the end of a series of piped steps, where saying “and the output goes into this object” reads well.</span>
+<span data-code-cell="annotated-cell-3" data-code-lines="3" data-code-annotation="2">Typing the name on its own line prints it.</span>
 </dd>
 </dl>
-<p><span class="ts">01:00:13</span> All three do the same thing. Fadel did not know whether other languages offer this and said so; the point is only that R has three and that this is unusual.</p>
-</section>
-<section id="object-not-found" class="level3">
-<h3 class="anchored" data-anchor-id="object-not-found">Object not found</h3>
-<p><span class="ts">01:00:13</span> R’s errors are awful. They are not very descriptive. The most common one you will meet is <code>object ... not found</code>, and Fadel simulated it live by deleting <code>crashes_per_day</code> from the environment with <code>rm()</code> and then pressing <code>Ctrl + Enter</code> on the line that prints it. R has no idea where the object is and cannot help you.</p>
-<p><span class="ts">01:01:11</span> That single message has three causes, and Fadel’s ranking of them: you capitalized something that should not be capitalized, you have some other typo in the name, or you simply never ran the line. The easiest way to check is to look at whatever you wrote and then look at the Environment pane. If it is not there, that is why you are getting the error.</p>
-</section>
-<section id="r-is-a-vector-language" class="level3">
-<h3 class="anchored" data-anchor-id="r-is-a-vector-language">R is a vector language</h3>
-<p><span class="ts">01:01:38</span> The interesting thing about R is that it is a vector language: you can run a function on a whole vector and it works, element by element, without you writing a loop. The seven numbers used here are the counts of crashes on each day of the week in 2025, the same seven bars from Wednesday’s chart.</p>
+<p><span class="ts">01:01:38</span> The teaching around that vector was that R is a vector language: a function run on a whole vector works, element by element, with no loop written anywhere. He introduced the seven numbers as the counts of crashes on each day of the week in 2025; the deck’s notes identify them as the seven bars from Wednesday’s chart. <code>c()</code> puts them into a vector of seven elements, and Fadel said he thinks of it as concatenating while noting he does not necessarily know whether that is technically what is happening. <code>names()</code> attaches a name to each element.</p>
+<p><span class="ts">01:07:04</span> The <code>results='hold'</code> option, which he uses in the class notes, holds the outputs of a chunk and shows them together at the end instead of interleaving each result with the code that produced it.</p>
+<p>Under the heading <code>## Type of `crashes_per_day`</code>, written with backticks so the name renders as code when knitted, the second chunk. It is unnamed in the class RMD.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>crashes_by_day <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">2241</span>, <span class="dv">2327</span>, <span class="dv">2285</span>,</span>
-<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>                   <span class="dv">2380</span>, <span class="dv">1866</span>, <span class="dv">1664</span>)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-4" class="code-annotation-target"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(crashes_by_day) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>,</span>
-<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"Fri"</span>, <span class="st">"Sat"</span>, <span class="st">"Sun"</span>)</span>
-<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a>crashes_by_day</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-4-7" class="code-annotation-target"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a>crashes_by_day <span class="sc">&gt;</span> <span class="dv">2000</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(crashes_by_day <span class="sc">&gt;</span> <span class="dv">2000</span>)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-4-9" class="code-annotation-target"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(crashes_by_day)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(crashes_by_day)</span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-4" class="code-annotation-target"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a>crashes_by_day_int <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2020</span>L, <span class="dv">2241</span>L, <span class="dv">2327</span>L, <span class="dv">2285</span>L,</span>
+<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a>                   <span class="dv">2380</span>L, <span class="dv">1866</span>L, <span class="dv">1664</span>L)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(crashes_by_day_int) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>,</span>
+<span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"Fri"</span>, <span class="st">"Sat"</span>, <span class="st">"Sun"</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a>crashes_by_day_int <span class="sc">|&gt;</span> <span class="fu">typeof</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="2" data-code-annotation="1"><code>c()</code> puts the numbers together into a vector of seven elements. Fadel thinks of it as concatenating, while noting that whether that is technically what is happening is another matter.</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="2" data-code-annotation="1">In the console this returned <code>"double"</code>.</span>
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="4" data-code-annotation="2"><code>names()</code> attaches a name to each element, making it a named vector. Printing it now shows Mon at 2020, Tue at 2241, and so on.</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="4" data-code-annotation="2">The same seven numbers, copied from the chunk above rather than retyped, with an uppercase <code>L</code> after each one to make them integers. Fadel said out loud not to type these by hand.</span>
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="3">A greater-than sign in R is a logical operation: it asks, for each element, true or false. One comparison, seven answers. On the slide, Saturday and Sunday come back <code>FALSE</code> and the other five <code>TRUE</code>.</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="3">Copying the block over left this line still naming <code>crashes_by_day</code>; Fadel spotted it and changed it to <code>crashes_by_day_int</code>, adding that it did not really matter here, because the only thing being checked was the type.</span>
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="8" data-code-annotation="4"><code>sum()</code> of <code>TRUE</code>s and <code>FALSE</code>s counts the <code>TRUE</code>s, because <code>TRUE</code> is 1 and <code>FALSE</code> is 0. The slide shows 5.</span>
-</dd>
-<dt data-target-cell="annotated-cell-4" data-target-annotation="5">5</dt>
-<dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="9" data-code-annotation="5"><code>mean()</code> works on the vector the same way, and the slide shows 2111.857.</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="8" data-code-annotation="4">The native pipe: take the thing on the left and make it the first input to the function on the right. <code>Ctrl + Shift + M</code> types the pipe. This returned <code>"integer"</code>.</span>
 </dd>
 </dl>
-<p><span class="ts">01:03:36</span> No <code>for</code> loop anywhere. Fadel’s contrast: in Python the default way to do this would be to go through the list, typically with a list comprehension. In R you operate on the vector itself.</p>
-</section>
-<section id="types" class="level3">
-<h3 class="anchored" data-anchor-id="types">Types</h3>
-<p><span class="ts">01:04:22</span> R has six data types by default, four of which are common enough that this class will highlight them. <strong>Logical</strong> is just <code>TRUE</code> or <code>FALSE</code>. <strong>Integer</strong> is a whole number, and to make something an integer in R you give it an uppercase <code>L</code>.</p>
-<p><span class="ts">01:04:48</span> The demonstration was a bit of a fumble over which object was called what, which is worth watching for its own sake: Fadel had to go back, check the name in the earlier chunk, and copy it rather than retype it. Under a new heading, <code>## Type of `crashes_per_day`</code> (the backtick is the key next to the 1, and it makes the name render as code when you knit), the second chunk of the class RMD is:</p>
+<p><span class="ts">01:09:31</span> He said the pipe is unnecessary here and that he was showing it only to show it. The substance is the contrast between the two chunks: the first vector had no decimal points anywhere and R still stored it as a double, because a double is what allows decimals, so making something explicitly an integer means telling R.</p>
+<section id="shown-on-the-slides-not-in-the-class-rmd" class="level3">
+<h3 class="anchored" data-anchor-id="shown-on-the-slides-not-in-the-class-rmd">Shown on the slides, not in the class RMD</h3>
+<p><span class="ts">00:59:05</span> Fadel called R a weird programming language in one specific way, that you can assign a value to an object in three different ways.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(crashes_by_day)</span>
-<span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a>crashes_by_day_int <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2020</span>L, <span class="dv">2241</span>L, <span class="dv">2327</span>L, <span class="dv">2285</span>L,</span>
-<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>                   <span class="dv">2380</span>L, <span class="dv">1866</span>L, <span class="dv">1664</span>L)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(crashes_by_day_int) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>,</span>
-<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"Fri"</span>, <span class="st">"Sat"</span>, <span class="st">"Sun"</span>)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-5-8" class="code-annotation-target"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a>crashes_by_day_int <span class="sc">|&gt;</span> <span class="fu">typeof</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>crashes_per_day <span class="ot">=</span> <span class="dv">30125</span> <span class="sc">/</span> <span class="dv">365</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>crashes_per_day <span class="ot">&lt;-</span> <span class="dv">30125</span> <span class="sc">/</span> <span class="dv">365</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a><span class="dv">30125</span> <span class="sc">/</span> <span class="dv">365</span> <span class="ot">-&gt;</span> crashes_per_day</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="2" data-code-annotation="1">In the console this returned <code>"double"</code>.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="2" data-code-annotation="1"><code>=</code>, which he assumed is what students use in their other classes, and what this course uses.</span>
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="2">The same seven numbers, copied from the chunk above rather than retyped, with an uppercase <code>L</code> after each one to make them integers. Fadel said out loud not to type these by hand.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="2"><code>&lt;-</code>, literally an arrow: take this value and assign it back into the name. This is what comes back from ChatGPT or from code found online, and it was the default way people wrote R, he guessed, ten or fifteen years ago.</span>
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="3">Copying the block over left this line still naming <code>crashes_by_day</code>; Fadel spotted it and changed it to <code>crashes_by_day_int</code>, adding that it did not really matter here, because the only thing being checked was the type.</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="8" data-code-annotation="4">The native pipe: take the thing on the left and make it the first input to the function on the right. <code>Ctrl + Shift + M</code> types the pipe. This returned <code>"integer"</code>.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="3"><code>-&gt;</code>, pointing the other way. Very uncommon, but he does use it at the end of a series of piped steps, where saying the output goes into this object reads well.</span>
 </dd>
 </dl>
-<p><span class="ts">01:09:31</span> The pipe is unnecessary here and Fadel said so; it was shown only to show it. The substance is the contrast between the two: the first vector had no decimal points anywhere and R still stored it as a double, because a double is what allows decimals. If you want something to be explicitly an integer, you have to tell R.</p>
+<p><span class="ts">01:00:13</span> All three do the same thing. He said he did not know whether other programming languages offer this; the point was only that R has three and that this is unusual. He then moved straight to R’s errors, which he called awful and not very descriptive.</p>
+<p><span class="ts">01:00:41</span> The most common error is object not found, and he simulated it live rather than showing the slide: he removed <code>crashes_per_day</code> from the environment and pressed <code>Ctrl + Enter</code> on the line that prints it, so R reported that it did not know where the object was.</p>
+<p><span class="ts">01:01:11</span> His ranking of the three causes: an uppercase letter where there should not be one, some other typo in the name, or simply never having run the line. The check he gave is to compare the name as typed against the Environment pane, and if it is not there, that is the reason.</p>
+<p>The vector operations, which stayed on the slide:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-2" class="code-annotation-target"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>crashes_by_day <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">2241</span>, <span class="dv">2327</span>, <span class="dv">2285</span>,</span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>                   <span class="dv">2380</span>, <span class="dv">1866</span>, <span class="dv">1664</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(crashes_by_day) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>,</span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"Fri"</span>, <span class="st">"Sat"</span>, <span class="st">"Sun"</span>)</span>
+<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>crashes_by_day</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-6-7" class="code-annotation-target"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a>crashes_by_day <span class="sc">&gt;</span> <span class="dv">2000</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-6-8" class="code-annotation-target"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(crashes_by_day <span class="sc">&gt;</span> <span class="dv">2000</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-6-9" class="code-annotation-target"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(crashes_by_day)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="2" data-code-annotation="1"><code>c()</code> puts the numbers together into a vector of seven elements.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="2"><code>names()</code> attaches a name to each element, making it a named vector. Fadel read the printed result as Mon at 2020, Tue at 2241, and so on.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="7" data-code-annotation="3">A greater-than sign in R is a logical operation: it asks, for each element, true or false. One comparison, seven answers. On the slide, Saturday and Sunday come back <code>FALSE</code> and the other five <code>TRUE</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="8" data-code-annotation="4"><code>sum()</code> of <code>TRUE</code>s and <code>FALSE</code>s counts the <code>TRUE</code>s, because <code>TRUE</code> is 1 and <code>FALSE</code> is 0. The slide shows 5.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="9" data-code-annotation="5"><code>mean()</code> works on the vector the same way, and the slide shows 2111.857.</span>
+</dd>
+</dl>
+<p><span class="ts">01:03:36</span> His contrast was with Python, where the default way to do this would be to go through the list, typically with a list comprehension. In R you operate on the vector itself, with no <code>for</code> loop anywhere.</p>
+<p><span class="ts">01:04:22</span> R has six data types by default, four of them common enough for this class. Logical is <code>TRUE</code> or <code>FALSE</code>. Integer is a whole number, and making something an integer in R means giving it an uppercase <code>L</code>.</p>
+<p><span class="ts">01:10:45</span> Back on the slides for the visual view of the four types. Factor is the one students have met in regression, where days of the week as a predictor get made into a factor. A factor is another way of saying categorical variable, and it differs from a character variable in being limited to specific values: if the days of the week are the levels, there cannot be a day of the week outside them. His analogy was a select filter in a dashboard, which limits people’s answers to a fixed list.</p>
+<p><span class="ts">01:12:07</span> Integer and double are the numeric types. He misspoke here and corrected himself in the same breath: double allows decimal points, integer does not. To check the type of something, <code>typeof()</code>, which he said takes a single value or a whole vector.</p>
 </section>
-<section id="resultshold" class="level3">
-<h3 class="anchored" data-anchor-id="resultshold">results=‘hold’</h3>
-<p><span class="ts">01:07:04</span> Along the way, the <code>results='hold'</code> chunk option, which Fadel uses in the class notes. Instead of printing the first result, then showing more code, then printing the next result, it holds the outputs and shows them together. Looking at the held output is what surfaced a mistake: the chunk was printing <code>crashes_per_day</code> where it should have printed <code>crashes_by_day</code>. Fixed, the knitted chunk shows two things, a single value and the named vector.</p>
-<p><span class="ts">01:06:37</span> This is also where the setting Fadel had been hunting for earlier turned up. <strong>Tools → Global Options → R Markdown → Show output preview in</strong> takes either <strong>Window</strong> or <strong>Viewer Pane</strong>: one opens the knitted file in its own window, the other shows it in the pane on the right. It is up to you.</p>
-</section>
-<section id="four-types-and-the-trap" class="level3">
-<h3 class="anchored" data-anchor-id="four-types-and-the-trap">Four types, and the trap</h3>
-<p><span class="ts">01:10:45</span> Back to the slides for a visual view of the four types. <strong>Logical</strong> takes two values. <strong>Factor</strong> is the one you have met in regression: if you had days of the week as a predictor, you made them a factor. A factor is another way of saying categorical variable, and it differs from a character variable in that it is limited to specific values. If the days of the week are Sunday, Monday, Tuesday, Wednesday, then those are the levels, and you cannot have a day of the week called something else. That is the point of it: you specify the levels the variable is allowed to take. Fadel’s analogy was a select filter in a dashboard, which limits people’s answers to a fixed list.</p>
-<p><span class="ts">01:12:07</span> <strong>Integer</strong> and <strong>double</strong> are the numeric types. Fadel misspoke and immediately corrected: double allows decimal points, integer does not.</p>
-<p><span class="ts">01:12:33</span> To check the type of something, <code>typeof()</code>, and you can hand it a single value or a whole vector.</p>
-</section>
-<section id="the-self-assessment" class="level3">
-<h3 class="anchored" data-anchor-id="the-self-assessment">The self-assessment</h3>
-<p><span class="ts">01:12:33</span> Two minutes on the clock to connect each of six columns from the Cincinnati crash file to its type: <code>instanceid</code>, <code>crashdate</code>, <code>dayofweek</code>, <code>age</code>, <code>latitude_x</code>, <code>injuries</code>. The seven sample rows on screen show what the values look like.</p>
-<p><span class="ts">01:13:03</span> A caveat given before the timer started, and it matters: the note at the bottom says the data was read with <code>read_csv()</code>. Some of these columns could be understood differently depending on how you read the file. A column full of dashes and colons might well come back as character; here it does not.</p>
-<p><span class="ts">01:15:10</span> Working through them. <code>instanceid</code> looks like words, like text, which is the usual indication of character.</p>
-<p><span class="ts">01:15:32</span> <code>crashdate</code> depends on how you read the file, and Fadel put the question to the room: when you read CSV files in R, what function do you use? A student answered <code>read.csv</code>. With <code>read.csv</code> this would come back as text and that would be fine. But the <strong>readr</strong> package has a function called <code>read_csv</code>, which guesses types better: it recognizes this as a date-time, which makes it a double. It is numeric underneath.</p>
-<p><span class="ts">01:16:13</span> <code>dayofweek</code> is text, so character. <code>age</code> is the one that catches people. It should be numeric, but the column contains some non-numeric values, and that makes the whole thing character.</p>
-<p><span class="ts">01:16:39</span> That is the rule worth carrying out of today, and it is not only an R rule: a vector can hold only one type. Mix types in it and R generalizes to the most general type that can hold everything. Integers and doubles together, say <code>401L</code> and <code>44.7</code>, generalize to double, because a double can represent both. Numbers and text together generalize to character.</p>
-<p><span class="ts">01:17:14</span> So in the table on screen, <code>age</code> shows <code>47</code> in one row and a letter code in another, and that makes the column character. <code>latitude_x</code> obviously has a decimal point, so it is a double, and <code>injuries</code> is obviously text.</p>
-<p><span class="ts">01:17:43</span> The Answer tab on the slide has the code that produces the six answers, and the two gotchas written out: <code>crashdate</code> is a double because readr stores a date-time as a number with a label on top, and <code>age</code> is character because of the letter codes in it. Cleaning <code>age</code> is a Class 07 job. Fadel invited notes from the discussion to go into the editable box on that slide, which is where they belong if you were taking any.</p>
+<section id="the-type-self-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="the-type-self-assessment">The type self-assessment</h3>
+<p><span class="ts">01:12:33</span> Two minutes on the countdown to connect each of six columns from the Cincinnati crash file to its type: <code>instanceid</code>, <code>crashdate</code>, <code>dayofweek</code>, <code>age</code>, <code>latitude_x</code> and <code>injuries</code>, with seven sample rows on screen showing what the values look like.</p>
+<p><span class="ts">01:13:03</span> He gave one caveat before starting the timer, and it is worth repeating verbatim when running this again. The note at the bottom of the slide says the data was read with <code>read_csv()</code>, and he said explicitly that some of these columns could be understood differently depending on how the file was read: a column full of dashes and colons might well come back as character, and here it does not.</p>
+<p><span class="ts">01:17:43</span> The Answer tab on the slide carries the code producing the six answers together with the two gotchas written out, that <code>crashdate</code> is a double because readr stores a date-time as a number with a label on top, and that <code>age</code> is character because of the letter codes in it. Cleaning <code>age</code> is a Class 07 job.</p>
 </section>
 </section>
-<section id="wrapping-up" class="level2">
-<h2 class="anchored" data-anchor-id="wrapping-up">Wrapping up</h2>
-<p><span class="ts">01:18:02</span> With two minutes left, Fadel chose not to push into the next topic and instead closed the Git loop. The changed files show in orange this time rather than green, because they already existed: a block of changed lines in the HTML, starting around line 1600, and in the <code>.Rmd</code> the chunk gained <code>results='hold'</code> and a few added lines. Commit summary <code>end of class03</code>, then push.</p>
-<p><span class="ts">01:19:17</span> One last Git point, made with the commit sitting locally and not yet pushed. Because it has not been pushed, right-clicking it offers <strong>undo commit</strong>, and undo does not delete your work: it just puts the changes back so you can add whatever you forgot. If you had already pushed, that option is gone and you revert instead, which adds the extra step to the history. This is the same undo-versus-revert distinction the Kahoot asked about, seen from the other side.</p>
-<p><span class="ts">01:19:45</span> Next class continues with R: data frames and subsetting. The two assignments were pushed by a day; you can do them now, because nothing in them depends on where we stopped and there were no R questions in them. The first fifteen minutes of Wednesday go to a former student now at Deloitte, talking about recruiting.</p>
-<!-- todo: awaiting answer #5 @ 01:20:01 (guest speaker sentence is garbled; written as "a former student now at Deloitte, talking about recruiting", and the following sentence about "an end of the class forward" is dropped) -->
-<p><span class="ts">01:20:29</span> The takeaway Fadel asked for: questions in class are always welcome, so stop the lecture and ask. And if you are chatting on Zoom, use the app rather than the browser, so screen shares can be driven from the podium.</p>
-</section>
-<section id="questions-from-class" class="level2">
-<h2 class="anchored" data-anchor-id="questions-from-class">Questions from class</h2>
-<p><span class="ts">00:29:10</span> A student asked whether you should set up a separate project directory for each class that uses R. Yes. A project per class, and the benefit is that everyone’s paths then agree, so posted code runs without editing.</p>
-<p><span class="ts">00:30:00</span> Asked in return, and answered by the room: R scripts or R Markdown? Markdown, and that is what the course uses from here.</p>
-<p><span class="ts">00:34:34</span> A student pointed out that Project Options was greyed out. That is what it looks like when you are not inside a project: create the project first, <strong>New Project → Existing Directory</strong>, and the entry becomes available.</p>
-<p><span class="ts">00:46:49</span> A student asked what <code>code_folding</code> and <code>code_download</code> each do, since both put a Code button on the page. <code>code_folding</code> gives you show-all and hide-all plus a per-chunk toggle; <code>code_download</code> gives you the link to download the <code>.Rmd</code>.</p>
-<p><span class="ts">01:15:32</span> Asked of the room: which function do you use to read a CSV in R? Someone answered <code>read.csv</code>. That works, and Fadel used it to introduce <code>readr::read_csv()</code>, which guesses column types better and is why <code>crashdate</code> comes back as a date-time rather than text.</p>
-</section>
-<section id="loose-ends" class="level2">
-<h2 class="anchored" data-anchor-id="loose-ends">Loose ends</h2>
-<!-- todo: 00:38:51 you looked for the R Markdown inline-output setting, could not find it, and said "when we run it, I'll figure it out"; it turned up at 01:06:37 as Show output preview in. Confirm that is what you were after, or say what the missing setting was. -->
-<!-- todo: 00:57:26 you said there used to be a way to suppress something in the R Markdown editor and could not find it in this RStudio version. Worth naming in the notes? -->
+<section id="for-next-time" class="level2">
+<h2 class="anchored" data-anchor-id="for-next-time">For next time</h2>
+<p><span class="ts">00:24:14</span> Fadel’s own remark on the overrun: the review took about 25 minutes and he did not intend it to, but his view is that if reviewing what has been covered is what it takes for everyone to be on the same page going forward, that is a win. His stated plan for the remaining time was RStudio as the interface to R, a little syntax, and a lot of indexing, which he called really basic, really fundamental, and the source of about half the errors students will get. Indexing was not reached.</p>
+<p><span class="ts">00:24:47</span> On what he expects to skip: custom functions and conditional statements were both offered as nice-to-haves if there was time, and he said he does not think he will talk about if-else statements at all in other sections. <code>for</code> loops he committed to, maybe not next week, the week after.</p>
 <!-- todo: 00:24:47 you said custom functions and if/else may not be covered at all, and for loops maybe next week or the week after. Update this line once the schedule is settled. -->
-<!-- todo: 00:19:21 you could not recall which color went with binary vs text files on the Wednesday slide; a pointer to that slide would help students match the two sessions. -->
-<!-- todo: awaiting answer #1 @ 00:00:31 -->
-<!-- todo: awaiting answer #2 @ 00:10:43 -->
-<!-- todo: awaiting answer #3 @ 00:07:43 -->
-<!-- todo: awaiting answer #4 @ 00:12:01 -->
-<!-- todo: awaiting answer #5 @ 01:20:01 -->
-<!-- todo: awaiting answer #7 @ 00:02:39 -->
+<p><span class="ts">00:46:29</span> On the YAML walkthrough, he said he will probably be quicker about it in future classes and showed it in full today because he wanted to highlight that it is an option.</p>
+<p><span class="ts">01:19:45</span> On the schedule: the next class continues with R, data frames and subsetting. The two assignments were pushed by a day, and he told the room they can be done now because nothing in them depends on where the class stopped and there were no R questions in them. The first fifteen minutes of the next class go to a former student now at Deloitte, talking about recruiting.</p>
+<!-- todo: awaiting answer #5 @ 01:20:01 (guest speaker sentence is garbled; written as "a former student now at Deloitte, talking about recruiting", and the following sentence about "an end of the class forward" is dropped) -->
+<p><span class="ts">01:20:29</span> The takeaway he asked the room to leave with: questions in class are always welcome, so stop him and ask; and anyone chatting on Zoom should use the app rather than the browser.</p>
+<p>Suggestion: budget the Week 01 review at 25 minutes on the plan, or cut it to four questions. Six questions with a full re-explanation of each miss took 18 minutes of question time, and indexing, named at the start of Part 1 as the day’s main topic, fell off the end.</p>
+<p>Suggestion: reconcile the deck with the demo before teaching it. The “Set Up RStudio Once” panels are written against Global Options while the live setup ran in Project Options, and Fadel had to say on the projector that he did not know which settings live where. The deck also names the file <code>class03.Rmd</code> while the class code repository holds <code>markdowns/03_r_basics.Rmd</code>.</p>
+<p>Suggestion: decide what to do about the YAML header. Building it option by option took about six minutes and is not in the deck, which simply tells students to delete everything below the setup chunk. Either give it a slide of its own or hand the header out and knit once.</p>
+<p>Suggestion: move the colon-then-Enter indent habit in front of the typing rather than after it. Both screen shares failed in the YAML block, and that habit is the fix Fadel reached for in both cases.</p>
+<p>Suggestion: sync the live Kahoot with the deck’s question bank. Five of the six matched; the deck’s chart-encoding question was replaced in the room by a county-map encoding question, and the order differed.</p>
+<p>Suggestion: assume the Recap section will not be reached at this pace. If the assignments card or the closing Menti matter, put them before Part 2 or move them into the following class.</p>
+<p>Open: what the phrase at 00:00:31 was, where the transcript has “why we’re using RMSpot”; provisionally written as R being a readable language.</p>
+<p>Open: whether “about 5 of these, followed by 5 of these” at 00:02:39 names a second tool in its second half, or is just a repetition.</p>
+<p>Open: the two course numbers at 00:07:43, heard as “IA35” and “ISA 3.21” and written as ISA 335 and ISA 321.</p>
+<p>Open: the two course numbers at 00:12:01, heard as “391” and “225”.</p>
+<p>Open: the name of the job-ads API at 00:10:43, transcribed as “Active.cv”.</p>
+<p>Open: the garbled sentence at 01:20:01 about the guest speaker and about what follows the guest slot.</p>
+<p>Open: which Project Options control Fadel was leaving to preference at 00:36:53 when he said it differs from Global Options and that the class will not be using Python.</p>
+<p>Open: whether the setting he could not find at 00:38:51 is the show output preview in setting he reached at 01:06:37, or something else in that pane.</p>
+<p>Open: what he was trying to suppress in the R Markdown editor at 00:57:26, which he could not find in this version of RStudio.</p>
+<!-- todo: 00:57:26 you said there used to be a way to suppress something in the R Markdown editor and could not find it in this RStudio version. Worth naming in the notes? -->
+<p>Open: which color meant binary and which meant flat files on Wednesday’s slide; at 00:19:21 Fadel said grey for binary and was unsure of the other.</p>
+<!-- todo: 00:19:21 you said grey was binary and thought the other was blue, but were not sure; a pointer to that slide would help students match the two sessions. -->
+<p>Open: when indexing, custom functions, conditional statements and <code>for</code> loops actually land, now that none of them were reached.</p>
+</section>
+<section id="materials" class="level2">
+<h2 class="anchored" data-anchor-id="materials">Materials</h2>
+<ul>
+<li><a href="https://fmegahed.github.io/isa401/fall2026/class03/03_r_foundations.html">Slides</a></li>
+<li><a href="https://github.com/fmegahed/isa401a/blob/main/markdowns/03_r_basics.Rmd">Class code</a></li>
+<li>The recording is on Canvas, available to ISA 401 instructors.</li>
+</ul>
 
 
 </section>
