@@ -184,6 +184,7 @@ def link_timestamps(text: str, template: str) -> str:
 
 
 _HAPPENED_RE = re.compile(r"^Happened:\s*", re.IGNORECASE)
+_NOTE_MARKERS = ("Timestamps before each paragraph", "The recording is on Canvas")
 
 
 def _clean_paragraph(lines: list[str]) -> str:
@@ -198,48 +199,57 @@ def _truncate(para: str | None) -> str | None:
     return para[:160].rsplit(" ", 1)[0]
 
 
-def _first_paragraph_after(text: str, start_line: int) -> str | None:
-    """The first run of non-blank, non-heading, non-list lines starting
-    at `start_line`, collapsed to one line. Used for the fallback branch
-    of page_summary, where the page has no "Happened:" paragraph to key
-    off, so the best guess is whatever paragraph opens the body."""
+def _paragraphs_after(text: str, start_line: int) -> list[str]:
+    """Every blank-line-delimited paragraph from `start_line` on, each
+    collapsed to one line. A heading or list-item line is a paragraph
+    break, not content, so it neither starts a paragraph of its own nor
+    merges into the paragraph before or after it."""
+    paragraphs: list[str] = []
     lines: list[str] = []
     for line in text.splitlines()[start_line:]:
         stripped = line.strip()
-        if not stripped:
+        is_break = (not stripped or stripped.startswith(("#", "-", "*"))
+                   or re.match(r"^\d+[.)]", stripped))
+        if is_break:
             if lines:
-                break
-            continue
-        if stripped.startswith(("#", "-", "*")) or re.match(r"^\d+[.)]", stripped):
-            if lines:
-                break
+                paragraphs.append(_clean_paragraph(lines))
+                lines = []
             continue
         lines.append(stripped)
-    return _clean_paragraph(lines) if lines else None
+    if lines:
+        paragraphs.append(_clean_paragraph(lines))
+    return paragraphs
+
+
+def _is_header_furniture(para: str) -> bool:
+    """The links line and the recording/timestamp note that `front_matter`
+    always emits after the YAML block: not content, so page_summary must
+    never mistake either for the page's own first paragraph."""
+    if para.startswith("[") and "](" in para:
+        return True
+    return any(marker in para for marker in _NOTE_MARKERS)
 
 
 def page_summary(text: str) -> str | None:
     """The listing description for a published page: the "Happened:"
     paragraph (the page's own account of what the session actually
     covered), stripped of its label; or, for a page that does not have
-    one, the first paragraph after the front matter. Either way, collapsed
-    to one line and truncated to 160 characters at a word boundary. None
-    if there is nothing to summarize (a listing description is then just
-    omitted, not left broken)."""
-    lines = text.splitlines()
-    for i, line in enumerate(lines):
-        stripped = line.strip()
-        if _HAPPENED_RE.match(stripped):
-            para_lines = [_HAPPENED_RE.sub("", stripped, count=1)]
-            for follow in lines[i + 1:]:
-                f_stripped = follow.strip()
-                if not f_stripped:
-                    break
-                para_lines.append(f_stripped)
-            return _truncate(_clean_paragraph(para_lines))
+    one, the first paragraph after the front matter and its links/note
+    line. Either way, collapsed to one line and truncated to 160
+    characters at a word boundary. None if there is nothing to summarize
+    (a listing description is then just omitted, not left broken).
+
+    The "Happened:" search is scoped to the first three paragraphs after
+    the header, not the whole page, so a stray "Happened:" deep in the
+    body (inside a quoted remark, say) cannot hijack the description."""
     block = front_matter_block(text)
     start = len(block) if block else 0
-    return _truncate(_first_paragraph_after(text, start))
+    paragraphs = [p for p in _paragraphs_after(text, start)
+                 if not _is_header_furniture(p)]
+    for para in paragraphs[:3]:
+        if _HAPPENED_RE.match(para):
+            return _truncate(_HAPPENED_RE.sub("", para, count=1).strip())
+    return _truncate(paragraphs[0]) if paragraphs else None
 
 
 def referenced_images(text: str) -> list[str]:

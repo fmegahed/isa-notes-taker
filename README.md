@@ -41,7 +41,7 @@ R Markdown file typed in class:
 | `isa_notes/` | the tool; `isa_notes/README.md` explains how to run it |
 | `notes_site/` | the Quarto website the published pages go into |
 | `docs/` | the rendered site, served by GitHub Pages |
-| `DEPLOY.md` | what gets copied where, and how the site reaches students |
+| `DEPLOY.md` | what gets copied where, and how the site reaches the next instructor |
 | `planning/` | the design spec and the implementation plan |
 | `sessions/` (not committed) | one folder per class with the Zoom download and the tool's output |
 

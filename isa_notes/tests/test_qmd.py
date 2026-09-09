@@ -150,7 +150,18 @@ with tempfile.TemporaryDirectory() as d:
         qmd.referenced_images(mixed)
     print("referenced_images finds Markdown and <img> references, either quote style")
 
-    planned_happened = ("---\ntitle: \"x\"\n---\n\nPlanned: cover vectors and loops.\n\n"
+    # A real header (links line, then the recording/timestamp note that
+    # front_matter always emits) must not be mistaken for the page's own
+    # first paragraph.
+    real_header = qmd.front_matter(
+        "Class 03", "ISA 401", "2026-08-31",
+        {"Slides": "https://s", "Class code": "https://c"},
+        "The recording is on Canvas, available to ISA 401 instructors. "
+        "Timestamps before each paragraph are hh:mm:ss into the recording.")
+    assert "[Slides](https://s)" in real_header
+    assert "The recording is on Canvas" in real_header
+
+    planned_happened = (real_header + "Planned: cover vectors and loops.\n\n"
                         "Happened: We loaded a CSV, cleaned column names, and made a "
                         "scatterplot.\n\n## Timeline\n\nMore text.\n")
     assert qmd.page_summary(planned_happened) == (
@@ -166,12 +177,24 @@ with tempfile.TemporaryDirectory() as d:
     assert qmd.page_summary(happened_ts) == "We covered loops.", \
         qmd.page_summary(happened_ts)
 
-    no_happened = "---\ntitle: \"x\"\n---\n\nThis session covered vectors and loops.\n\n## Timeline\n"
-    assert qmd.page_summary(no_happened) == "This session covered vectors and loops."
+    # No "Happened:" paragraph: page_summary must skip the header's links
+    # line and note paragraph and land on the real content paragraph, not
+    # either piece of header boilerplate.
+    no_happened = real_header + "This session covered vectors and loops.\n\n## Timeline\n"
+    assert qmd.page_summary(no_happened) == "This session covered vectors and loops.", \
+        qmd.page_summary(no_happened)
+
+    # A "Happened:" paragraph past the third one after the header is out of
+    # scope; page_summary must not search the whole document for it.
+    far_happened = (real_header
+                    + "First.\n\nSecond.\n\nThird.\n\nHappened: too far to count.\n")
+    assert qmd.page_summary(far_happened) == "First.", qmd.page_summary(far_happened)
 
     assert qmd.page_summary("## Timeline\n\n- only a list, no paragraph\n") is None
-    print("page_summary prefers the Happened paragraph, falls back to the "
-         "first paragraph, strips ts marks, and truncates at a word boundary")
+    print("page_summary prefers the Happened paragraph within the first three "
+         "after the header, skips the header's links line and note, falls "
+         "back to the first content paragraph, strips ts marks, and "
+         "truncates at a word boundary")
 
     header_a = qmd.front_matter("Old title", "Old sub", "2026-08-31", {}, "")
     header_b = qmd.front_matter("New title", "New sub", "2026-08-31", {}, "",

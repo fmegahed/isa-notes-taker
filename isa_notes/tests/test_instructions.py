@@ -42,6 +42,10 @@ msg = I.write_message(title="Class 03", date="2026-08-31",
 assert "D.Rmd" in msg and "no in-class rmd" in msg.lower()
 assert msg.index("---\nx\n---") < msg.index("[00:00:01] hi")
 assert "(he/him)" in msg and "call the instructor \"Fadel\"" in msg
+assert "What we covered" not in msg
+assert "Planned:" in msg
+print("write_message's front-matter instruction names the Planned/Happened "
+     "paragraphs, not the old 'What we covered' heading")
 v = I.verify_message(notes=Path("notes.qmd"), instructor="Fadel Megahed",
                      deck=Path("D.Rmd"), class_rmd=Path("C.Rmd"),
                      transcript_text="[00:00:01] hi", scene_index="")
