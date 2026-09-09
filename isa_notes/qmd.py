@@ -221,11 +221,21 @@ def _paragraphs_after(text: str, start_line: int) -> list[str]:
     return paragraphs
 
 
+_LINKS_LINE_RE = re.compile(r"^(?:\[[^\]]+\]\([^)]*\)\s*(?:\|\s*)?)+$")
+
+
 def _is_header_furniture(para: str) -> bool:
     """The links line and the recording/timestamp note that `front_matter`
     always emits after the YAML block: not content, so page_summary must
-    never mistake either for the page's own first paragraph."""
-    if para.startswith("[") and "](" in para:
+    never mistake either for the page's own first paragraph.
+
+    Only ever tested against the leading run of paragraphs right after the
+    front matter (see page_summary), and only matches a paragraph made
+    entirely of "[text](url)" links: a content paragraph that happens to
+    open with a link but goes on to say something ("[Assignment](url) is
+    due Friday. We covered arrays.") is not the links line and must not
+    match, wherever it falls."""
+    if _LINKS_LINE_RE.match(para):
         return True
     return any(marker in para for marker in _NOTE_MARKERS)
 
@@ -239,13 +249,18 @@ def page_summary(text: str) -> str | None:
     characters at a word boundary. None if there is nothing to summarize
     (a listing description is then just omitted, not left broken).
 
-    The "Happened:" search is scoped to the first three paragraphs after
-    the header, not the whole page, so a stray "Happened:" deep in the
-    body (inside a quoted remark, say) cannot hijack the description."""
+    Header furniture is only ever stripped from the FRONT of the
+    paragraph list, stopping at the first paragraph that is not furniture:
+    a real content paragraph elsewhere in the page is never filtered, even
+    if it happens to look like a links line or mention the recording. The
+    "Happened:" search is then scoped to the first three paragraphs that
+    remain, not the whole page, so a stray "Happened:" deep in the body
+    (inside a quoted remark, say) cannot hijack the description."""
     block = front_matter_block(text)
     start = len(block) if block else 0
-    paragraphs = [p for p in _paragraphs_after(text, start)
-                 if not _is_header_furniture(p)]
+    paragraphs = _paragraphs_after(text, start)
+    while paragraphs and _is_header_furniture(paragraphs[0]):
+        paragraphs.pop(0)
     for para in paragraphs[:3]:
         if _HAPPENED_RE.match(para):
             return _truncate(_HAPPENED_RE.sub("", para, count=1).strip())

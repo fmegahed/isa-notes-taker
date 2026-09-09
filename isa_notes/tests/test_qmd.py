@@ -184,6 +184,14 @@ with tempfile.TemporaryDirectory() as d:
     assert qmd.page_summary(no_happened) == "This session covered vectors and loops.", \
         qmd.page_summary(no_happened)
 
+    # A content paragraph that happens to open with a Markdown link is not
+    # the header's links line (which is nothing but links) and must be
+    # returned, not swallowed as furniture, even as the very first
+    # paragraph after the real header.
+    link_paragraph = ("[Assignment](https://a) is due Friday. We covered arrays.")
+    link_first = real_header + link_paragraph + "\n\n## Timeline\n"
+    assert qmd.page_summary(link_first) == link_paragraph, qmd.page_summary(link_first)
+
     # A "Happened:" paragraph past the third one after the header is out of
     # scope; page_summary must not search the whole document for it.
     far_happened = (real_header
