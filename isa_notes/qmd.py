@@ -183,36 +183,63 @@ def link_timestamps(text: str, template: str) -> str:
     return TS_RE.sub(sub, text)
 
 
-_WHAT_WE_COVERED_RE = re.compile(r"^##\s+What we covered\s*$",
-                                 re.IGNORECASE | re.MULTILINE)
+_HAPPENED_RE = re.compile(r"^Happened:\s*", re.IGNORECASE)
 
 
-def what_we_covered(text: str) -> str | None:
-    """The first paragraph under "## What we covered", collapsed to one
-    line and truncated to 160 characters at a word boundary. None if the
-    section or its paragraph is missing (a listing description is then
-    just omitted, not left broken)."""
-    m = _WHAT_WE_COVERED_RE.search(text)
-    if not m:
+def _clean_paragraph(lines: list[str]) -> str:
+    return re.sub(r"\s+", " ", TS_RE.sub("", " ".join(lines))).strip()
+
+
+def _truncate(para: str | None) -> str | None:
+    if not para:
         return None
+    if len(para) <= 160:
+        return para
+    return para[:160].rsplit(" ", 1)[0]
+
+
+def _first_paragraph_after(text: str, start_line: int) -> str | None:
+    """The first run of non-blank, non-heading, non-list lines starting
+    at `start_line`, collapsed to one line. Used for the fallback branch
+    of page_summary, where the page has no "Happened:" paragraph to key
+    off, so the best guess is whatever paragraph opens the body."""
     lines: list[str] = []
-    for line in text[m.end():].splitlines():
+    for line in text.splitlines()[start_line:]:
         stripped = line.strip()
         if not stripped:
             if lines:
                 break
             continue
         if stripped.startswith(("#", "-", "*")) or re.match(r"^\d+[.)]", stripped):
-            break
+            if lines:
+                break
+            continue
         lines.append(stripped)
-    if not lines:
-        return None
-    para = re.sub(r"\s+", " ", TS_RE.sub("", " ".join(lines))).strip()
-    if not para:
-        return None
-    if len(para) <= 160:
-        return para
-    return para[:160].rsplit(" ", 1)[0]
+    return _clean_paragraph(lines) if lines else None
+
+
+def page_summary(text: str) -> str | None:
+    """The listing description for a published page: the "Happened:"
+    paragraph (the page's own account of what the session actually
+    covered), stripped of its label; or, for a page that does not have
+    one, the first paragraph after the front matter. Either way, collapsed
+    to one line and truncated to 160 characters at a word boundary. None
+    if there is nothing to summarize (a listing description is then just
+    omitted, not left broken)."""
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if _HAPPENED_RE.match(stripped):
+            para_lines = [_HAPPENED_RE.sub("", stripped, count=1)]
+            for follow in lines[i + 1:]:
+                f_stripped = follow.strip()
+                if not f_stripped:
+                    break
+                para_lines.append(f_stripped)
+            return _truncate(_clean_paragraph(para_lines))
+    block = front_matter_block(text)
+    start = len(block) if block else 0
+    return _truncate(_first_paragraph_after(text, start))
 
 
 def referenced_images(text: str) -> list[str]:

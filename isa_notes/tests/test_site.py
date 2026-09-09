@@ -104,6 +104,8 @@ with tempfile.TemporaryDirectory() as d:
 
         assert "How these notes are made" in html
         assert "https://github.com/dmanam/notetaker" in html
+        assert "Teaching notes" in html
+        assert "whoever teaches the course next" in html
         print("the index page explains how the notes are made and credits notetaker")
 
         assert '<link href="./favicon.png" rel="icon"' in html, html

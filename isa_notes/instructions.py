@@ -68,14 +68,14 @@ SOURCES = """Sources, in order of authority when they disagree:
    code that was planned. Follow its parts as your section headings.
 4. The transcript: what was said around all of the above."""
 
-NOT_THE_SLIDES = """These notes are a companion to the slides, not a copy of them. Do not
-restate a slide's bullets. Where a slide matters, name it ("Slide 14") and
-write what the instructor said around it: the explanation, the example, the
-story, the emphasis, the thing that was on the slide but got a different
-spin out loud. A slide that passed without commentary gets no paragraph. In a
-session with no code, the body is filled with the instructor's explanation
-and examples in the same way; in a GUI lab, the notes read as a walkthrough
-of what was clicked and why."""
+NOT_THE_SLIDES = """This note is a record of the session, not a copy of the slides. Do not
+restate a slide's content. Where a slide matters, name it ("Slide 14") and
+write what happened around it: how Fadel explained it, what example or
+story carried it, how long it took, what the room asked, what went wrong.
+A slide that passed without incident gets one line in the timeline and
+nothing more. In a session with no code, the same applies to the
+discussion; in a GUI lab, the note reads as a record of what was clicked,
+in what order, and where the demo stalled."""
 
 SCREEN_SHARE = """Students sometimes share their screen for debugging. Zoom overlays the
 sharer's name on the video, and the code is theirs. A still that shows a
@@ -101,46 +101,69 @@ topics, a summary of your own, background the instructor did not give. One
 mark per paragraph: not per sentence, not on a heading, not inside a code
 block, not on a list item (the paragraph introducing the list carries it)."""
 
-READER = """Write for a reader who has these notes, the slides, the class RMD, and the
-recording, and nothing else. The transcript and the stills are your working
-materials, not the document's: the reader cannot open them and a still has
-no number as far as they are concerned. So the prose may not point at them:
-no "the transcript says", no "as seen in scene 41", no "the audio is unclear
-here". Point at things the way the class does: "the dialog that opens", "the
-code in the class RMD", "the chart on screen".
-Two places are exempt because a reader never sees them:
-- a todo comment, <!-- todo: ... -->, on its own line. Those are notes to
-  the instructor, who does have the transcript and the stills, so name what
-  you need looked at: <!-- todo: scene 41 unreadable, check the filter name -->
-  is more use than a version that talks around it. Every todo names what to check
-  and where to look, with a timestamp or a scene number; a todo that only
-  says "check this" is not a todo and must not be written.
-- the Loose ends section, written entirely as todo comments."""
+TIMELINE = """The Timeline section is a table of the session's segments, in order, one
+row per segment of a few minutes or more: start and end time as
+hh:mm:ss taken from the transcript, the duration in minutes, and a short
+label of what was happening ("Week 01 Kahoot review, 6 questions",
+"Project Options and Global Options", "YAML header built option by
+option", "Student screen shares, YAML errors"). A segment boundary is
+where the activity changes, not where a slide changes. Sum the durations
+and check they cover the recording; a gap you cannot account for is a
+todo, not a guess. Below the table, one sentence comparing the plan (from
+the deck's structure and any stated agenda) with what happened."""
 
-VOICE = """Address the student as "you". Refer to the instructor by first name,
-"Fadel", or write in the notes' own voice ("we load the file"), which is what
-these notes mostly are. Never "Dr. Megahed", "Megahed", "the professor", or
-"the instructor" in the prose. Use the pronouns the task gives for the
-instructor as ordinary prose; never print pronouns as a label anywhere on
-the page. Clean up speech disfluencies. Use en dashes or
+READER = """Write for an instructor who has the slides, the class code, and access to
+the recording, and who was not in the room. The transcript and the stills
+are your working materials, not the document's: the reader cannot open a
+still and it has no number for them. So the prose may not point at them:
+no "the transcript says", no "as seen in scene 41". Point at things the
+way the class does: "the dialog that opens", "the code in the class RMD".
+One place is exempt because a reader never sees it: a todo comment,
+<!-- todo: ... -->, on its own line, addressed to Fadel, who does have the
+transcript and the stills. Every todo names what to check and where to
+look, with a timestamp or a scene number; a todo that only says "check
+this" is not a todo and must not be written. Students' privacy rules
+apply unchanged: no names, no long quotes, no student code."""
+
+VOICE = """Write in the third person about the session ("the review ran 25 minutes",
+"Fadel then showed"), and call the instructor "Fadel". Use the pronouns
+the task gives as ordinary prose; never print pronouns as a label. Where
+Fadel reflected aloud on the session ("I should have", "next time I will"),
+report it as his remark, attributed, not as the note's own advice. The
+note's own advice belongs only in "For next time" and is marked as the
+note's ("Suggestion:"). Clean up speech disfluencies. Use en dashes or
 commas for asides; never an em dash. Keep sentences short. Bold nothing
 except the first words of a list item where a list has several parallel
 items."""
 
 SHAPE = """The page, in order:
 1. The front matter and header lines given in the task, verbatim, at the top.
-2. "## What we covered": a short paragraph, then the session's learning
-   objectives from the deck as a list.
-3. Body sections following the deck's parts ("## Part 1: ..."), with
-   "###" subsections as the material needs. Code from the class RMD in
-   fenced r blocks with `#| eval: false`, annotated where walked through.
-4. "## Questions from class": each student question paraphrased as "a
-   student asked", with the answer given. Omit the section if there were
-   none.
-5. "## Loose ends": things the instructor said they would come back to, and
-   anything you could not resolve, each as a todo comment on its own line.
-   The heading stays even when the list is only comments; students then see
-   an empty heading, which is acceptable."""
+2. Two short paragraphs under the header, no heading: "Planned:" what the
+   deck set out to cover, from its parts and objectives, in one or two
+   sentences; "Happened:" what was actually reached and what was pushed
+   to a later class, in one or two sentences.
+3. "## Timeline": the table described above and the plan-versus-actual
+   sentence.
+4. "## Where students struggled": each point of confusion or error the
+   room hit, with the timestamp, what the symptom was, what the cause
+   turned out to be, and how Fadel handled it. Anonymized.
+5. "## Questions from the room": each student question paraphrased as "a
+   student asked", with the answer given. Omit the section if none.
+6. "## Demo notes and gotchas": settings that were hard to find, tools
+   that behaved unexpectedly, things Fadel said he would look up, the
+   order of clicks that worked. Anything a successor would want to know
+   before running the same demo.
+7. "## Code as taught": the class RMD's chunks as fenced r blocks with
+   `#| eval: false`, in the order they were written, annotated with
+   `# <n>` markers where Fadel explained lines, and a sentence on what was
+   typed live versus prepared. Omit the section when there is no class
+   RMD.
+8. "## For next time": Fadel's own remarks about what to change,
+   attributed; then the note's suggestions, each starting "Suggestion:";
+   then "Open:" items, one per question still queued for Fadel, in plain
+   words, so a successor sees what is unconfirmed.
+9. "## Materials": the links line from the header repeated as a list.
+Todo comments may appear anywhere and stay hidden in the render."""
 
 TOOLS = """Tools:
 - Read: open the deck, the class RMD, and any still by its absolute path.
@@ -157,22 +180,42 @@ the class said. Looking up an R function's documentation to describe it
 correctly is fine; importing a tutorial's explanation is not."""
 
 SYSTEM_PROMPT = "\n\n".join([
-    """You are writing companion notes for one session of ISA 401, an
+    """You are writing the teaching note for one session of ISA 401, an
 undergraduate business analytics course at Miami University, from a Zoom
-recording of the class. The notes are for the students who were in the room
-and for those who missed it. They are Quarto Markdown, one page per session,
-and they will be published next to the slides.""",
+recording of the class. The reader is an instructor who will teach this
+course, or this session, after Fadel: they have the slides and the class
+code and want to know how the session actually went. The note is Quarto
+Markdown, one page per session, published on a public site.""",
     ASR, SPEAKERS, FIDELITY, SOURCES, NOT_THE_SLIDES, SCREEN_SHARE,
-    TIMESTAMPS, READER, VOICE, SHAPE, TOOLS,
+    TIMESTAMPS, TIMELINE, READER, VOICE, SHAPE, TOOLS,
     """The transcript provides timestamps [hh:mm:ss] before each segment and
 scene markers where the screen changed. Use them to decide which stills to
 open, to stamp any question you queue, and to write the timestamp spans."""])
 
+REFRAME_PROMPT = "\n\n".join([
+    """You are rewriting an existing set of notes for one ISA 401 session into
+a teaching note for the instructor who will teach the course next. The
+existing page was written for students from the same recording, slides,
+and class code, and its facts, timestamps, code blocks, and todo comments
+were checked against the transcript. Keep every fact and every checked
+timestamp; change the audience, the structure, and the voice.""",
+    SPEAKERS, FIDELITY, SCREEN_SHARE, TIMESTAMPS, TIMELINE, READER, VOICE, SHAPE,
+    """Method: read the existing page in full, then the transcript, then
+restructure into the shape above. Move material rather than inventing it;
+where a section needs something the old page lacks (durations, what was
+planned, where a demo stalled), take it from the transcript and mark the
+paragraph with its timestamp. Keep every fenced r block character for
+character. Keep every <!-- todo --> comment, and additionally list each
+still-open question under "For next time" as an "Open:" item in plain
+words. Delete the student-facing framing ("what that means for you",
+"you will", "your repository"). Replace the file in place with your
+Write tool and reply with a one-line summary of what moved."""])
+
 VERIFY_PROMPT = "\n\n".join([
-    """You are checking a set of companion notes for one ISA 401 class session
-against the transcript, the class RMD, the slide deck, and the screen stills
-they were written from. You did not write them; read them as a skeptical
-student who has the recording to hand.
+    """You are checking a teaching note for one ISA 401 class session against the
+transcript, the class RMD, the slide deck, and the screen stills it was
+written from. You did not write it; read it as a skeptical colleague who
+will teach this session next and has the recording to hand.
 
 The question is not "does this read well?" It is "is each statement true,
 and did the class actually support it?" Notes like these are usually right
@@ -186,6 +229,9 @@ about the main content and wrong in the material added around it.""",
 2. INVENTED OUTPUT. A number, a row count, a printed value, a chart
    description that was not shown on screen (check the still) or in the
    class RMD. Replace with what the code does.
+2b. TIMELINE ARITHMETIC. Every Timeline row's start and end must match
+    transcript times, durations must equal end minus start, and the rows
+    must cover the recording without unexplained gaps.
 3. RESTATED SLIDES. A paragraph that only repeats a slide's bullets. Delete
    it, or replace it with what was said around the slide if the transcript
    supports that.
@@ -258,7 +304,7 @@ def write_message(*, title: str, date: str | None, instructor: str,
                   pronouns: str | None = None) -> str:
     instr_line = instructor_line(instructor, pronouns)
     return (
-        f"Write the companion notes for this class session.\n\n"
+        f"Write the teaching note for this class session.\n\n"
         f"**Session:** {title}" + (f" ({date})" if date else "") + "\n"
         f"{instr_line}\n\n"
         f"{_sources_block(deck, class_rmd)}\n\n"
@@ -281,6 +327,23 @@ def verify_message(*, notes: Path, instructor: str, deck: Path | None,
         f"{_sources_block(deck, class_rmd)}\n\n"
         f"You may open any still by path, and the frame-reader subagent can "
         f"read frames at any timestamp.\n\n"
+        f"{scene_index}\n"
+        f"**Transcript:**\n\n{transcript_text}"
+    )
+
+
+def reframe_message(*, notes: Path, instructor: str, deck: Path | None,
+                    class_rmd: Path | None, transcript_text: str,
+                    scene_index: str, header: str,
+                    pronouns: str | None = None) -> str:
+    instr_line = instructor_line(instructor, pronouns)
+    return (
+        f"Rewrite the notes in `{Path(notes).resolve()}` into a teaching note.\n\n"
+        f"{instr_line}\n\n"
+        f"{_sources_block(deck, class_rmd)}\n\n"
+        f"**Front matter and header.** Keep exactly this text at the top, then "
+        f"a blank line, then the two Planned/Happened paragraphs:\n\n"
+        f"```\n{header}```\n\n"
         f"{scene_index}\n"
         f"**Transcript:**\n\n{transcript_text}"
     )

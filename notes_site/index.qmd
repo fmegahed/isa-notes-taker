@@ -1,5 +1,5 @@
 ---
-title: "Class notes"
+title: "Teaching notes"
 listing:
   contents: "class*/index.qmd"
   type: table
@@ -8,24 +8,27 @@ listing:
   field-display-names:
     date: "Date"
     title: "Session"
-    description: "Covered"
+    description: "Happened"
   sort-ui: false
   filter-ui: false
 ---
 
-One page per class session, written from the recording, the slides, and the
-code typed in class. Timestamps are hh:mm:ss into the recording on Canvas.
+One page per class session of ISA 401 (Business Intelligence and Data
+Visualization, Miami University), written from the recording, the slides,
+and the code typed in class, for whoever teaches the course next. Each
+page records what was planned, what happened and how long it took, where
+students struggled, what the demos needed, and what to change.
 
 ## How these notes are made
 
-These pages are generated, not typed. After each class, Dr. Megahed runs a small program that takes the Zoom recording, the slide deck, and the R Markdown file written in class, and asks an AI model (Claude, run through Claude Code) to write the notes. A second, independent pass re-reads the draft against the transcript and the class code and corrects what it can show to be wrong. Anything it cannot settle is flagged for Dr. Megahed to answer before the page is published.
+These pages are generated, not typed. After each class, Dr. Megahed runs a small program that takes the Zoom recording, the slide deck, and the R Markdown file written in class, and asks an AI model (Claude, run through Claude Code) to write the teaching note. A second, independent pass re-reads the draft against the transcript and the class code and corrects what it can show to be wrong. Anything it cannot settle is flagged for Dr. Megahed to answer before the page is published.
 
-What that means for you:
+What this means for readers:
 
 - The code blocks are copied from the class file, not rewritten by the model.
-- Timestamps before each paragraph point into the recording on Canvas. When the notes and the recording disagree, the recording wins.
-- Questions from the room appear as "a student asked". No student is named or quoted at length.
-- The prose is AI-written and machine-checked, not proofread word by word. If you find a mistake, tell Dr. Megahed and it will be fixed.
+- Timestamps before each paragraph are hh:mm:ss into the Zoom recording, which is on Canvas for ISA 401 instructors.
+- Questions from the room are paraphrased and anonymized; no student is named or quoted at length.
+- The prose is AI-written and machine-checked against the transcript; unresolved points are listed under For next time on each page.
 
 The program is an adaptation of [notetaker](https://github.com/dmanam/notetaker) by Deven Manam, which does the same for mathematics lectures. The adapted version, and a description of how it works, is at [fmegahed/isa-notes-taker](https://github.com/fmegahed/isa-notes-taker).
 

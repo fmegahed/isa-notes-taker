@@ -7,7 +7,7 @@ project:
     - "class*/index.pdf"
 
 website:
-  title: "ISA 401 Notes"
+  title: "ISA 401 Teaching Notes"
   favicon: favicon.png
   search: false
   navbar:

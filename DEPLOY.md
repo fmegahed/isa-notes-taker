@@ -46,7 +46,7 @@ In the `isa-notes-taker` repo on GitHub: Settings, Pages, Source: "Deploy
 from a branch", Branch: `main`, Folder: `/docs`. Save. After the first
 push with a `docs/` folder, the site is live within a few minutes.
 
-## The URL students get
+## The URL instructors get
 
 - All sessions: `https://fmegahed.github.io/isa-notes-taker/`
 - One session: `https://fmegahed.github.io/isa-notes-taker/class03/`

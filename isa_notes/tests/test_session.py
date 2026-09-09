@@ -80,7 +80,8 @@ with tempfile.TemporaryDirectory() as d:
     assert "on Canvas" not in header, "a linked recording needs no Canvas note"
     # Without a URL the page says where the recording lives instead of linking it.
     no_url = S.header_for({**src, "video_url": None})
-    assert "[Recording]" not in no_url and "The recording is on Canvas." in no_url
+    assert "[Recording]" not in no_url
+    assert "The recording is on Canvas, available to ISA 401 instructors." in no_url
     assert "github.com/fmegahed/isa401a/blob/main/markdowns/03_r_basics.Rmd" in header
     assert "fmegahed.github.io/isa401/fall2026/class03/03_r_foundations.html" in header
     print("sources resolved from folder name, flags, and saved state; header built")
@@ -249,6 +250,47 @@ with tempfile.TemporaryDirectory() as d:
     assert all_flags.publish is True and all_flags.pdf is True
     assert all_flags.deploy == str(d / "elsewhere")
     print("--publish is boolean; --pdf and --deploy parse independently")
+
+    # --reframe: parses, requires notes.qmd, and backs up the old page.
+    reframe_flag = S.parse_args(["sessions/class03", "--reframe"])
+    assert reframe_flag.reframe is True
+    assert default_flags.reframe is False
+    print("--reframe parses to a boolean flag")
+
+    out9 = d / "sessions" / "class03_reframe" / "out"
+    out9.mkdir(parents=True)
+    tj9 = out9 / "transcript.json"
+    tj9.write_text(json.dumps({"segments": []}), encoding="utf-8")
+    try:
+        S.stage_reframe(out9, mp4, tj9, [], src, reframe_flag)
+        assert False, "stage_reframe must refuse without notes.qmd"
+    except SystemExit as e:
+        assert "write them first" in str(e)
+    print("stage_reframe refuses to run without notes.qmd")
+
+    notes9 = out9 / "notes.qmd"
+    notes9.write_text("# old student-facing notes\n", encoding="utf-8")
+
+    reframe_calls = []
+
+    def fake_reframe_run_agent(*, output_file, **kwargs):
+        reframe_calls.append(kwargs)
+        output_file.write_text("# new teaching note\n", encoding="utf-8")
+        return "# new teaching note\n"
+
+    real_run_agent = S.run_agent
+    S.run_agent = fake_reframe_run_agent
+    try:
+        S.stage_reframe(out9, mp4, tj9, [], src, reframe_flag)
+    finally:
+        S.run_agent = real_run_agent
+    backup9 = out9 / "notes.qmd.pre-reframe"
+    assert backup9.read_text(encoding="utf-8") == "# old student-facing notes\n"
+    assert notes9.read_text(encoding="utf-8") == "# new teaching note\n"
+    assert len(reframe_calls) == 1
+    assert reframe_calls[0]["revise"] is True and reframe_calls[0]["role"] == "reframe"
+    print("stage_reframe backs up the old page and calls run_agent with "
+         "revise=True, role='reframe'")
 
     # stage_deploy refuses a target inside the project, and refuses when
     # nothing has been published yet (no docs/ to copy from).

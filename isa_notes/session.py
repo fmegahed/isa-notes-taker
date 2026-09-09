@@ -3,7 +3,7 @@
 
     python isa_notes/session.py sessions/class03 [--class-rmd F] [--deck F]
         [--instructor NAME] [--video-url URL] [--video-url-template T]
-        [--answer] [--verify] [--no-verify] [--regen]
+        [--answer] [--verify] [--no-verify] [--regen] [--reframe]
         [--publish] [--pdf] [--deploy DIR]
         [--no-scenes] [--scene-threshold X] [--wait]
         [--backend B] [--model M] [--frame-model M]
@@ -52,8 +52,8 @@ CLASS_CODE_URL = "https://github.com/fmegahed/isa401a/blob/main/markdowns/{name}
 TS_NOTE = ("Timestamps before each paragraph are hh:mm:ss into the "
            "recording; drag the player there to hear the passage.")
 # The recording itself is not linked from the page unless --video-url is
-# given; students find it on Canvas.
-RECORDING_NOTE = "The recording is on Canvas."
+# given; instructors find it on Canvas.
+RECORDING_NOTE = "The recording is on Canvas, available to ISA 401 instructors."
 SAVED_KEYS = ("instructor", "instructor_pronouns", "video_url",
               "video_url_template", "deck", "class_rmd", "date")
 
@@ -295,7 +295,7 @@ def stage_publish(out: Path, src: dict, args) -> Path:
     source_pdf = target / "index.pdf"
 
     original_text = notes.read_text(encoding="utf-8")
-    description = qmd.what_we_covered(original_text)
+    description = qmd.page_summary(original_text)
 
     def write_page(extra_links: dict[str, str] | None) -> str:
         # The site copy has no ts.css beside it (notes_site/'s own scss
@@ -394,6 +394,33 @@ def stage_verify(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
               role="verify", log_dir=out / "logs")
 
 
+def stage_reframe(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
+                  args) -> None:
+    """Rewrite an existing notes.qmd, written for students, into the
+    teaching-note shape: same facts and checked timestamps, new audience,
+    structure, and voice. Used once, on a page written before the pivot;
+    the old file is kept alongside as notes.qmd.pre-reframe."""
+    notes = out / "notes.qmd"
+    if not notes.exists():
+        raise SystemExit(_no_notes_message(notes))
+    backup = notes.with_name(notes.name + ".pre-reframe")
+    shutil.copy2(notes, backup)
+    print(f"  backed up existing notes to {backup}")
+    header = header_for(src)
+    user = I.reframe_message(
+        notes=notes, instructor=src["instructor"], deck=src.get("deck"),
+        class_rmd=src.get("class_rmd"),
+        transcript_text=_transcript_text(tj, found),
+        scene_index=SC.index_text(found), header=header,
+        pronouns=src.get("instructor_pronouns"))
+    print(f"  reframing the notes as a teaching note with the {args.backend} backend")
+    run_agent(system_prompt=I.REFRAME_PROMPT, user_text=user,
+              ctx=_ctx(out, mp4, tj, found), output_file=notes,
+              backend=args.backend, model=args.model,
+              frame_model=args.frame_model, revise=True,
+              role="reframe", log_dir=out / "logs")
+
+
 def stage_answer(out: Path, mp4: Path, tj: Path, found: list[dict], src: dict,
                  args) -> None:
     notes = out / "notes.qmd"
@@ -483,6 +510,9 @@ def parse_args(argv: list[str]):
     p.add_argument("--verify", action="store_true", help="run only the checking pass")
     p.add_argument("--no-verify", dest="verify_after", action="store_false", default=True)
     p.add_argument("--regen", action="store_true")
+    p.add_argument("--reframe", action="store_true",
+                   help="rewrite an existing page into the teaching-note "
+                        "shape; requires notes.qmd already present")
     p.add_argument("--publish", action="store_true",
                    help="land this class's page in notes_site/ and render docs/")
     p.add_argument("--pdf", action="store_true",
@@ -522,6 +552,11 @@ def main(argv: list[str] | None = None) -> None:
         stage_render(out, mp4, tj, found, src, args)
     elif args.verify:
         stage_verify(out, mp4, tj, found, src, args)
+        stage_render(out, mp4, tj, found, src, args)
+    elif args.reframe:
+        stage_reframe(out, mp4, tj, found, src, args)
+        if args.verify_after:
+            stage_verify(out, mp4, tj, found, src, args)
         stage_render(out, mp4, tj, found, src, args)
     else:
         if notes.exists() and not args.regen:

@@ -150,27 +150,28 @@ with tempfile.TemporaryDirectory() as d:
         qmd.referenced_images(mixed)
     print("referenced_images finds Markdown and <img> references, either quote style")
 
-    covered_short = ("---\ntitle: \"x\"\n---\n\n## What we covered\n\n"
-                     "We loaded a CSV, cleaned column names, and made a "
-                     "scatterplot.\n\n- objective one\n- objective two\n\n"
-                     "## Part 1\n\nMore text.\n")
-    assert qmd.what_we_covered(covered_short) == (
+    planned_happened = ("---\ntitle: \"x\"\n---\n\nPlanned: cover vectors and loops.\n\n"
+                        "Happened: We loaded a CSV, cleaned column names, and made a "
+                        "scatterplot.\n\n## Timeline\n\nMore text.\n")
+    assert qmd.page_summary(planned_happened) == (
         "We loaded a CSV, cleaned column names, and made a scatterplot.")
 
     long_sentence = "word " * 40
-    covered_long = f"## What we covered\n\n{long_sentence.strip()}.\n\n- a list\n"
-    got = qmd.what_we_covered(covered_long)
+    happened_long = f"Happened: {long_sentence.strip()}.\n\n## Timeline\n"
+    got = qmd.page_summary(happened_long)
     assert got is not None and len(got) <= 160, got
     assert not got.endswith(" "), "truncation lands on a word boundary"
 
-    covered_ts = "## What we covered\n\n[00:00:05]{.ts} We covered loops.\n\n- x\n"
-    assert qmd.what_we_covered(covered_ts) == "We covered loops.", \
-        qmd.what_we_covered(covered_ts)
+    happened_ts = "Happened: [00:00:05]{.ts} We covered loops.\n\n## Timeline\n"
+    assert qmd.page_summary(happened_ts) == "We covered loops.", \
+        qmd.page_summary(happened_ts)
 
-    assert qmd.what_we_covered("## Body only\n\nNo such section.\n") is None
-    assert qmd.what_we_covered("## What we covered\n\n- only a list, no paragraph\n") \
-        is None
-    print("what_we_covered extracts, strips ts marks, and truncates at a word boundary")
+    no_happened = "---\ntitle: \"x\"\n---\n\nThis session covered vectors and loops.\n\n## Timeline\n"
+    assert qmd.page_summary(no_happened) == "This session covered vectors and loops."
+
+    assert qmd.page_summary("## Timeline\n\n- only a list, no paragraph\n") is None
+    print("page_summary prefers the Happened paragraph, falls back to the "
+         "first paragraph, strips ts marks, and truncates at a word boundary")
 
     header_a = qmd.front_matter("Old title", "Old sub", "2026-08-31", {}, "")
     header_b = qmd.front_matter("New title", "New sub", "2026-08-31", {}, "",

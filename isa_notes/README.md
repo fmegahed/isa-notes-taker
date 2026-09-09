@@ -1,6 +1,7 @@
 # isa_notes
 
-One recorded ISA 401 class in, one page of companion notes out.
+One recorded ISA 401 class in, one page of teaching notes for the next
+instructor out.
 
 ## Setup, once
 
@@ -63,6 +64,8 @@ pass after writing.
   already has `scenes/scenes.json` re-detects the stills instead of
   serving ones made at the old threshold.
 - `--wait`: see step 3 above.
+- `--reframe`: rewrite an existing page into the teaching-note shape; used
+  once when the audience changed.
 
 ## Tests
 

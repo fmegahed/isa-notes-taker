@@ -1,9 +1,11 @@
 # isa-notes-taker
 
-Turns a recorded class session into a page of companion notes for students.
-Built for ISA 401 (Business Intelligence and Data Visualization) at Miami
-University, where each class is recorded on Zoom, taught from xaringan slides,
-and coded live in R Markdown.
+Turns a recorded class session into a teaching note for whoever teaches ISA
+401 next. Built for ISA 401 (Business Intelligence and Data Visualization) at
+Miami University, where each class is recorded on Zoom, taught from xaringan
+slides, and coded live in R Markdown. Started as student companion notes;
+after faculty feedback it became a record for instructors, since students
+learn more from taking their own notes.
 
 This is an adaptation of [dmanam/notetaker](https://github.com/dmanam/notetaker)
 by Deven Manam, a tool that turns recorded mathematics lectures into typeset
@@ -22,10 +24,11 @@ R Markdown file typed in class:
 
 1. parses Zoom's VTT into a timestamped transcript;
 2. pulls one still per change of the shared screen with ffmpeg;
-3. has a Claude agent (on a Claude Code subscription) write `notes.qmd`:
-   narrative keyed to the slides, the class code reproduced exactly with
-   numbered annotations, timestamps into the recording before each paragraph,
-   student questions anonymized;
+3. has a Claude agent (on a Claude Code subscription) write `notes.qmd`: a
+   teaching note for the next instructor, with a timeline of the session,
+   where students struggled, demo notes and gotchas, the class code
+   reproduced exactly with numbered annotations, timestamps into the
+   recording before each paragraph, and student questions anonymized;
 4. re-reads the page in a fresh context against the transcript and the code,
    and fixes what it can prove wrong;
 5. queues questions for the instructor instead of guessing;
