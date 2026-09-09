@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2026-09-02">
-<meta name="description" content="The session opened with three Mentimeter questions about Monday’s material, then moved through the two data structures that sit on top of vectors: data frames">
+<meta name="description" content="Parts 1 and 2 were covered in full with both of their activities, and Part 3 reached the CSV read from a FRED URL and the setup for the Excel example. JSON,">
 
 <title>04: Data Import &amp; Export – ISA 401 Teaching Notes</title>
 <style>
@@ -135,31 +135,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-we-covered" id="toc-what-we-covered" class="nav-link active" data-scroll-target="#what-we-covered">What we covered</a></li>
-  <li><a href="#warm-up-monday-in-three-questions" id="toc-warm-up-monday-in-three-questions" class="nav-link" data-scroll-target="#warm-up-monday-in-three-questions">Warm-up: Monday in three questions</a></li>
-  <li><a href="#part-1-data-frames-and-lists" id="toc-part-1-data-frames-and-lists" class="nav-link" data-scroll-target="#part-1-data-frames-and-lists">Part 1: Data Frames and Lists</a>
-  <ul class="collapse">
-  <li><a href="#from-vectors-to-a-data-frame" id="toc-from-vectors-to-a-data-frame" class="nav-link" data-scroll-target="#from-vectors-to-a-data-frame">From vectors to a data frame</a></li>
-  <li><a href="#looking-at-a-data-frame" id="toc-looking-at-a-data-frame" class="nav-link" data-scroll-target="#looking-at-a-data-frame">Looking at a data frame</a></li>
-  <li><a href="#a-list-holds-anything" id="toc-a-list-holds-anything" class="nav-link" data-scroll-target="#a-list-holds-anything">A list holds anything</a></li>
-  <li><a href="#the-pepper-shaker" id="toc-the-pepper-shaker" class="nav-link" data-scroll-target="#the-pepper-shaker">The pepper shaker</a></li>
-  <li><a href="#activity-examine-a-job-ad" id="toc-activity-examine-a-job-ad" class="nav-link" data-scroll-target="#activity-examine-a-job-ad">Activity: examine a job ad</a></li>
-  </ul></li>
-  <li><a href="#part-2-subsetting-and-indexing" id="toc-part-2-subsetting-and-indexing" class="nav-link" data-scroll-target="#part-2-subsetting-and-indexing">Part 2: Subsetting and Indexing</a>
-  <ul class="collapse">
-  <li><a href="#subsetting-a-vector" id="toc-subsetting-a-vector" class="nav-link" data-scroll-target="#subsetting-a-vector">Subsetting a vector</a></li>
-  <li><a href="#subsetting-a-data-frame" id="toc-subsetting-a-data-frame" class="nav-link" data-scroll-target="#subsetting-a-data-frame">Subsetting a data frame</a></li>
-  <li><a href="#the-summary-table" id="toc-the-summary-table" class="nav-link" data-scroll-target="#the-summary-table">The summary table</a></li>
-  <li><a href="#activity-predict-the-output" id="toc-activity-predict-the-output" class="nav-link" data-scroll-target="#activity-predict-the-output">Activity: predict the output</a></li>
-  </ul></li>
-  <li><a href="#part-3-data-import" id="toc-part-3-data-import" class="nav-link" data-scroll-target="#part-3-data-import">Part 3: Data Import</a>
-  <ul class="collapse">
-  <li><a href="#csv-ohio-job-postings-on-fred" id="toc-csv-ohio-job-postings-on-fred" class="nav-link" data-scroll-target="#csv-ohio-job-postings-on-fred">CSV: Ohio job postings on FRED</a></li>
-  <li><a href="#excel-download-first-then-read" id="toc-excel-download-first-then-read" class="nav-link" data-scroll-target="#excel-download-first-then-read">Excel: download first, then read</a></li>
-  </ul></li>
-  <li><a href="#where-we-stopped" id="toc-where-we-stopped" class="nav-link" data-scroll-target="#where-we-stopped">Where we stopped</a></li>
-  <li><a href="#questions-from-class" id="toc-questions-from-class" class="nav-link" data-scroll-target="#questions-from-class">Questions from class</a></li>
-  <li><a href="#loose-ends" id="toc-loose-ends" class="nav-link" data-scroll-target="#loose-ends">Loose ends</a></li>
+  <li><a href="#timeline" id="toc-timeline" class="nav-link active" data-scroll-target="#timeline">Timeline</a></li>
+  <li><a href="#where-students-struggled" id="toc-where-students-struggled" class="nav-link" data-scroll-target="#where-students-struggled">Where students struggled</a></li>
+  <li><a href="#questions-from-the-room" id="toc-questions-from-the-room" class="nav-link" data-scroll-target="#questions-from-the-room">Questions from the room</a></li>
+  <li><a href="#demo-notes-and-gotchas" id="toc-demo-notes-and-gotchas" class="nav-link" data-scroll-target="#demo-notes-and-gotchas">Demo notes and gotchas</a></li>
+  <li><a href="#code-as-taught" id="toc-code-as-taught" class="nav-link" data-scroll-target="#code-as-taught">Code as taught</a></li>
+  <li><a href="#for-next-time" id="toc-for-next-time" class="nav-link" data-scroll-target="#for-next-time">For next time</a></li>
+  <li><a href="#materials" id="toc-materials" class="nav-link" data-scroll-target="#materials">Materials</a></li>
   </ul>
 </nav>
     </div>
@@ -174,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    The session opened with three Mentimeter questions about Monday’s material, then moved through the two data structures that sit on top of vectors: data frames
+    Parts 1 and 2 were covered in full with both of their activities, and Part 3 reached the CSV read from a FRED URL and the setup for the Excel example. JSON,
   </div>
 </div>
 
@@ -198,58 +180,165 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><a href="https://fmegahed.github.io/isa401/fall2026/class04/04_data_import_export.html">Slides</a> | <a href="https://github.com/fmegahed/isa401a/blob/main/markdowns/class04.Rmd">Class code</a> | <a href="index.pdf">PDF</a></p>
-<p>The recording is on Canvas. Timestamps before each paragraph are hh:mm:ss into the recording; drag the player there to hear the passage.</p>
-<section id="what-we-covered" class="level2">
-<h2 class="anchored" data-anchor-id="what-we-covered">What we covered</h2>
-<p>The session opened with three Mentimeter questions about Monday’s material, then moved through the two data structures that sit on top of vectors: data frames and lists. Most of the middle of the class was subsetting, which Fadel introduced as the first of the two errors he expects to frustrate you. The last twenty minutes started Part 3, reading a CSV straight from a URL, and set up the Excel example for Wednesday. We did not reach JSON, the Import Heist activity, or Part 4 on export.</p>
-<p>The deck’s learning objectives for the session:</p>
-<ul>
-<li><strong>Create and inspect</strong> data frames and lists; run <code>dplyr::glimpse()</code> on anything you did not build yourself.</li>
-<li><strong>Subset and index</strong> those structures with <code>[ ]</code>, <code>[[ ]]</code>, and <code>$</code>.</li>
-<li><strong>Import</strong> data from CSV files, Excel workbooks, and web-served JSON files.</li>
-<li><strong>Export</strong> results with <code>write_csv()</code> and <code>write_xlsx()</code>, then knit and push the lot.</li>
-</ul>
+<p>The recording is on Canvas, available to ISA 401 instructors. Timestamps before each paragraph are hh:mm:ss into the recording; drag the player there to hear the passage.</p>
+<section id="timeline" class="level2">
+<h2 class="anchored" data-anchor-id="timeline">Timeline</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Start</th>
+<th style="text-align: left;">End</th>
+<th style="text-align: right;">Min</th>
+<th style="text-align: left;">Segment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">00:00:01</td>
+<td style="text-align: left;">00:09:20</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">Mentimeter warm-up, three questions on Monday’s material</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">00:09:20</td>
+<td style="text-align: left;">00:20:31</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: left;">Part 1 slides: vectors to data frames, tibbles, lists, the pepper shaker</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">00:20:31</td>
+<td style="text-align: left;">00:23:59</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Into RStudio: open the project, new <code>class04.Rmd</code>, YAML header typed</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">00:23:59</td>
+<td style="text-align: left;">00:30:01</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">Activity 1, examine a job ad, work time</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">00:30:01</td>
+<td style="text-align: left;">00:36:40</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Activity 1 debrief, the four expressions worked at the podium</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">00:36:40</td>
+<td style="text-align: left;">00:46:23</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">Part 2: subsetting a vector, a data frame, the three-bracket table</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">00:46:23</td>
+<td style="text-align: left;">00:49:32</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Activity 2, predict the output, work time</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">00:49:32</td>
+<td style="text-align: left;">00:54:34</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Activity 2 debrief, six expressions</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">00:54:34</td>
+<td style="text-align: left;">01:03:34</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">Part 3 CSV: the FRED link, tidyverse install, <code>read_csv()</code> against <code>read.csv()</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">01:03:34</td>
+<td style="text-align: left;">01:06:26</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Screen-share debugging, then the editor colour setting</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">01:06:26</td>
+<td style="text-align: left;">01:08:23</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Excel setup: <code>readxl</code>, downloading the workbook, its sheets</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">01:08:23</td>
+<td style="text-align: left;">01:10:06</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Wednesday’s plan, knit, commit and push, close</td>
+</tr>
+</tbody>
+</table>
+<p>The twelve segments sum to 70 minutes and the recording ends at 01:10:06, so the table covers it with no unexplained gap. Against the plan: the deck’s notes budget about three minutes for the warm-up and set three timed activities across Parts 1 to 3, but the warm-up ran nine minutes and Parts 1 and 2 with their two activities took 45, so Part 3 opened with 15 minutes left and the last two parts went to Wednesday.</p>
 </section>
-<section id="warm-up-monday-in-three-questions" class="level2">
-<h2 class="anchored" data-anchor-id="warm-up-monday-in-three-questions">Warm-up: Monday in three questions</h2>
-<p><span class="ts">00:00:01</span> Three questions on Mentimeter. Fadel was explicit that this had no impact on your grade even though Menti calls it a quiz: it was there so he could see where the room was before starting. He also said he had never used Menti for this before and was testing it out.</p>
-<p><span class="ts">00:02:23</span> Question 1 asked which file you should click on before opening RStudio. Eighteen of the votes went to <code>business_intelligence.Rproj</code>, which is the answer. The explanation out loud went further than the question: technically you do not have to open the project, but double-clicking the <code>.Rproj</code> guarantees that the working directory starts where your folder is, which matters if you open the repo on a different computer. Fadel said he had assumed on Monday that everyone’s layout was the M drive, then an ISA 401 folder, then the <code>business_intelligence</code> folder, and that it could just as easily be the M drive and then the folder directly. Either way, clicking the project opens RStudio inside <code>business_intelligence</code>. The <code>README.md</code> has no effect on RStudio at all, and <code>.gitignore</code> only tells Git which files and folders not to track, so neither of them starts a session.</p>
-<p><span class="ts">00:05:04</span> Question 2 asked what <code>crashes_by_day &gt; 2000</code> returns. The majority of the room picked “just the days above 2,000”; the answer is seven TRUE/FALSE values. Fadel walked through why. <code>crashes_by_day</code> is the named vector from Monday, Monday through Sunday, holding the crash counts for each day. The greater-than sign is a logical operator, and applying it to a vector returns TRUE or FALSE for every element: five TRUEs for Monday through Friday, two FALSEs for Saturday and Sunday, which were both under 2,000. He described it as the equivalent of a for loop that walks every element and asks whether the comparison holds. “Just the days above 2,000” is what you get when you put that logical check inside square brackets, <code>crashes_by_day[crashes_by_day &gt; 2000]</code>, and use it to subset. That distinction is the whole of Part 2, arriving early.</p>
-<p><span class="ts">00:07:08</span> Question 3 asked what <code>typeof(c(2020, "Mon"))</code> gives. Seventeen of twenty-five votes said <code>"character"</code>, which is right. Fadel took the chance to answer a question a student had asked him after the previous class: what is a vector? His answer was that you can think of it as a column of data in an Excel table. The difference from Excel is that a column in a spreadsheet lets you mix things, while R and most other programming languages generalise to the most general type that can hold everything in it. Here <code>2020</code> on its own is a double and <code>"Mon"</code> is a character, and the only way to preserve both is to store the whole thing as text. Same rule as Monday’s example: combine integers with doubles and you get doubles.</p>
-<p><span class="ts">00:09:05</span> The Menti leaderboard went up at the end of the warm-up and Fadel congratulated the top scorer. No points this time, but he said there would be points next time.</p>
+<section id="where-students-struggled" class="level2">
+<h2 class="anchored" data-anchor-id="where-students-struggled">Where students struggled</h2>
+<p><span class="ts">00:05:04</span> Warm-up question 2, what <code>crashes_by_day &gt; 2000</code> returns, was the one the room got wrong. The majority picked “just the days above 2,000” rather than seven TRUE/FALSE values. Fadel worked it from the named vector: the greater-than sign is a logical operator, and applied to a vector it returns TRUE or FALSE for every element, five TRUE for Monday through Friday and two FALSE for Saturday and Sunday, which were both under 2,000. He described it as the equivalent of a for loop that walks every element and asks whether the comparison holds. The option the room chose is what <code>crashes_by_day[crashes_by_day &gt; 2000]</code> returns, and saying so pulled the central idea of Part 2 forward by half an hour.</p>
+<p><span class="ts">00:02:23</span> The other two warm-up questions caused no trouble, and the explanations Fadel gave anyway are worth keeping. On question 1, which file to click before opening RStudio, eighteen of twenty-four votes went to <code>business_intelligence.Rproj</code>, which is the answer. Opening the project is not strictly required, but double-clicking the <code>.Rproj</code> guarantees the working directory starts where the folder is, which matters when the repo is opened on a different computer. Fadel said he had assumed on Monday that everyone’s layout was the M drive, then an ISA 401 folder, then the <code>business_intelligence</code> folder, and that it could just as easily be the M drive and then the folder directly. Either way the project opens RStudio inside <code>business_intelligence</code>. The <code>README.md</code> has no effect on RStudio at all, and <code>.gitignore</code> only tells Git which files and folders not to track, so neither starts a session. Question 3, <code>typeof(c(2020, "Mon"))</code>, took seventeen of twenty-five votes for <code>"character"</code>, which is right.</p>
+<p><span class="ts">00:23:45</span> YAML indentation. Fadel mentioned that a student in one of the two sections had had the indentation of the output options wrong. The fix he demonstrated while typing the header: type the key and its colon first, then press Enter before typing the next key. RStudio indents the new line, and keeps indenting the lines that belong at that level.</p>
+<p><span class="ts">00:35:29</span> After the job-ad debrief he asked for a show of hands, how many were close to at least some of the four answers, then turned to those who were not. He asked twice more, in different words, whether anyone wanted an explanation done differently, and repeated the standing rule that anyone who shows up should leave understanding everything he talked about. <!-- todo: awaiting answer #5 @ 00:35:29 — the show of hands after Activity 1: roughly how much of the room was close? The note reports only that the poll happened, and claims no proportion. --></p>
+<p><span class="ts">00:50:00</span> In the predict activity, <code>crashes_by_day[Sat]</code> without quotes. The symptom is an object-not-found error rather than Saturday’s value; the cause is that unquoted, <code>Sat</code> reads as the name of an object in the environment, and no such object exists. Fadel had made the same point earlier while subsetting the vector by name, that the quotes are what separate a name from an object.</p>
+<p><span class="ts">00:52:43</span> <code>job["salary"]$max</code> was the expression he expected to catch people, and he flagged that it is different from the one he had typed into the class markdown. The single bracket returns a list, and that outer list contains nothing called <code>max</code>. He said he believed it returned NULL rather than an error but was not certain off the top of his head, so he ran it. It returns NULL.</p>
+<p><span class="ts">00:54:01</span> The autocomplete makes the reason visible, and he pointed at it: typing <code>job["salary"]$</code> offers only <code>salary</code>, because the object at that point is a list of one whose single element is named <code>salary</code>. <code>max</code> is one level further down, which is why <code>job["salary"]$salary$max</code> is what reaches it.</p>
+<p><span class="ts">01:03:37</span> The live debugging moment, and the one worth planning for. A student hit an object-not-found error; Fadel asked them to share their screen, then requested remote control to look. His two usual suspects are that the line creating the object was never run at all, or that Enter was pressed instead of Ctrl+Enter, which inserts a newline in the editor instead of sending the line to R. Here the object had simply never been created. This is the error he had flagged the previous class as one of the most frustrating things in R, because the messages are not plain about what went wrong. The fix was to run the line that creates it, and he thanked the student for sharing, because it produced the exact error he had described.</p>
 </section>
-<section id="part-1-data-frames-and-lists" class="level2">
-<h2 class="anchored" data-anchor-id="part-1-data-frames-and-lists">Part 1: Data Frames and Lists</h2>
-<p><span class="ts">00:09:20</span> Fadel laid out the plan: creating and inspecting data frames, then a lot of subsetting, then importing data inside your markdown. He framed the whole session around two mistakes. His stated goal for the day was that you leave knowing the two common errors that are going to cost you time, and how to address them.</p>
-<section id="from-vectors-to-a-data-frame" class="level3">
-<h3 class="anchored" data-anchor-id="from-vectors-to-a-data-frame">From vectors to a data frame</h3>
-<p><span class="ts">00:10:06</span> The reminder first: a vector is a column of data in an Excel file, and R gives that data structure a specific type. The Lego picture on the slide carries the four common ones. Logical is the grey and yellow tower: the output of something like <code>crashes_by_day &gt; 2000</code>, only ever TRUE or FALSE. Categorical is a fixed set of labels, day of the week being Monday through Sunday and nothing else. Numeric is a double or an integer. Character is the open one, where the number of possible values is effectively unlimited.</p>
-<p><span class="ts">00:11:09</span> A vector is one-dimensional, and that is the point of the picture. Because it has only one dimension, pulling something out of it needs only one thing inside the brackets: a single number, or a vector of numbers. Pointing at two grey bricks in the tower and counting from 1, you would ask for <code>c(2, 3)</code> and get those two elements back.</p>
-<p><span class="ts">00:12:07</span> Moving from one dimension to a table gives you a data frame. Two ways to build one: <code>tibble()</code>, which comes from the tibble package, or <code>data.frame()</code>, which anyone who has used R before this class will recognise. A data frame is a collection of vectors, with one hard rule: they all have to be the same length. A vector of length 50 next to a vector of length 100 is an error in R, and an error in Python too, because neither one knows how to line the rows up. Fadel’s example of where this bites in practice is web scraping: you scrape two things, they come back at different lengths, and the attempt to put them in a data frame fails. That is a signal that you need a cleaning step before you combine.</p>
-<p><span class="ts">00:13:33</span> Within that rule, each vector can be its own type. Character for the day, doubles for the crashes, logical for busy, all in the same table. That is one of the nice things about data frames, and it is what the <code>&lt;chr&gt;</code>, <code>&lt;dbl&gt;</code>, <code>&lt;lgl&gt;</code> line under the column headers is telling you.</p>
-<p><span class="ts">00:14:00</span> We will not use matrices in this class, but Fadel mentioned them because an AI assistant may well suggest one. A matrix looks like a data frame but can only hold one type, so combining numbers with characters turns the entire matrix to character. He also drew a contrast about named columns, and immediately hedged it with “though some do”. There is no matrix slide in the deck; this was said in passing because an AI assistant may suggest one. <!-- todo: awaiting answer #1 @ 00:14:00 — the matrix/data frame contrast is garbled in the transcript ("a matrix cannot have problems, while a data thing does ... though some do"); confirm what the distinction was --></p>
-<p><span class="ts">00:14:21</span> Two differences between a tibble and a base data frame, for those who have not used a tibble before. First, it prints better: you get the size, the column names, and the column types before any of the data. Second, extracting a one-by-one element from a data frame gives you a single element, while the same thing on a tibble gives you back a one-by-one tibble.</p>
+<section id="questions-from-the-room" class="level2">
+<h2 class="anchored" data-anchor-id="questions-from-the-room">Questions from the room</h2>
+<p><span class="ts">00:07:44</span> A student had asked after the previous class what a vector actually is, and Fadel answered it during warm-up question 3. Think of it as a column of data in an Excel table, with the difference that a spreadsheet column will hold mixed things while R, like most other programming languages, generalises to the most general type that can store everything. In <code>c(2020, "Mon")</code> the number on its own is a double and <code>"Mon"</code> is character, so the only way to preserve both is to store the whole vector as text. Combining integers with doubles generalises to doubles the same way.</p>
+<p><span class="ts">01:01:29</span> A student asked which package had just been installed. Tidyverse, which is a bundle rather than a single package: it brings dplyr, the source of <code>glimpse()</code>, and readr, the source of <code>read_csv()</code>.</p>
+<p><span class="ts">01:02:12</span> A student asked him to walk back through how he had got the CSV link, and he did it again click by click: the data-source hyperlink in the slide’s footer, then Download on the FRED page, then right-click the CSV entry and copy the link address.</p>
+<p><span class="ts">01:02:21</span> In answering he added that the file can be downloaded from the FRED page directly. He thought at first that this download might be aggregated by week rather than daily, then corrected himself that it may well be the same daily data. The reason he did not use the download button on the chart embedded in the slide is that it appeared to offer an XLS rather than a CSV.</p>
 </section>
-<section id="looking-at-a-data-frame" class="level3">
-<h3 class="anchored" data-anchor-id="looking-at-a-data-frame">Looking at a data frame</h3>
-<p><span class="ts">00:14:49</span> The four questions to ask about any data you load: how many rows, how many columns, what are the columns called, and what type is each one. <code>nrow()</code> and <code>ncol()</code> answer the first two, <code>colnames()</code> or <code>names()</code> the third. <code>typeof()</code> on a data frame is the odd one; it reports <code>"list"</code> rather than telling you about any particular column, so to ask about one column you would write something like <code>crashes_df$day</code>.</p>
-<p><span class="ts">00:16:07</span> Fadel said he tends to ignore all of those and load dplyr instead. He also explained his own colour scheme while he was there, because it shows up on the slides and in his RStudio: mustard yellow is a package or library name, and the bluish colour is a function name. <code>glimpse()</code> gives you the number of rows, the number of columns, the column names, the types, and the first few values in one call. For anyone who has used R before, it is similar to <code>str()</code>; it just prints more readably. Both work, and he left the choice to you. He said he thought everyone in this section had used R before, which was not the case in his other section.</p>
+<section id="demo-notes-and-gotchas" class="level2">
+<h2 class="anchored" data-anchor-id="demo-notes-and-gotchas">Demo notes and gotchas</h2>
+<p><span class="ts">00:01:35</span> The warm-up ran on Mentimeter rather than Kahoot. Fadel told the room it had no effect on their grade even though Menti calls it a quiz, and said he had never used Menti for this and was testing it out. The sound coming from the embed was loud enough that he stopped to deal with it before talking over the first set of results.</p>
+<p><span class="ts">00:08:43</span> The leaderboard is the last Menti slide and he nearly skipped it, remarking that he probably should have shown it. He congratulated the top scorer, said there were no points this time, and said there would be points next time.</p>
+<p><span class="ts">00:09:43</span> The session was framed around two errors he expects to cost students time, one in Part 1 and one in Part 3. His stated goal for the day was that the room leave knowing both and how to address them.</p>
+<p><span class="ts">00:10:06</span> The Lego picture on the data frame slide carried the four vector types: logical as the grey and yellow tower, the output of something like <code>crashes_by_day &gt; 2000</code>; categorical as a fixed set of labels, day of the week being Monday through Sunday and nothing else; numeric as a double or an integer; and character as the open one, where the number of possible values is effectively unlimited. He used the same picture again for the one-dimensional point, that pulling from a vector needs only one thing inside the brackets, a single number or a vector of numbers.</p>
+<p><span class="ts">00:12:36</span> For the rule that all columns of a data frame must be the same length he gave a practical example that is not on the slide: web scraping, where two things come back at different lengths and the attempt to build a data frame fails, which is the signal that a cleaning step is needed first. He noted that Python errors the same way and for the same reason, because neither language knows how to line the rows up.</p>
+<p><span class="ts">00:14:00</span> A matrix aside, not in the deck. Fadel raised matrices only because an AI assistant may well suggest one. A matrix looks like a data frame but can hold only one type, so combining numbers with characters turns the entire matrix to character. He drew a second contrast about named columns and hedged it in the same breath. <!-- todo: awaiting answer #1 @ 00:14:00 — the matrix/data frame contrast is garbled in the transcript ("a matrix cannot have problems, while a data thing does ... though some do"); confirm what the distinction was --></p>
+<p><span class="ts">00:14:21</span> Two tibble-versus-data-frame differences he added for anyone who had not used a tibble: a tibble prints its size, its column names and its column types before any of the data, and extracting a one-by-one element gives a single element from a data frame but a one-by-one tibble from a tibble.</p>
+<p><span class="ts">00:14:49</span> The four questions he put to any loaded data frame are how many rows, how many columns, what the columns are called, and what type each one is. <code>nrow()</code> and <code>ncol()</code> answer the first two, <code>colnames()</code> or <code>names()</code> the third. <code>typeof()</code> on a data frame is the odd one, reporting <code>"list"</code> rather than anything about a particular column, so asking about one column means writing something like <code>crashes_df$day</code>.</p>
+<p><span class="ts">00:16:07</span> He then said he tends to ignore all of those and load dplyr for <code>glimpse()</code> instead, which gives the row and column counts, the names, the types and the first few values in one call. For anyone who has used R before it is similar to <code>str()</code> and just prints more readably; he left the choice open. He explained his colour convention in the same breath, since it shows up both on the slides and in his editor: mustard yellow is a package or library name, the bluish colour is a function name. He said he thought everyone in this section had used R before, which was not the case in his other section.</p>
+<p><span class="ts">00:16:50</span> Lists were introduced as what usually comes back from an API, precisely because nothing in them has to match: a list can hold another list, a data frame, and vectors of different lengths at once. The slide’s <code>example_list</code> holds four elements, the integers 1, 2, 3, a single character <code>"a"</code>, a logical vector of length 3, and a numeric vector of length 2.</p>
+<p><span class="ts">00:18:20</span> The pepper shaker is the mental model he leaned on hardest, and the place he put the first of the day’s two frustrating errors. The shaker is the list and the packets are the elements. <code>x[1]</code> gets the first packet but leaves it in the container, so what comes back is still a list; <code>x[[1]]</code> hands over the packet; <code>x[[1]][[1]]</code> is the pepper. He tied it to why it matters: a function such as <code>mean()</code> takes a vector and not a list, so the container has to be opened before the function will accept what is inside. He came back to the shaker twice, at the job-ad debrief and again at the three-bracket summary table.</p>
+<p><span class="ts">00:20:59</span> RStudio opened on whatever project was last used, which he pointed out was not the recommendation he had just made in warm-up question 1. He double-clicked the project file for this section and pointed at the top right corner of RStudio, where the project name appears. He teaches two sections, so he has two projects to choose between; a student with one class in this lab has only one.</p>
+<p><span class="ts">00:21:18</span> He asked whether the room could read the slides from where they were or wanted him to switch to RStudio. Someone in the room answered, and he went to RStudio full screen for the header typing. When he wanted the slide and RStudio visible at once, a few minutes later, getting the two windows next to each other took several attempts, and he said out loud that the computer was not cooperating. Budget a moment for it.</p>
+<p><span class="ts">00:21:50</span> The markdown was built the way Monday’s was: File, New File, R Markdown, then delete everything after the setup chunk and type the output options from the previous class. It was saved with File, Save As into the <code>markdowns</code> folder as <code>class04.Rmd</code>; he noted that the deck he had made that morning calls it Class 4, so he kept that name.</p>
+<p><span class="ts">00:25:05</span> The instructions he gave while the first activity clock ran: insert a chunk with the insert button, give it a name such as <code>activity01</code>, copy the list definition off the slide rather than retyping it, and run with Ctrl+Enter, which works with the cursor anywhere on the line, at the end as well as the beginning.</p>
+<p><span class="ts">00:30:01</span> He said he had locked the answers panel so the room could not read ahead, and promised to share the answer code at the end of class.</p>
+<p><span class="ts">00:34:05</span> A habit he narrated as he worked: test the expression in the Console, confirm it returns what was expected, and only then write it into the chunk.</p>
+<p><span class="ts">00:35:12</span> He rearranged the panes so the whole chunk was visible at once, and mentioned bracket colouring as a reading aid, since with two pairs on screen you can see which opening bracket goes with which closing one. He was explicit that it has no effect on the code.</p>
+<p><span class="ts">00:36:40</span> He clicked Knit before going back to the deck, so the HTML would generate in the background while he talked.</p>
+<p><span class="ts">00:38:34</span> Rather than assert that the dollar sign does not work on a vector, he opened a chunk and ran the experiment. It does not work. He said plainly that this is what the Console is for when you are not sure.</p>
+<p><span class="ts">00:40:38</span> Two reading rules he wanted carried away: a square bracket means extracting from a data structure, whatever that structure is, and parentheses mean applying a function and giving it arguments. For anyone who did Python in ISA 104, he added that Python starts counting from 0 and R starts from 1.</p>
+<p><span class="ts">00:45:22</span> The three-bracket summary slide ends on two prohibitions worth repeating: no dollar sign on a vector at all, and the dollar sign on a list only when the elements have names, which sometimes they do not. He skipped double brackets on vectors as rarely needed.</p>
+<p><span class="ts">00:46:51</span> The second activity was framed as prediction rather than execution. Copying the code and checking was allowed, but the short clock was there to force reasoning from what had just been covered. He worked all six aloud in the debrief, corrected himself on the first one, since <code>crashes_by_day[c(2, 4)]</code> is Tuesday and Thursday rather than Wednesday and Friday, and had to run the sixth to settle it.</p>
+<p><span class="ts">00:56:26</span> The click order that produced the CSV address: the data-source hyperlink in the slide’s footer opens the FRED page for the series, Download on that page opens a menu offering CSV, Excel, an image and PowerPoint, and right-clicking the CSV entry copies the link address. That address, in quotes, is what <code>read_csv()</code> takes.</p>
+<p><span class="ts">00:57:35</span> The tidyverse install went into the Console on purpose, so the install line would not sit in the markdown. Note the quotes around <code>"tidyverse"</code>: it is not an object in the environment, so it has to be a string. RStudio offered to restart R and he declined, since nothing had been loaded in that session yet.</p>
+<p><span class="ts">00:58:31</span> <code>read_csv()</code> was a function the class had not used, so he put the cursor on it and pressed F1 to open the help page, then widened the pane to read it. The arguments he pointed at: <code>file</code>, <code>col_names</code> defaulting to TRUE, white space trimmed, <code>skip</code> at 0, and type guessing from a minimum of a thousand rows. The line that matters for the demo is the description of <code>file</code>, which says it can be a URL.</p>
+<p><span class="ts">00:59:28</span> The pasted address is very long and does not fit the editor width, and he said so. The deck’s own version of this demo does it differently: it builds a short URL with <code>paste0()</code> from the series id and a date range, and follows the read with a one-line <code>plot()</code>. Neither was used.</p>
+<p><span class="ts">01:00:08</span> Running the readr line prints rather than staying silent: it reports how many rows and columns it read and the types it assigned, and reports that the date column came back as a date.</p>
+<p><span class="ts">01:00:37</span> The comparison is the reason the file is read twice. Both objects came back with the same 1,827 rows and the same two variables, but <code>glimpse()</code> shows the readr version holding the date column as a date and the value as a double, while the base R version left the date column as character. The dashes in the date are why base R keeps it as text.</p>
+<p><span class="ts">01:05:49</span> The colouring that makes package and function names appear differently is optional and cosmetic. It lives under Tools, Global Options; Fadel was briefly unsure whether it sat under Appearance or Code, settled on Code, then Display, where he had two boxes ticked. He left it to the room whether to apply it. <!-- todo: 01:05:49 — name the two Tools > Global Options > Code > Display checkboxes that give function and library highlighting. The frames at this moment are a student's shared screen under remote control, so they are off limits and the setting cannot be read off the recording. --></p>
+<p><span class="ts">01:06:34</span> Excel needs its own install. He said the package name aloud as “read Excel” and then spelled out that the package itself is <code>readxl</code>. He put up the slide on reading an Excel file, then stepped back one slide to the download-first slide, and moved on to Canvas without working through either.</p>
+<p><span class="ts">01:07:15</span> The workbook comes from Canvas, from the module item for this class, as <code>occupation.xlsx</code>. Download it rather than pointing code at a URL.</p>
+<p><span class="ts">01:07:40</span> His strong recommendation before any code is written is to open the downloaded workbook in Excel, because Excel data tends to be messy and the messiness is structural. A workbook can hold multiple sheets, which is why a CSV is called a flat file and a workbook is not. This one opens on an Index sheet listing the tables, and the tabs along the bottom are that Index plus eleven numbered tables, twelve sheets in all; the numbering runs 1.1 to 1.12 with no Table 1.7. Table 1.3 is the one the class wants, and opening it shows the second problem: row 1 is a title written for a human reader, and the column names sit in row 2. He deliberately did not push further, since reading the workbook properly is Wednesday’s work.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="crops/crop-001.jpg" class="img-fluid figure-img"></p>
+<figcaption>Table 1.3 open in Excel: row 1 is the table’s title, the column names sit in row 2, and the sheet tabs along the bottom start at Index and run through the numbered tables</figcaption>
+</figure>
+</div>
+<p><span class="ts">01:09:08</span> The end-of-class ritual, now with data in it: knit the document, then commit and push from GitHub Desktop. Fadel used <code>end of class04</code> as the commit summary and explained that committing stores that version and pushing puts it on GitHub, so the work is available in later classes.</p>
 </section>
-<section id="a-list-holds-anything" class="level3">
-<h3 class="anchored" data-anchor-id="a-list-holds-anything">A list holds anything</h3>
-<p><span class="ts">00:16:50</span> The third data structure is the list. A list is very flexible, and it is what you usually get back when you pull data from an API. In a data frame every column has to be the same length; in a list nothing has to match. A list can contain another list, a data frame, and vectors of different lengths, all at once. The example on the slide, <code>example_list</code>, holds four elements: the integers 1, 2, 3; a single character <code>"a"</code>; a logical vector of length 3; and a numeric vector of length 2. That is exactly what we like lists for as a container.</p>
-</section>
-<section id="the-pepper-shaker" class="level3">
-<h3 class="anchored" data-anchor-id="the-pepper-shaker">The pepper shaker</h3>
-<p><span class="ts">00:18:20</span> This is where Fadel put the first of the day’s two frustrating errors. Subsetting is a fancy way of saying you are extracting information from a structure, and with lists the failure mode is that you think you pulled a vector or a data frame when you actually pulled a list. The mental model on the slide is a pepper shaker. The shaker is the list. Inside it are pepper packets, the elements.</p>
-<p><span class="ts">00:19:03</span> <code>x[1]</code> gets you the first packet but leaves it in the container: what comes back is still a list, a list holding the one thing you asked for. <code>x[[1]]</code> hands you the packet itself. Go one more level, <code>x[[1]][[1]]</code>, and you have the pepper. The rule to hold on to: if you start with a list and use single brackets, you come back with a list.</p>
-<p><span class="ts">00:19:56</span> Why this matters is that functions expect particular inputs. You cannot take a mean of a list, but you can take a mean of a vector. So if the number you want is inside a list, you have to open the container before the function will accept it, which is what <code>example_list[[1]]</code> does and <code>example_list[1]</code> does not.</p>
-</section>
-<section id="activity-examine-a-job-ad" class="level3">
-<h3 class="anchored" data-anchor-id="activity-examine-a-job-ad">Activity: examine a job ad</h3>
-<p><span class="ts">00:20:31</span> At this point we moved to RStudio. Fadel admitted he had not followed his own recommendation from the first Menti question: RStudio had opened on whatever project he used last, rather than from the <code>.Rproj</code> file. For you, with one class in this lab, there is only one project to open. He teaches two sections, so he double-clicked the project file for this section and pointed at the top right corner of RStudio, which is where the project name appears.</p>
-<p><span class="ts">00:21:50</span> The markdown for the day was created the same way as Monday: <strong>File → New File → R Markdown</strong>, delete everything after the setup chunk, and fill in the YAML options he showed last class. Fadel asked whether the room could see the slides or wanted him to switch; someone said the side-by-side view of slides and RStudio was better, and after a false start he got the two windows next to each other.</p>
-<p><span class="ts">00:23:45</span> A note on the YAML that came from a student’s problem in one of the sections: the indentation was wrong. The fix is to type the colon first and then press Enter before typing the next key. RStudio then indents that line for you, and it keeps indenting the lines that belong at the same level.</p>
+<section id="code-as-taught" class="level2">
+<h2 class="anchored" data-anchor-id="code-as-taught">Code as taught</h2>
+<p>The class RMD was built live in front of the room, nothing prepared in advance. The two things not typed out are the <code>job</code> list definition, which Fadel told the room to copy off the slide rather than retype, and the FRED URL, which was pasted from the browser. Several expressions were tried in the Console and never made it into the file.</p>
 <p>The YAML header, as typed:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">'Class 04: R Data Structures'</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Fadel M Megahed"</span></span>
@@ -261,14 +350,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number_sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code_folding</span><span class="kw">:</span><span class="at"> show</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code_download</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><span class="ts">00:22:55</span> The file was saved with <strong>File → Save As</strong> into the <code>markdowns</code> folder, as <code>class04.Rmd</code>. Fadel noted that the deck he had made that morning calls it Class 4, so he stuck with that name.</p>
-<p><span class="ts">00:23:59</span> The activity, two or three minutes on the clock, four expressions to write against the <code>job</code> list: extract the company name as “Google” and not as a list; extract the maximum salary as a number; extract the maximum salary again using only square brackets; and get the names of the elements in <code>job</code>. His advice while you worked: insert a chunk with the insert button, give the chunk a name such as <code>activity01</code>, copy the list definition off the slide rather than retyping it, and run with Ctrl+Enter. Ctrl+Enter works with the cursor anywhere on the line, at the end as well as the beginning.</p>
-<p><span class="ts">00:30:01</span> The debrief. For the company name there are two routes. By position, <code>job[[2]]</code>, because company is the second element; you can confirm the position by expanding <code>job</code> in the Environment pane. By name, <code>job$company</code>. Both return <code>"Google"</code> as a value.</p>
-<p><span class="ts">00:31:02</span> The contrast he wanted you to see is what happens with a single bracket. <code>job[2]</code> returns a list whose one element is named <code>company</code>, and inside that is Google. Assigning <code>company = job[[2]]</code> puts a value in your environment; assigning <code>company_list = job[2]</code> puts a list of one in your environment. That is the pepper shaker again, and unwrapping it takes another step.</p>
-<p><span class="ts">00:32:41</span> The maximum salary is nested, so it takes two steps: <code>job$salary$max</code>. Fadel pointed out the autocomplete while typing: after <code>job$salary$</code>, RStudio offers the named things inside, which is only possible because the sublist has names. Salary is a named element of <code>job</code>, and <code>max</code> is a named element of salary, and that is why the dollar-sign path works.</p>
-<p><span class="ts">00:33:25</span> The all-brackets version of the same path: salary is the third element of <code>job</code>, and <code>max</code> is the second element inside it, so <code>job[[3]][[2]]</code>. He tested each expression in the Console first, saw it return what he expected, and only then wrote it into the chunk. That order is worth copying.</p>
-<p><span class="ts">00:34:05</span> For the names, you can expand <code>job</code> in the Environment pane and read them, or call <code>names(job)</code>, which returns title, company, and salary.</p>
-<p>The class RMD chunk, as it ended up:</p>
+<p><span class="ts">00:23:59</span> The first chunk came out of the job-ad activity, two or three minutes on the clock and four expressions against the <code>job</code> list: the company name as a value rather than as a list, the maximum salary as a number, the maximum salary again using only square brackets, and the names of the elements.</p>
+<p><span class="ts">00:30:01</span> The debrief was worked at the podium. Position can be confirmed by expanding <code>job</code> in the Environment pane, which is also where the element names can be read without calling <code>names()</code>. The autocomplete carried one of the points: after <code>job$salary$</code> RStudio offers the named things inside, which is only possible because the sublist has names, and that is why the dollar-sign path works at all.</p>
+<p>The chunk, as it ended up:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>job <span class="ot">=</span> <span class="fu">list</span>(<span class="at">title   =</span> <span class="st">"Research Data Scientist, Magic Eye"</span>,</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">company =</span> <span class="st">"Google"</span>, <span class="at">salary  =</span> <span class="fu">list</span>(<span class="at">min =</span> <span class="dv">147000</span>, <span class="at">max =</span> <span class="dv">210000</span>) )</span>
@@ -306,25 +390,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="5">5</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="15" data-code-annotation="5">Starting with a single bracket instead. <code>job['salary']</code> is still a list, so you have to name <code>salary</code> again to get inside it before <code>max</code> is reachable.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="15" data-code-annotation="5">Starting with a single bracket instead. <code>job['salary']</code> is still a list, so <code>salary</code> has to be named again to get inside it before <code>max</code> is reachable.</span>
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="6">6</dt>
 <dd>
 <span data-code-cell="annotated-cell-2" data-code-lines="18" data-code-annotation="6">Title, company, salary.</span>
 </dd>
 </dl>
-<p><span class="ts">00:35:12</span> Fadel rearranged the panes so the whole chunk was visible at once, and mentioned the colouring as a reading aid: with two of something on screen you can see which opening bracket goes with which closing one. He was explicit that this had no effect on the code.</p>
-<p><span class="ts">00:35:51</span> The name for what we had just done: subsetting. You are getting a subset of the data, and you are making sure that subset comes out in the format you need. He returned to the standing rule for the course, that if you show up you should leave understanding every single thing he talked about, and asked twice whether anyone wanted a different explanation.</p>
-</section>
-</section>
-<section id="part-2-subsetting-and-indexing" class="level2">
-<h2 class="anchored" data-anchor-id="part-2-subsetting-and-indexing">Part 2: Subsetting and Indexing</h2>
-<p><span class="ts">00:36:40</span> Fadel clicked Knit before moving on, so the HTML would generate in the background, and went back to the deck. The point of Part 2 is that Part 1 used subsetting without explaining it, and only for a list.</p>
-<section id="subsetting-a-vector" class="level3">
-<h3 class="anchored" data-anchor-id="subsetting-a-vector">Subsetting a vector</h3>
-<p><span class="ts">00:37:11</span> The vector on the slide is real data: unique crashes in Cincinnati in 2025, summed by day of the week, for the whole of last year. Because a vector is one-dimensional, one input inside the brackets is all it takes. <code>crashes_by_day[2]</code> returns the second day, Tuesday, and because the vector is named, the name comes back with the value: Tue 2241. You can also index by name, <code>crashes_by_day["Fri"]</code>, and get the same kind of result for Friday.</p>
-<p><span class="ts">00:38:34</span> A new section and chunk went into the markdown, and the first thing Fadel did in it was run an experiment rather than state a fact. The question was whether <code>crashes_by_day$</code> works. It does not. You cannot use a dollar sign on a vector. He was explicit that this is what the Console is for: when you are not sure, test it.</p>
-<p><span class="ts">00:39:02</span> To pull more than one element you have to hand the brackets a vector. <code>crashes_by_day[c("Wed", "Fri")]</code> returns both days by name. <code>crashes_by_day[c(3, 5)]</code> returns the same two by position. And when the elements you want sit next to each other, the colon does it: <code>crashes_by_day[1:5]</code> gives the first five days.</p>
+<p><span class="ts">00:35:51</span> The name he gave to what the activity had just done is subsetting: getting a subset of the data, and making sure that subset comes out in the format the next step needs. Part 2 then went back over it properly, since Part 1 had used subsetting without explaining it, and only for a list.</p>
+<p><span class="ts">00:37:11</span> The second chunk is the vector subsetting section. The vector is real data, unique crashes in Cincinnati in 2025 summed by day of the week across the whole of last year, and it is named, so <code>crashes_by_day[2]</code> returns the second day, Tuesday, with its name attached, and <code>crashes_by_day["Fri"]</code> does the same for Friday. To pull more than one element the brackets need a vector, and when the wanted elements sit next to each other the colon does it.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>crashes_by_day <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">2241</span>, <span class="dv">2327</span>, <span class="dv">2285</span>, <span class="dv">2380</span>, <span class="dv">1866</span>, <span class="dv">1664</span>)</span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(crashes_by_day) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>,</span>
@@ -338,7 +412,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="6" data-code-annotation="1">Two elements by name. The quotes are required: without them R reads <code>Wed</code> as the name of an object in your environment, and there is no such object.</span>
+<span data-code-cell="annotated-cell-3" data-code-lines="6" data-code-annotation="1">Two elements by name. The quotes are required: without them R reads <code>Wed</code> as the name of an object in the environment, and there is no such object.</span>
 </dd>
 <dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
 <dd>
@@ -353,51 +427,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span data-code-cell="annotated-cell-3" data-code-lines="10" data-code-annotation="4">Empty brackets return everything, which is no different from typing the object’s name.</span>
 </dd>
 </dl>
-<p><span class="ts">00:40:38</span> A reading rule for R that Fadel wanted you to carry: a square bracket means you are extracting data from a data structure, whatever that structure is. Parentheses mean you are applying a function and giving it arguments. Two symbols, two different jobs.</p>
-<p><span class="ts">00:42:22</span> One more difference worth knowing if you did Python in ISA 104: Python starts counting from 0, R starts from 1.</p>
-</section>
-<section id="subsetting-a-data-frame" class="level3">
-<h3 class="anchored" data-anchor-id="subsetting-a-data-frame">Subsetting a data frame</h3>
-<p><span class="ts">00:43:25</span> A data frame has rows and columns, so the story changes. <code>crashes_df[["crashes"]]</code> is the same as <code>crashes_df$crashes</code>: both pull a single column out as a vector. Then the two-dimensional form: inside single brackets you give rows, a comma, and columns. Rows can be <code>1:2</code> for the first two, <code>2:3</code> for rows two and three, a vector such as <code>c(1, 3)</code> for rows that are not adjacent, or a logical condition. Columns work the same way, by name or by number, so <code>c("day", "crashes")</code> and <code>1:2</code> and <code>c(1, 2)</code> all get you the first two columns.</p>
-</section>
-<section id="the-summary-table" class="level3">
-<h3 class="anchored" data-anchor-id="the-summary-table">The summary table</h3>
-<p><span class="ts">00:45:22</span> The reference slide pulls it together. Single brackets on a vector give a shorter vector; double brackets on a vector exist but are rarely needed, so we skipped them. Single brackets on a list give a shorter list; double brackets give you whatever the element is, a list, a data frame, or a vector. Single brackets on a data frame typically give a smaller data frame; double brackets pull one column as a vector, the same as the dollar sign. And the two prohibitions: no dollar sign on a vector, and the dollar sign only works on a list when the elements have names, which they sometimes do not.</p>
-</section>
-<section id="activity-predict-the-output" class="level3">
-<h3 class="anchored" data-anchor-id="activity-predict-the-output">Activity: predict the output</h3>
-<p><span class="ts">00:46:23</span> Two and a half minutes, six expressions across the three objects from today, and the instruction was to predict rather than run. You could copy the code and check, but the point of the short clock was to make you reason from what we had just done.</p>
-<p><span class="ts">00:49:32</span> Working through them. For <code>crashes_by_day[c(2, 4)]</code>, Fadel first said Wednesday and Friday and then corrected himself: positions 2 and 4 are Tuesday and Thursday, so those are the two named values that come back. <code>c(2, 4)</code> asks for two specific positions, not a range.</p>
-<p><span class="ts">00:50:00</span> <code>crashes_by_day[Sat]</code> does not work. Without quotes, <code>Sat</code> is read as an object name and there is no object called <code>Sat</code>, so you get an object-not-found error.</p>
-<p><span class="ts">00:50:28</span> <code>sum(crashes_by_day &gt; 2300)</code> is the Menti question with a function wrapped around it. Inside, the comparison gives seven TRUE/FALSE values, five FALSE and two TRUE. Summing a logical vector counts the TRUEs, because TRUE is 1 and FALSE is 0, so the answer is 2.</p>
-<p><span class="ts">00:51:27</span> <code>crashes_df$day[crashes_df$crashes &lt; 2000]</code> has two steps. The dollar sign pulls the <code>day</code> column out as a vector, and the condition inside the brackets produces TRUE/FALSE for each element; indexing with that keeps only the TRUE positions. The days under 2,000 crashes are the weekend, so you get Saturday and Sunday.</p>
-<p><span class="ts">00:52:18</span> <code>crashes_df[["busy"]][3]</code> is written correctly on both counts, double brackets and the name in quotes. It opens the <code>busy</code> column into a logical vector and takes the third element, which is TRUE.</p>
-<p><span class="ts">00:52:43</span> <code>job["salary"]$max</code> is the one that catches people, and Fadel flagged that it is deliberately different from what he had typed in the class markdown. The single bracket returns a list, and that outer list does not contain anything called <code>max</code>. He said he believed it returned NULL rather than an error but was not certain off the top of his head, so he ran it. It returns NULL.</p>
-<p><span class="ts">00:54:01</span> The autocomplete makes the reason visible. Typing <code>job["salary"]$</code> offers only <code>salary</code>, because the object at that point is a list of one whose single element is named <code>salary</code>. <code>max</code> is one level further down, which is why <code>job["salary"]$salary$max</code> is what actually reaches it.</p>
-</section>
-</section>
-<section id="part-3-data-import" class="level2">
-<h2 class="anchored" data-anchor-id="part-3-data-import">Part 3: Data Import</h2>
-<p><span class="ts">00:54:34</span> Three formats for the day: CSV, Excel, and JSON. <code>read_csv()</code> reads data that lives on your computer and data that lives on the web, as long as what you point it at is actually a CSV and not, say, a folder containing one. It works the same way as base R’s <code>read.csv()</code>; Fadel said he prefers the underscore version because it guesses column types. Excel files have to be on your computer. JSON, the semi-structured format from the earlier class, can come from either your computer or the web.</p>
-<section id="csv-ohio-job-postings-on-fred" class="level3">
-<h3 class="anchored" data-anchor-id="csv-ohio-job-postings-on-fred">CSV: Ohio job postings on FRED</h3>
-<p><span class="ts">00:55:47</span> The CSV for the day is the Indeed job postings index for Ohio, served by FRED, with roughly five years of data. It is an index rather than a count: February 1, 2020 is set to 100, so a value above 100 means more job postings than there were on that date and a value below 100 means fewer.</p>
-<p><span class="ts">00:56:26</span> Getting the URL was done live, and it is worth repeating because a student asked about it later. Fadel clicked the source link in the slide’s footer, which opens the FRED page for the series. On that page there is a <strong>Download</strong> button; the menu under it offers CSV, Excel, an image, and PowerPoint. He right-clicked the CSV entry and copied the link address. That address, quotes and all, is what goes into <code>read_csv()</code>.</p>
-<p><span class="ts">00:57:35</span> The install went into the Console, on purpose, because he did not want the installation line sitting in his code. The package is tidyverse, which is a bundle rather than a single package: it brings dplyr, which we had already been using, and readr, which provides <code>read_csv()</code>. Note the quotes around <code>"tidyverse"</code> in <code>install.packages()</code>: tidyverse is not an object in your environment, so it has to be a string. RStudio offered to restart R and Fadel said no, since no packages had been loaded yet in that session.</p>
-<p><span class="ts">00:58:19</span> Then the read itself. Since <code>read_csv()</code> was a function we had never used, he pressed <strong>F1</strong> with the cursor on it and read the help page. The arguments that came up: <code>file</code>, <code>col_names</code> defaulting to TRUE, white space trimmed by default, <code>skip</code> defaulting to 0, and the type guessing that looks at a minimum of a thousand rows. The line in the help that matters most for today is the description of <code>file</code>, which says it can be a path, a connection, or a URL.</p>
+<p><span class="ts">00:43:25</span> No data frame chunk was typed; that material stayed on the slides. What Fadel added there is that <code>crashes_df[["crashes"]]</code> and <code>crashes_df$crashes</code> do the same thing, both pulling one column out as a vector, and that the two-dimensional form takes rows, a comma, then columns, where either side can be a single position, a range such as <code>1:2</code>, a vector of positions such as <code>c(1, 3)</code>, column names such as <code>c("day", "crashes")</code>, or a logical condition.</p>
+<p><span class="ts">00:54:34</span> The third chunk is the CSV read. Three formats were promised for the day, CSV, Excel and JSON. <code>read_csv()</code> reads data on the machine and data on the web, as long as what it is pointed at is actually a CSV and not, say, a folder containing one; it works the same way as base R’s <code>read.csv()</code>, and Fadel said he prefers the underscore version because it guesses column types. Excel files have to be on the machine. JSON, the semi-structured format from the earlier class, can come from either. Only the CSV was reached.</p>
+<p><span class="ts">00:55:47</span> The file is the Indeed job postings index for Ohio, served by FRED, with roughly five years of data. It is an index rather than a count: February 1, 2020 is set to 100, so a value above 100 means more job postings than there were on that date and a value below 100 means fewer. The chunk reads it twice, once with readr and once with base R, so the two can be compared.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>oh_jobs <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-3" class="code-annotation-target"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file=</span><span class="st">"https://fred.stlouisfed.org/graph/fredgraph.csv?...&amp;id=IHLIDXUSOH&amp;..."</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-3" class="code-annotation-target"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file=</span><span class="st">"https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23ebf3fb&amp;chart_type=line&amp;drp=0&amp;fo=open%20sans&amp;graph_bgcolor=%23ffffff&amp;height=450&amp;mode=fred&amp;recession_bars=on&amp;txtcolor=%23444444&amp;ts=12&amp;tts=12&amp;width=1140&amp;nt=0&amp;thu=0&amp;trc=0&amp;show_legend=yes&amp;show_axis_titles=yes&amp;show_tooltip=yes&amp;id=IHLIDXUSOH&amp;scale=left&amp;cosd=2021-08-28&amp;coed=2026-08-28&amp;line_color=%230073e6&amp;link_values=false&amp;line_style=solid&amp;mark_type=none&amp;mw=3&amp;lw=3&amp;ost=-99999&amp;oet=99999&amp;mma=0&amp;fml=a&amp;fq=Daily%2C%207-Day&amp;fam=avg&amp;fgst=lin&amp;fgsnd=2020-02-01&amp;line_index=1&amp;transformation=lin&amp;vintage_date=2026-09-02&amp;revision_date=2026-09-02&amp;nd=2020-02-01"</span></span>
 <span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a>oh_jobs_baser<span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"https://fred.stlouisfed.org/graph/fredgraph.csv?..."</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a>oh_jobs_baser<span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23ebf3fb&amp;chart_type=line&amp;drp=0&amp;fo=open%20sans&amp;graph_bgcolor=%23ffffff&amp;height=450&amp;mode=fred&amp;recession_bars=on&amp;txtcolor=%23444444&amp;ts=12&amp;tts=12&amp;width=1140&amp;nt=0&amp;thu=0&amp;trc=0&amp;show_legend=yes&amp;show_axis_titles=yes&amp;show_tooltip=yes&amp;id=IHLIDXUSOH&amp;scale=left&amp;cosd=2021-08-28&amp;coed=2026-08-28&amp;line_color=%230073e6&amp;link_values=false&amp;line_style=solid&amp;mark_type=none&amp;mw=3&amp;lw=3&amp;ost=-99999&amp;oet=99999&amp;mma=0&amp;fml=a&amp;fq=Daily%2C%207-Day&amp;fam=avg&amp;fgst=lin&amp;fgsnd=2020-02-01&amp;line_index=1&amp;transformation=lin&amp;vintage_date=2026-09-02&amp;revision_date=2026-09-02&amp;nd=2020-02-01"</span>)</span>
 <span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(oh_jobs)</span>
 <span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(oh_jobs_baser)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="3" data-code-annotation="1">The full URL is very long, so it is abbreviated here; the class RMD has it in full. It is the copied link address, in quotes. Mustard yellow is the package, blue is the function, in Fadel’s editor colours.</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="3" data-code-annotation="1">The copied link address, in quotes. It is long enough that it runs well past the editor width, which Fadel remarked on as he pasted it. Mustard yellow is the package, blue is the function, in Fadel’s editor colours.</span>
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
 <dd>
@@ -408,48 +453,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span data-code-cell="annotated-cell-4" data-code-lines="8" data-code-annotation="3"><code>glimpse()</code> on both is the habit, and here it is also the comparison.</span>
 </dd>
 </dl>
-<p><span class="ts">01:00:08</span> Running the <code>read_csv()</code> line prints a message rather than staying silent: readr tells you how many rows and columns it read and what types it assigned, and it reports that the date column came back as a date.</p>
-<p><span class="ts">01:00:37</span> The comparison is the reason both lines are there. Both objects have the same number of rows and the same two variables. But <code>glimpse()</code> shows that the readr version stored the date column as a date and the value column as a double, while the base R version stored the date column as character. The dashes in the date are why base R leaves it as text. Readr guesses, and that guess is the part Fadel finds helpful.</p>
-<p><span class="ts">01:03:37</span> A live debugging moment, and the lesson generalises. The error was an object-not-found error: the code referred to an object that was not in the Environment. Fadel’s two usual suspects for this are that the line creating the object was never run at all, or that Enter was pressed instead of Ctrl+Enter, which types a newline in the editor instead of sending the line to R. This is the error he had flagged the previous class as one of the most frustrating things about R, because the message does not say “you forgot to run line 62”; it just says it cannot find something. The fix was to run the line that creates the object.</p>
-<p><span class="ts">01:05:49</span> Optional, and only if you like the look: the colouring that makes function and library names appear differently is a setting in <strong>Tools → Global Options</strong>. Fadel was briefly unsure whether it lived under Appearance or Code and settled on <strong>Code</strong>, then <strong>Display</strong>, where he had ticked two boxes. He was clear that this is cosmetic and left it up to you. <!-- todo: which two Display checkboxes were ticked at 01:05:49? The frame is not legible enough to name them --></p>
 </section>
-<section id="excel-download-first-then-read" class="level3">
-<h3 class="anchored" data-anchor-id="excel-download-first-then-read">Excel: download first, then read</h3>
-<p><span class="ts">01:06:34</span> The next format is Excel, and it starts with an install: the package is readxl. Fadel said the name out loud as “read Excel” and then spelled out that the package itself is <code>readxl</code>.</p>
-<p><span class="ts">01:07:15</span> The workbook is on Canvas, under Files: <code>occupation.xlsx</code>. Download it rather than trying to read it from a URL.</p>
-<p><span class="ts">01:07:40</span> His strong recommendation is to open the downloaded workbook before you write any code, because Excel data tends to be messy. The messiness has a structural cause: an Excel file can hold multiple sheets, which is why a CSV is called a flat file and a workbook is not. This one has twelve sheets: an index and the numbered tables. The one we want is Table 1.3, and looking at it shows the second problem: the column names are not in the first row. Row 1 is a title written for a human reader, and the header sits in row 2.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="crops/crop-001.jpg" class="img-fluid figure-img"></p>
-<figcaption>Table 1.3 open in Excel: row 1 is the table’s title, the column names sit in row 2, and the sheet tabs along the bottom start at Index and run through the numbered tables</figcaption>
-</figure>
-</div>
-<p><span class="ts">01:07:56</span> Fadel deliberately did not rush this. Reading the workbook properly is Wednesday’s work.</p>
-</section>
-</section>
-<section id="where-we-stopped" class="level2">
-<h2 class="anchored" data-anchor-id="where-we-stopped">Where we stopped</h2>
-<p><span class="ts">01:08:23</span> The plan for Wednesday, as announced: no new slides. We finish importing data, and then use that as the excuse to talk about getting insights out of imported data with AI. Fadel described using a package that lets you ask an OpenAI model questions about the data repeatedly, from inside R. <!-- todo: awaiting answer #3 @ 01:08:48 — the package name for Wednesday's AI demo did not survive transcription; ellmer? chattr? --></p>
-<p><span class="ts">01:09:08</span> The end-of-class ritual, unchanged and now with data in it: knit the document, then go to GitHub Desktop, commit, and push. Fadel used <code>end of class 4</code> as the commit summary. Committing stores that version; pushing puts it on GitHub, so today’s work is available to you in future classes.</p>
-<p><span class="ts">01:09:55</span> He closed by thanking the people who asked questions, and repeated the standing invitation: if you feel he went too fast through something, say so.</p>
-<p>We did not get to JSON, the Import Heist activity, or Part 4 on exporting with <code>write_csv()</code> and <code>write_xlsx()</code>. Those slides are still in the deck if you want to read ahead.</p>
-</section>
-<section id="questions-from-class" class="level2">
-<h2 class="anchored" data-anchor-id="questions-from-class">Questions from class</h2>
-<p><span class="ts">00:07:44</span> After the previous class, a student asked what a vector actually is. Fadel answered it at the start of this one: think of it as a column of data in an Excel table, with the difference that a column in R holds exactly one type, and mixing types makes R generalise the whole thing.</p>
-<p><span class="ts">00:21:18</span> Asked whether the room could see the slides or would rather he switched to a side-by-side layout, someone said the side-by-side was better, so that is how the rest of the coding was shown.</p>
-<p><span class="ts">01:01:29</span> A student asked what the package was that had just been installed. It is tidyverse, which contains both dplyr, used for <code>glimpse()</code>, and readr, used for <code>read_csv()</code>.</p>
-<p><span class="ts">01:02:12</span> A student asked him to walk through how he got the CSV link. He did: click the data-source hyperlink in the slide footer, which opens the FRED series page; click <strong>Download</strong>; right-click the CSV entry and copy the link address. He added that you can also download the file from that page directly. He then compared it with the download button on the embedded chart, thought at first that one might be aggregated by week rather than daily and immediately corrected himself that it may well be the same daily data; the reason he did not use it is that it appeared to be an XLS rather than a CSV.</p>
-</section>
-<section id="loose-ends" class="level2">
-<h2 class="anchored" data-anchor-id="loose-ends">Loose ends</h2>
-<!-- todo: awaiting answer #1 @ 00:14:00 — matrix vs data frame distinction is garbled; confirm the wording -->
+<section id="for-next-time" class="level2">
+<h2 class="anchored" data-anchor-id="for-next-time">For next time</h2>
+<p>Fadel’s own remarks about the session come first, then the note’s suggestions, then what is still unconfirmed.</p>
+<p><span class="ts">00:08:43</span> On the warm-up: he said he probably should have shown the last Menti slide, the leaderboard, and that there were no points this time but there would be points next time.</p>
+<p><span class="ts">00:20:59</span> On opening RStudio: he noted that he had not followed the recommendation he had just made in warm-up question 1, since RStudio came up on the project he had used last rather than from the project file.</p>
+<p><span class="ts">00:54:34</span> On pacing: he said out loud that the class was doing well on time, then immediately took it back.</p>
+<p><span class="ts">00:56:26</span> On the slides: he said the FRED chart embedded in the deck had got squished, that he did not know why, and that he could probably fix it later.</p>
+<p><span class="ts">01:08:23</span> On Wednesday: he said he would not rush the Excel workbook and would talk about it then, that he did not plan to make any new slides, and that he would finish importing data and then use that as an excuse to look at getting insights from imported data with AI, using a package that lets you ask an OpenAI model questions about the data repeatedly from inside R. <!-- todo: awaiting answer #3 @ 01:08:48 — the package name for Wednesday's AI demo did not survive transcription; ellmer? chattr? --></p>
+<p><span class="ts">01:09:55</span> On the session as a whole: he thanked the people who asked questions, said it had been really helpful, and repeated the standing invitation to say so if he sped up through something.</p>
+<p>Suggestion: budget nine minutes for the warm-up rather than three. Two of the three questions needed a full explanation, and the leaderboard came after them.</p>
+<p>Suggestion: the deck and the demo disagree about how the FRED URL is built. The deck assembles a short one with <code>paste0()</code> from the series id and a date range, and follows the read with a one-line <code>plot()</code>; the class pasted the full copied link address and skipped the plot. Settle which one the class RMD should carry before the demo is run again.</p>
+<p>Suggestion: the job-ad activity was given two or three minutes and ran six, and its debrief ran seven. If the deck’s three-minute countdown is kept, plan the period around the debrief rather than the clock.</p>
+<p>Suggestion: what is left is more than one Wednesday. The Excel read with <code>sheet</code>, <code>skip</code> and <code>n_max</code>, the <code>../data/</code> path convention and its animated slide, JSON, the Import Heist and Part 4 on export are all still to come. Decide in advance which of them moves further out.</p>
+<p>Open: what the matrix and data frame contrast at 00:14:00 was meant to say. The transcript garbles it and it is on no slide.</p>
+<p>Open: the name of the package for Wednesday’s AI demo.</p>
+<p>Open: the two checkboxes under Tools, Global Options, Code, Display that give function and library highlighting.</p>
+<p>Open: whether Part 4 on export and the Import Heist move to Wednesday or later, so the Class 05 notes can pick them up.</p>
+<p>Open: how much of the room was close to the job-ad answers when the show of hands was taken.</p>
 <!-- todo: awaiting answer #2 @ 00:55:47 — "Ohio job postings and threats"; the deck settles this ("the Indeed job postings index for Ohio, served by FRED"), so the prose no longer hedges. Question still queued. -->
-<!-- todo: awaiting answer #3 @ 01:08:48 — name the AI package promised for Wednesday -->
 <!-- todo: awaiting answer #4 @ 00:04:01 — "the cutting theater board" at the Menti transition; confirm "quiz leaderboard" (it is not quoted in the notes, so this only matters if you want it mentioned) -->
-<!-- todo: 01:05:49 — name the two Tools > Global Options > Code > Display checkboxes you tick for function/library highlighting, so students can reproduce it -->
 <!-- todo: 01:07:40 — you said Table 1.3 would be read properly on Wednesday; confirm the notes should not pre-empt the sheet/skip/n_max arguments here -->
 <!-- todo: Part 4 (export) and the Import Heist were not reached on 09/02; say whether they move to Wednesday so the Class 05 notes can pick them up -->
+</section>
+<section id="materials" class="level2">
+<h2 class="anchored" data-anchor-id="materials">Materials</h2>
+<ul>
+<li><a href="https://fmegahed.github.io/isa401/fall2026/class04/04_data_import_export.html">Slides</a></li>
+<li><a href="https://github.com/fmegahed/isa401a/blob/main/markdowns/class04.Rmd">Class code</a></li>
+</ul>
 
 
 </section>
